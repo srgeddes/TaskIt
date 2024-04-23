@@ -1,15 +1,15 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/uwW2kZBL)
+hec[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/uwW2kZBL)
 # Homework 6 - Course Review Application
 
 ## Authors
-1) Name, netid, [GitHub profile name]
-2) Name, netid, [GitHub profile name]
-3) Name, netid, [GitHub profile name]
-4) Name, netid, [GitHub profile name]
+1) Riley Geddes, krf9mp, srgeddes
+2) Levi Dawit, kpn5ef, ldawit153
+3) Alexander Halpern, upy9gr, alexanderhalpern
+
 
 ## To Run
 
-[Add a brief description of which .java file to run, and what vm arguments are needed]
+Run CourseReviewsApplication 
 
 ## Contributions
 
