@@ -1,4 +1,4 @@
-hec[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/uwW2kZBL)
+[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/uwW2kZBL)
 # Homework 6 - Course Review Application
 
 ## Authors
@@ -9,7 +9,7 @@ hec[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-r
 
 ## To Run
 
-Run CourseReviewsApplication 
+Run CourseReviewsApplication.java
 
 ## Contributions
 
@@ -30,12 +30,6 @@ List the primary contributions of each author. It is recommended to update this 
 ### [Author 3 - replace this with their name]
 
 * Author 3 contributions
-* as a bulleted list
-* each line starts with an asterisk and a space
-
-### [Author 4 - replace this with their name]
-
-* Author 4 contributions
 * as a bulleted list
 * each line starts with an asterisk and a space
 

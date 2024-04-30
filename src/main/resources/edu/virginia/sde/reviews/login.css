@@ -1,0 +1,13 @@
+.root {
+    -fx-background-color: #232D4B;
+}
+
+.label {
+    -fx-font-size: 20;
+    -fx-font-family: "Helvetica";
+    -fx-text-fill: #E57200;
+}
+
+#loginAction {
+    
+}

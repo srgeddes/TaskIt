@@ -1,4 +1,4 @@
-package edu.virginia.sde.reviews.Controllers;
+package edu.virginia.sde.reviews.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
