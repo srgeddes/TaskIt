@@ -13,18 +13,14 @@ public class LoginScene {
     public LoginScene(Stage stage) throws Exception {
         this.stage = stage;
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/edu/virginia/sde/reviews/login.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/edu/virginia/sde/reviews/LoginStyling/login.fxml"));
             scene = new Scene(root);
-            String css = this.getClass().getResource("/edu/virginia/sde/reviews/login.css").toExternalForm();
+            String css = this.getClass().getResource("/edu/virginia/sde/reviews/LoginStyling/login.css").toExternalForm();
             scene.getStylesheets().add(css);
             stage.setTitle("Login");
         } catch(Exception e) {
             e.printStackTrace();
         }
-//        this.stage = stage;
-//        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/edu/virginia/sde/reviews/login.fxml"));
-//        scene = new Scene(fxmlLoader.load());
-//        stage.setTitle("Login");
     }
 
     public Scene getScene() {
