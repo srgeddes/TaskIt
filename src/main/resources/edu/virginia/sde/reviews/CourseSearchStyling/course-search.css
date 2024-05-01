@@ -1,0 +1,28 @@
+.root {
+    -fx-background-color: #232D4B;
+    -fx-font-family: "Helvetica";
+}
+
+
+.TableColumn {
+    -fx-text-alignment: center;
+}
+
+.MenuBar {
+    -fx-background-color: #0e0e0e;
+}
+
+.MenuBar .container {
+    -fx-alignment: center-right;
+}
+
+.button {
+    -fx-background-color: #E57200;
+}
+
+.menu-button {
+    -fx-background-color: #E57200;
+}
+
+
+

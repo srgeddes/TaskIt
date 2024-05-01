@@ -31,9 +31,9 @@ public class SceneManager {
     }
 
     public void initializeCourseSearchScene(Stage stage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/edu/virginia/sde/reviews/CourseSearchStyling/courseSearch.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/edu/virginia/sde/reviews/CourseSearchStyling/course-search.fxml"));
         Scene scene = new Scene(root);
-        stage.setTitle("Login");
+        stage.setTitle("Course Search");
         stage.setScene(scene);
         stage.show();
     }
@@ -43,6 +43,7 @@ public class SceneManager {
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
+        stage.setTitle("Login");
         stage.show();
     }
 
@@ -51,6 +52,7 @@ public class SceneManager {
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
+        stage.setTitle("Course Search");
         stage.show();
     }
 
@@ -59,6 +61,25 @@ public class SceneManager {
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
+        stage.setTitle("Create Account");
+        stage.show();
+    }
+
+    public void switchToCourseReviewsScene(javafx.event.ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/edu/virginia/sde/reviews/CourseReviewsStyling/course-reviews.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle("Course Reviews");
+        stage.show();
+    }
+
+    public void switchToMyReviewsScene(javafx.event.ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/edu/virginia/sde/reviews/MyReviewsStyling/my-reviews.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle("My Reviews");
         stage.show();
     }
 

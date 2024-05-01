@@ -101,7 +101,7 @@ public class LoginSceneController {
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             SceneManager sceneManager = new SceneManager(stage);
             sceneManager.switchToCourseSearchScene(event);
-            // TODO : Update the current account with database
+            // TODO : Update the current account with database and add them to the list of users
         } else {
             if (!username1.equals(username2) || username1.isEmpty()) {
                 usernameDoesNotMatchError.setVisible(true);
