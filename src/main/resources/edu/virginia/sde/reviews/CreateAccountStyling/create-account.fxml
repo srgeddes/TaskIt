@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="667.0" prefWidth="839.0" spacing="40.0" stylesheets="@create-account.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.virginia.sde.reviews.controllers.LoginSceneController">
+    <children>
+
+        <Label fx:id="usernameDoesNotMatchError" text="Usernames do not match" visible="false" />
+        <Label fx:id="passwordDoesNotMatchError" text="Passwords do not match" visible="false" />
+      <VBox alignment="CENTER" spacing="30.0">
+         <children>
+              <TextField fx:id="createAccountUsernameField" maxWidth="200" onMouseClicked="#usernamePasswordErrorHide" promptText="New Username" />
+      
+              <TextField fx:id="confirmAccountUsernameField" maxWidth="200" onMouseClicked="#usernamePasswordErrorHide" promptText="Confirm Username" />
+      
+              <PasswordField fx:id="createAccountPasswordField" maxWidth="200" onMouseClicked="#usernamePasswordErrorHide" promptText="New Password" />
+      
+              <PasswordField fx:id="confirmAccountPasswordField" maxWidth="200" onMouseClicked="#usernamePasswordErrorHide" promptText="Confirm Password" />
+         </children>
+      </VBox>
+        <Label fx:id="passwordTooShortError" text="Password is not 8 characters long" visible="false" />
+      <VBox alignment="CENTER" spacing="30.0">
+         <children>
+              <Button fx:id="backToLogin" alignment="CENTER" onAction="#switchToLoginScene" text="Back To Login" textAlignment="CENTER" />
+      
+              <Button fx:id="createAccount" onAction="#createAccount" text="Create Account" />
+         </children>
+      </VBox>
+    </children>
+    <padding>
+        <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+    </padding>
+</VBox>
