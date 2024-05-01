@@ -64,5 +64,18 @@
     -fx-text-fill: #c70000;
 }
 
+.table-view .column-header-background .filler {
+    -fx-background-color: transparent;
+}
+
+.table-view .corner {
+    -fx-background-color: transparent;
+}
+
+
+
+
+
+
 
 

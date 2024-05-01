@@ -86,10 +86,19 @@ public class CourseSearchController implements Initializable{
         courseNameColumn.setCellValueFactory(param -> new javafx.beans.property.SimpleStringProperty(param.getValue().split(" - Review: ")[0]));
         courseReviewColumn.setCellValueFactory(param -> new javafx.beans.property.SimpleStringProperty(param.getValue().split(" - Review: ")[1]));
 
-        courseTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
-            if (newValue != null) {
-                String[] parts = newValue.split(" - Review: ");
-                courseLabel.setText(parts[0] + " has a review of " + parts[1]);
+        courseTable.setOnMouseClicked(event -> {
+            // TODO :
+            if (!courseTable.getSelectionModel().isEmpty()) {
+                // TODO : Open Course Review Screen for this particular course
+                currentCourse = courseTable.getSelectionModel().getSelectedItem();
+                stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                SceneManager sceneManager = new SceneManager(stage);
+                try {
+                    sceneManager.switchToCourseReviewsScene(event, courseTable.getSelectionModel().getSelectedItem().split("- Review: ")[0]);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                System.out.println(currentCourse);
             }
         });
     }

@@ -1,12 +1,13 @@
 package edu.virginia.sde.reviews;
 
+import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,7 +39,9 @@ public class SceneManager {
         stage.show();
     }
 
-    public void switchToLoginScene(ActionEvent event) throws IOException {
+    public void switchToLoginScene(Event event) throws IOException {
+        Node source = (Node) event.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/edu/virginia/sde/reviews/LoginStyling/login.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -47,7 +50,7 @@ public class SceneManager {
         stage.show();
     }
 
-    public void switchToCourseSearchScene(ActionEvent event) throws IOException{
+    public void switchToCourseSearchScene(Event event) throws IOException{
         root = FXMLLoader.load(getClass().getResource("/edu/virginia/sde/reviews/CourseSearchStyling/course-search.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -56,7 +59,7 @@ public class SceneManager {
         stage.show();
     }
 
-    public void switchToCreateAccountScene(ActionEvent event) throws IOException {
+    public void switchToCreateAccountScene(Event event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/edu/virginia/sde/reviews/CreateAccountStyling/create-account.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -65,16 +68,16 @@ public class SceneManager {
         stage.show();
     }
 
-    public void switchToCourseReviewsScene(ActionEvent event) throws IOException {
+    public void switchToCourseReviewsScene(Event event, String course) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/edu/virginia/sde/reviews/CourseReviewsStyling/course-reviews.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
-        stage.setTitle("Course Reviews");
+        stage.setTitle(course);
         stage.show();
     }
 
-    public void switchToMyReviewsScene(ActionEvent event) throws IOException {
+    public void switchToMyReviewsScene(Event event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/edu/virginia/sde/reviews/MyReviewsStyling/my-reviews.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
