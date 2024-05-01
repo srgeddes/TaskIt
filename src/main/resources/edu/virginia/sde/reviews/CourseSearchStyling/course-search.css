@@ -3,6 +3,11 @@
     -fx-font-family: "Helvetica";
 }
 
+.label {
+    -fx-font-size: 30px;
+    -fx-text-fill: #cccccc;
+}
+
 
 .TableColumn {
     -fx-text-alignment: center;
@@ -18,10 +23,45 @@
 
 .button {
     -fx-background-color: #E57200;
+    -fx-text-fill: black;
+    -fx-font-size: 14px;
 }
 
 .menu-button {
     -fx-background-color: #E57200;
+}
+
+.text-field {
+    -fx-font-size: 13px;
+    -fx-min-width: 150px;
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-padding: 6 7 7 7;
+    -fx-prompt-text-fill: #808080;
+    -fx-text-fill: #E57200;
+}
+
+
+.text-field:focused {
+    -fx-border-color: transparent transparent #E57200 transparent;
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-font-size: 17px;
+    -fx-prompt-text-fill: #cccccc;
+    -fx-text-fill: #cccccc;
+}
+
+.text-field {
+    -fx-border-color: transparent transparent grey transparent;
+    -fx-border-width: 0 0 2 0;
+}
+
+#catalogIncorrectError, #titleTooLongError, #titleTooShortError, #departmentTooShortError {
+    -fx-font-size: 10px;
+    -fx-text-alignment: center;
+    -fx-text-fill: #c70000;
 }
 
 

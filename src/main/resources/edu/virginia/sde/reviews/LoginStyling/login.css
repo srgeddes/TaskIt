@@ -25,6 +25,8 @@
     -fx-background-color: transparent;
     -fx-background-insets: 0;
     -fx-background-radius: 0;
+    -fx-prompt-text-fill: #cccccc;
+    -fx-text-fill: #cccccc;
 }
 
 .text-field, .password-field {

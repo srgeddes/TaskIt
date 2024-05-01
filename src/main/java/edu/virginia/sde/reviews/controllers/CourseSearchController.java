@@ -5,11 +5,12 @@ import edu.virginia.sde.reviews.SceneManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
@@ -22,6 +23,24 @@ import javafx.event.ActionEvent;
 public class CourseSearchController implements Initializable{
 
     private Stage stage;
+    private Scene scene;
+
+
+    // add course
+    @FXML
+    TextField courseDepartment;
+    @FXML
+    TextField courseCatalog;
+    @FXML
+    TextField courseTitle;
+    @FXML
+    Label catalogIncorrectError;
+    @FXML
+    Label titleTooLongError;
+    @FXML
+    Label titleTooShortError;
+    @FXML
+    Label departmentTooShortError;
 
     @FXML
     TableView<String> courseTable;
@@ -36,6 +55,10 @@ public class CourseSearchController implements Initializable{
     @FXML
     ImageView userImagev;
 
+    @FXML
+    MenuItem reviewsMenuItem;
+    @FXML
+    MenuItem logoutMenuItem;
 
     // List of Courses in the Database as Strings
     // TODO : Create and Array of courses like this from the Database
@@ -83,5 +106,55 @@ public class CourseSearchController implements Initializable{
         sceneManager.switchToMyReviewsScene(event);
     }
 
+    public void addCourse(ActionEvent event) throws IOException {
+        String department = courseDepartment.getText().trim();
+        String catalog = courseCatalog.getText().trim();
+        String title = courseTitle.getText().trim();
+
+        boolean isDepartmentValid = department.matches("[a-zA-Z]{2,4}");
+
+        boolean isCatalogValid = catalog.matches("\\d{4}");
+
+        boolean isTitleTooShort = title.length() < 2;
+        boolean isTitleTooLong = title.length() > 50;
+
+        if (isDepartmentValid && isCatalogValid && !isTitleTooLong && !isTitleTooShort) {
+            department = department.toUpperCase();
+            System.out.println("department added");
+            // TODO : Add course to Database
+        } else {
+            if (!isDepartmentValid) {
+                departmentTooShortError.setVisible(true);
+            }
+            if (!isCatalogValid) {
+                catalogIncorrectError.setVisible(true);
+            }
+            if (isTitleTooLong) {
+                titleTooShortError.setVisible(true);
+            } else if (isTitleTooShort) {
+                titleTooLongError.setVisible(true);
+            }
+        }
+    }
+
+    public void addCourseErrorHide() {
+        courseDepartment.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                departmentTooShortError.setVisible(false);
+            }
+        });
+        courseCatalog.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                catalogIncorrectError.setVisible(false);
+            }
+        });
+        courseTitle.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                titleTooShortError.setVisible(false);
+                titleTooLongError.setVisible(false);
+            }
+        });
+
+    }
 
 }
