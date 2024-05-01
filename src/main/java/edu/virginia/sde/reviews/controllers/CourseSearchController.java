@@ -2,33 +2,22 @@ package edu.virginia.sde.reviews.controllers;
 
 
 import edu.virginia.sde.reviews.SceneManager;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.image.Image;
-import javax.print.DocFlavor;
-import javax.swing.text.html.ListView;
-
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
-
-import java.awt.*;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 import java.util.ResourceBundle;
 import javafx.scene.image.ImageView;
+import javafx.event.ActionEvent;
+
 
 public class CourseSearchController implements Initializable{
 
@@ -82,13 +71,13 @@ public class CourseSearchController implements Initializable{
         });
     }
 
-    public void switchToLoginScene(javafx.event.ActionEvent event) throws IOException {
+    public void switchToLoginScene(ActionEvent event) throws IOException {
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         SceneManager sceneManager = new SceneManager(stage);
         sceneManager.switchToLoginScene(event);
     }
 
-    public void switchToMyReviewsScene(javafx.event.ActionEvent event) throws IOException {
+    public void switchToMyReviewsScene(ActionEvent event) throws IOException {
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         SceneManager sceneManager = new SceneManager(stage);
         sceneManager.switchToMyReviewsScene(event);

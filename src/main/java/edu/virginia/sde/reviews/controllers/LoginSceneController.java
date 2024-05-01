@@ -1,21 +1,14 @@
 package edu.virginia.sde.reviews.controllers;
 
 import edu.virginia.sde.reviews.SceneManager;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import javax.swing.text.html.ImageView;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
 import java.io.IOException;
 
 
@@ -50,7 +43,7 @@ public class LoginSceneController {
 
     public LoginSceneController() {}
 
-    public void login(javafx.event.ActionEvent event) throws IOException {
+    public void login(ActionEvent event) throws IOException {
         String username = usernameField.getText();
         String password = passwordField.getText();
         // TODO : Delete this and query the database for the username and password
@@ -77,7 +70,7 @@ public class LoginSceneController {
         });
     }
 
-    public void switchToLoginScene(javafx.event.ActionEvent event) throws IOException {
+    public void switchToLoginScene(ActionEvent event) throws IOException {
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         SceneManager sceneManager = new SceneManager(stage);
         sceneManager.switchToLoginScene(event);
@@ -91,7 +84,7 @@ public class LoginSceneController {
 
 
 
-    public void createAccount(javafx.event.ActionEvent event) throws IOException {
+    public void createAccount(ActionEvent event) throws IOException {
         String username1 = createAccountUsernameField.getText();
         String username2 = confirmAccountUsernameField.getText();
         String password1 = createAccountPasswordField.getText();
@@ -140,6 +133,7 @@ public class LoginSceneController {
             }
         });
     }
+
 
 }
 
