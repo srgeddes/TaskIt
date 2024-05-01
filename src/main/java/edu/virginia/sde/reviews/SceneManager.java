@@ -30,6 +30,14 @@ public class SceneManager {
         stage.show();
     }
 
+    public void initializeCourseSearchScene(Stage stage) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/edu/virginia/sde/reviews/CourseSearchStyling/courseSearch.fxml"));
+        Scene scene = new Scene(root);
+        stage.setTitle("Login");
+        stage.setScene(scene);
+        stage.show();
+    }
+
     public void switchToLoginScene(javafx.event.ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/edu/virginia/sde/reviews/LoginStyling/login.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();

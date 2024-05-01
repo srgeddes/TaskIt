@@ -97,13 +97,13 @@ public class LoginSceneController {
         String password1 = createAccountPasswordField.getText();
         String password2 = confirmAccountPasswordField.getText();
 
-        if (username1.equals(username2) && password1.equals(password2) && password1.length() >= 8) {
+        if (username1.equals(username2) && password1.equals(password2) && !username1.isEmpty() && password1.length() >= 8) {
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             SceneManager sceneManager = new SceneManager(stage);
             sceneManager.switchToCourseSearchScene(event);
             // TODO : Update the current account with database
         } else {
-            if (!username1.equals(username2)) {
+            if (!username1.equals(username2) || username1.isEmpty()) {
                 usernameDoesNotMatchError.setVisible(true);
             }
             else if (!password1.equals(password2)) {

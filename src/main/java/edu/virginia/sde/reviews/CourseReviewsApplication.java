@@ -20,5 +20,6 @@ public class CourseReviewsApplication extends Application {
         stage.setHeight(720);
         SceneManager sceneManager = new SceneManager(stage);
         sceneManager.initializeLoginScene(stage);
+//        sceneManager.initializeCourseSearchScene(stage);
     }
 }
