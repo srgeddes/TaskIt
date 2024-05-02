@@ -1,6 +1,8 @@
 package edu.virginia.sde.reviews.controllers;
 
 import edu.virginia.sde.reviews.SceneManager;
+import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -16,6 +18,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import javafx.util.StringConverter;
+import javafx.util.converter.NumberStringConverter;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
@@ -40,6 +44,10 @@ public class CourseReviewsController implements Initializable {
     Label ratingErrorLabel;
     @FXML
     Label commentErrorLabel;
+    @FXML
+    Slider ratingSlider;
+    @FXML
+    Label sliderValueLabel;
 
     @FXML
     TableView<String[]> reviewsTable;
@@ -52,6 +60,7 @@ public class CourseReviewsController implements Initializable {
 
     @FXML
     TextField usernameSearchTextField;
+
 
     // TODO : database
     // key = user id
@@ -103,6 +112,12 @@ public class CourseReviewsController implements Initializable {
         timestampColumn.setSortType(TableColumn.SortType.DESCENDING);
         reviewsTable.getSortOrder().add(timestampColumn);
         reviewsTable.sort();
+
+        StringConverter<Number> format = new NumberStringConverter("0.0");
+        sliderValueLabel.textProperty().bind(Bindings.createStringBinding(() ->
+                format.toString(ratingSlider.getValue()), ratingSlider.valueProperty()));
+        ratingSlider.valueProperty().addListener((obs, oldval, newVal) -> updateLabelPosition());
+        Platform.runLater(this::updateLabelPosition);
     }
 
     public void setStage(Stage stage) {
@@ -172,5 +187,15 @@ public class CourseReviewsController implements Initializable {
         sceneManager.switchToCourseSearchScene(event);
     }
 
-
+    private void updateLabelPosition() {
+        double thumbWidth = ratingSlider.lookup(".thumb").getBoundsInParent().getWidth();
+        double trackWidth = ratingSlider.lookup(".track").getBoundsInParent().getWidth();
+        double value = ratingSlider.getValue();
+        double min = ratingSlider.getMin();
+        double max = ratingSlider.getMax();
+        double percent = (value - min) / (max - min);
+        double thumbPos = percent * (trackWidth - thumbWidth) + thumbWidth / 2;
+        sliderValueLabel.setLayoutX(ratingSlider.getLayoutX() + thumbPos - sliderValueLabel.getWidth() / 2);
+        sliderValueLabel.setLayoutY(ratingSlider.getLayoutY() - sliderValueLabel.getHeight() - 5);
+    }
 }
