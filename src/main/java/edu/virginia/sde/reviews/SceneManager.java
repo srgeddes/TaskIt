@@ -65,7 +65,7 @@ public class SceneManager {
                 Scene newScene = new Scene(newRoot);
                 stage.setScene(newScene);
                 stage.setTitle("Course Search");
-                slideIn((Node) newRoot);
+                slideIn(newRoot);
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }

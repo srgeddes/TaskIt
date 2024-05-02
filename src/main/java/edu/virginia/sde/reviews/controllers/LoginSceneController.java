@@ -149,7 +149,8 @@ public class LoginSceneController {
     }
 
     @FXML
-    void handlePasswordShow() {
+    void handlePasswordShow() throws IOException{
+        incorrectUsernameOrPasswordHide();
         if (passwordShowCheckbox.isSelected()) {
             visiblePasswordField.setText(hiddenPasswordField.getText());
             visiblePasswordField.setVisible(true);
