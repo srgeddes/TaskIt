@@ -46,8 +46,22 @@
 
 #showPasswordLabel:hover {
     -fx-text-fill: #cccccc;
-
 }
+
+.check-box .box {
+    -fx-background-color: white;
+    -fx-border-color: transparent;
+    -fx-border-radius: 2;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: white;
+}
+.check-box:selected .box {
+    -fx-background-color: transparent;
+}
+
+
 
 
 
