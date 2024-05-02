@@ -40,6 +40,15 @@
     -fx-font-size: 20;
 }
 
+.button:hover {
+    -fx-background-color: #E57200;
+}
+
+#showPasswordLabel:hover {
+    -fx-text-fill: #cccccc;
+
+}
+
 
 
 

@@ -19,7 +19,7 @@ public class CourseReviewsApplication extends Application {
         stage.setWidth(1280);
         stage.setHeight(720);
         SceneManager sceneManager = new SceneManager(stage);
-//        sceneManager.initializeLoginScene(stage);
-        sceneManager.initializeCourseSearchScene(stage);
+        sceneManager.initializeLoginScene(stage);
+//        sceneManager.initializeCourseSearchScene(stage);
     }
 }

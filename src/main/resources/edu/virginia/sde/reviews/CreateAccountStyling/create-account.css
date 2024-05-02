@@ -17,7 +17,7 @@
     -fx-background-radius: 0;
     -fx-padding: 6 7 7 7;
     -fx-prompt-text-fill: #808080;
-    -fx-text-fill: #E57200;
+    -fx-text-fill: #cccccc;
 }
 
 .text-field:focused, .password-field:focused {
@@ -38,6 +38,10 @@
     -fx-font-size: 20;
 }
 
+
+.button:hover {
+    -fx-background-color: #E57200;
+}
 
 
 

@@ -4,6 +4,7 @@ import edu.virginia.sde.reviews.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -19,7 +20,9 @@ public class LoginSceneController {
     @FXML
     TextField usernameField;
     @FXML
-    PasswordField passwordField;
+    PasswordField hiddenPasswordField;
+    @FXML
+    TextField visiblePasswordField;
     @FXML
     Label errorLabel;
 
@@ -37,6 +40,9 @@ public class LoginSceneController {
     Label passwordDoesNotMatchError;
     @FXML
     Label passwordTooShortError;
+    @FXML
+    CheckBox passwordShowCheckbox;
+
 
 
 
@@ -47,7 +53,7 @@ public class LoginSceneController {
 
     public void login(ActionEvent event) throws IOException {
         String username = usernameField.getText();
-        String password = passwordField.getText();
+        String password = hiddenPasswordField.getText();
         // TODO : Delete this and query the database for the username and password
         if (username.equals("1") && password.equals("1")) {
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -71,7 +77,7 @@ public class LoginSceneController {
                 errorLabel.setVisible(false);
             }
         });
-        passwordField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+        hiddenPasswordField.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 errorLabel.setVisible(false);
             }
@@ -141,5 +147,19 @@ public class LoginSceneController {
             }
         });
     }
+
+    @FXML
+    void handlePasswordShow() {
+        if (passwordShowCheckbox.isSelected()) {
+            visiblePasswordField.setText(hiddenPasswordField.getText());
+            visiblePasswordField.setVisible(true);
+            hiddenPasswordField.setVisible(false);
+        } else {
+            hiddenPasswordField.setText(visiblePasswordField.getText());
+            hiddenPasswordField.setVisible(true);
+            visiblePasswordField.setVisible(false);
+        }
+    }
+
 }
 

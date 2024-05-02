@@ -91,11 +91,20 @@
 
 .table-cell {
     -fx-font-size: 20px;
+
+}
+.table-cell:hover {
+    -fx-background-color: #232D4B;
+    -fx-text-fill: #cccccc;;
 }
 
 .table-view .column-header .label {
     -fx-font-size: 20px;
     -fx-text-fill: black;
+}
+
+.button:hover {
+    -fx-background-color: #cccccc;
 }
 
 

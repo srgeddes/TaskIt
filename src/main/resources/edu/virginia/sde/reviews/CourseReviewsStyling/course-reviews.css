@@ -118,6 +118,17 @@
     -fx-alignment: center;
 }
 
+.button:hover {
+    -fx-background-color: #cccccc;
+}
+
+.table-cell:hover {
+    -fx-background-color: #232D4B;
+    -fx-text-fill: #cccccc;;
+}
+
+
+
 
 
 
