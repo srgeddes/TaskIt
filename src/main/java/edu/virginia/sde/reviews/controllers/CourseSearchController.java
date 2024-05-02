@@ -90,8 +90,9 @@ public class CourseSearchController implements Initializable{
         courseNameColumn.setCellValueFactory(param -> new javafx.beans.property.SimpleStringProperty(param.getValue().split(" - Review: ")[0]));
         courseReviewColumn.setCellValueFactory(param -> new javafx.beans.property.SimpleStringProperty(param.getValue().split(" - Review: ")[1]));
 
-        courseReviewColumn.setSortType(TableColumn.SortType.ASCENDING);
-
+        courseReviewColumn.setSortType(TableColumn.SortType.DESCENDING);
+        courseTable.getSortOrder().add(courseReviewColumn);
+        courseTable.sort();
 
         courseTable.setOnMouseClicked(event -> {
             // TODO :

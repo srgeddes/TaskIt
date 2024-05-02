@@ -8,6 +8,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@course-reviews.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.virginia.sde.reviews.controllers.CourseReviewsController">
@@ -19,24 +20,30 @@
                         <HBox alignment="CENTER" />
                   <VBox alignment="CENTER" prefHeight="89.0" prefWidth="400.0" spacing="60.0">
                      <children>
-                                <TextArea maxHeight="400.0" minHeight="165.0" prefHeight="165.0" prefWidth="300.0" promptText="Comments..." />
+                                <TextArea fx:id="commentsTextArea" maxHeight="400.0" minHeight="165.0" prefHeight="165.0" prefWidth="300.0" promptText="Comments..." wrapText="true" />
                         <VBox alignment="BOTTOM_RIGHT" spacing="50.0">
                            <children>
-                              <TextField promptText="Rating" /> <!-- Smaller width -->
-                                      <Button prefWidth="100.0" text="Submit" />
+                              <TextField fx:id="ratingTextField" onKeyPressed="#handleKeyPressed" promptText="Rating (1-5)" />
+                                      <Button onAction="#addReview" prefWidth="100.0" text="Submit" />
                            </children>
                         </VBox>
                      </children>
                   </VBox>
+                  <StackPane>
+                     <children>
+                        <Label fx:id="ratingErrorLabel" text="Rating must be 1-5 " visible="false" />
+                        <Label fx:id="commentErrorLabel" text="Comment too long" visible="false" />
+                     </children>
+                  </StackPane>
                     </children>
                 </VBox>
                 <VBox alignment="CENTER">
                     <children>
-                        <TableView fx:id="courseTable" prefHeight="460.0">
+                        <TableView fx:id="reviewsTable" prefHeight="423.0" prefWidth="672.0">
                             <columns>
-                                <TableColumn fx:id="courseNameColumn" minWidth="350.0" prefWidth="75.0" reorderable="false" sortType="ASCENDING" text="Comments" />
-                                <TableColumn fx:id="courseReviewColumn" maxWidth="-1.0" minWidth="150.0" prefWidth="20.0" reorderable="false" sortType="ASCENDING" text="Rating" />
-                        <TableColumn fx:id="courseNameColumn1" minWidth="200.0" prefWidth="20.0" reorderable="false" sortType="ASCENDING" text="Timestamp" />
+                                <TableColumn fx:id="commentsColumn" minWidth="350.0" prefWidth="75.0" reorderable="false" text="Comments" />
+                                <TableColumn fx:id="ratingColumn" maxWidth="-1.0" minWidth="80.0" prefWidth="20.0" reorderable="false" text="Rating" />
+                                <TableColumn fx:id="timestampColumn" minWidth="240.0" prefWidth="20.0" reorderable="false" text="Timestamp" />
                             </columns>
                         </TableView>
                     </children>
@@ -50,7 +57,8 @@
                 <Button fx:id="logout" mnemonicParsing="false" onAction="#switchToLoginScene" text="Logout" />
             </children>
         </HBox>
-        <Button layoutX="35.0" layoutY="14.0" mnemonicParsing="false" text="&lt;- Back" onAction="#switchToCourseSearchScene" />
+        <Button layoutX="35.0" layoutY="14.0" mnemonicParsing="false" onAction="#switchToCourseSearchScene" text="&lt;- Back" />
       <Label layoutX="39.0" layoutY="238.0" prefHeight="36.0" prefWidth="207.0" text="Create Review" />
+      <TextField fx:id="usernameSearchTextField" onKeyPressed="#handleKeyPressed" layoutX="584.0" layoutY="205.0" promptText="Search (username)" />
     </children>
 </AnchorPane>

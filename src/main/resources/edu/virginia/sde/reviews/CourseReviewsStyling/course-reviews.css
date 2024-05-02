@@ -90,13 +90,35 @@
 }
 
 .table-cell {
-    -fx-font-size: 20px;
+    -fx-font-size: 15px;
+    -fx-text-alignment: CENTER;
 }
 
 .table-view .column-header .label {
     -fx-font-size: 20px;
     -fx-text-fill: black;
 }
+
+
+.text-area {
+    -fx-font-size: 16px;
+}
+
+#ratingErrorLabel {
+    -fx-font-size: 13px;
+    -fx-text-fill: #c70000;
+}
+
+#commentErrorLabel {
+    -fx-font-size: 13px;
+    -fx-text-fill: #c70000;
+}
+
+#reviewsTable #ratingColumn, #timestampColumn {
+    -fx-alignment: center;
+}
+
+
 
 
 
