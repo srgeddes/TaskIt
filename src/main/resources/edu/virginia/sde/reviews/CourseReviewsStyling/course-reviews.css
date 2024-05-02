@@ -1,0 +1,104 @@
+.root {
+    -fx-background-color: #232D4B;
+    -fx-font-family: "Helvetica";
+}
+
+.label {
+    -fx-font-size: 30px;
+    -fx-text-fill: #cccccc;
+}
+
+
+.TableColumn {
+    -fx-text-alignment: center;
+}
+
+.MenuBar {
+    -fx-background-color: #0e0e0e;
+}
+
+.MenuBar .container {
+    -fx-alignment: center-right;
+}
+
+.button {
+    -fx-background-color: #E57200;
+    -fx-text-fill: black;
+    -fx-font-size: 14px;
+}
+
+.menu-button {
+    -fx-background-color: #E57200;
+    -fx-border-radius: 10px;
+}
+
+.menu-item {
+    -fx-border-radius: 10px;
+}
+
+.text-field {
+    -fx-font-size: 20px;
+    -fx-min-width: 150px;
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-padding: 6 7 7 7;
+    -fx-prompt-text-fill: #808080;
+    -fx-text-fill: #E57200;
+}
+
+#courseTitle {
+    -fx-min-width: 315px;
+}
+
+#courseCatalog {
+    -fx-min-width: 175px;
+}
+
+#courseDepartment {
+    -fx-min-width: 130px;
+}
+
+
+
+.text-field:focused {
+    -fx-border-color: transparent transparent #E57200 transparent;
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-font-size: 23px;
+    -fx-text-fill: #e0e0e0;
+}
+
+.text-field {
+    -fx-border-color: transparent transparent grey transparent;
+    -fx-border-width: 0 0 2 0;
+}
+
+#catalogIncorrectError, #titleTooLongError, #titleTooShortError, #departmentTooShortError {
+    -fx-font-size: 10px;
+    -fx-text-alignment: center;
+    -fx-text-fill: #c70000;
+}
+
+.table-view .column-header-background .filler {
+    -fx-background-color: transparent;
+}
+
+.table-view .corner {
+    -fx-background-color: transparent;
+}
+
+.table-cell {
+    -fx-font-size: 20px;
+}
+
+.table-view .column-header .label {
+    -fx-font-size: 20px;
+    -fx-text-fill: black;
+}
+
+
+
+
+

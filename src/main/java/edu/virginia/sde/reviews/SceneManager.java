@@ -77,7 +77,8 @@ public class SceneManager {
         scene = new Scene(root);
         stage.setScene(scene);
         courseReviewsController.setCourseLabel(course);
-        stage.setTitle("Course Reviews");
+        courseReviewsController.setStage(stage);
+        stage.setTitle(course);
         stage.show();
     }
 
