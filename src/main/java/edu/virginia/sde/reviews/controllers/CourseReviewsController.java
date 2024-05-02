@@ -110,7 +110,14 @@ public class CourseReviewsController implements Initializable {
     }
 
     public void setCourseLabel(String course) {
-        this.courseLabel.setText(course);
+        String averageRating = getAverageRating(course);
+        this.courseLabel.setText(course + " " + averageRating);
+    }
+
+    public String getAverageRating(String course) {
+        // TODO : Average all the ratings for a given course
+        // Needs to be to 2 decimals places
+        return "4.22";
     }
 
     public void addReview(ActionEvent event) throws IOException {

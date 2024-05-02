@@ -13,12 +13,12 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@course-reviews.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.virginia.sde.reviews.controllers.CourseReviewsController">
     <children>
-        <HBox layoutX="84.0" layoutY="236.0" prefHeight="484.0" prefWidth="1176.0" spacing="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="84.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="236.0">
+        <HBox layoutX="84.0" layoutY="268.0" prefHeight="452.0" prefWidth="1176.0" spacing="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="84.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="268.0">
             <children>
-                <VBox alignment="CENTER" maxHeight="610.0" minHeight="291.0" prefHeight="402.0" prefWidth="400.0">
+                <VBox alignment="CENTER" maxHeight="610.0" minHeight="291.0" prefHeight="448.0" prefWidth="400.0">
                     <children>
                         <HBox alignment="CENTER" />
-                  <VBox alignment="CENTER" prefHeight="89.0" prefWidth="400.0" spacing="60.0">
+                  <VBox alignment="CENTER" prefHeight="421.0" prefWidth="400.0" spacing="60.0">
                      <children>
                                 <TextArea fx:id="commentsTextArea" maxHeight="400.0" minHeight="165.0" prefHeight="165.0" prefWidth="300.0" promptText="Comments..." wrapText="true" />
                         <VBox alignment="BOTTOM_RIGHT" spacing="50.0">
@@ -50,15 +50,15 @@
                 </VBox>
             </children>
         </HBox>
-        <Label fx:id="courseLabel" layoutX="35.0" layoutY="73.0" prefHeight="64.0" prefWidth="669.0" text="Course Name" />
+        <Label fx:id="courseLabel" layoutX="39.0" layoutY="118.0" prefHeight="64.0" prefWidth="669.0" text="Course Name" />
         <HBox alignment="CENTER_RIGHT" layoutX="1000.0" layoutY="137.0" spacing="20.0">
             <children>
                 <Button mnemonicParsing="false" onAction="#switchToMyReviewsScene" prefWidth="99.0" text="My Reviews" />
                 <Button fx:id="logout" mnemonicParsing="false" onAction="#switchToLoginScene" text="Logout" />
             </children>
         </HBox>
-        <Button layoutX="35.0" layoutY="14.0" mnemonicParsing="false" onAction="#switchToCourseSearchScene" text="&lt;- Back" />
-      <Label layoutX="39.0" layoutY="238.0" prefHeight="36.0" prefWidth="207.0" text="Create Review" />
-      <TextField fx:id="usernameSearchTextField" onKeyPressed="#handleKeyPressed" layoutX="584.0" layoutY="205.0" promptText="Search (username)" />
+      <Label layoutX="86.0" layoutY="247.0" prefHeight="36.0" prefWidth="207.0" text="Create Review" />
+      <TextField fx:id="usernameSearchTextField" layoutX="584.0" layoutY="205.0" onKeyPressed="#handleKeyPressed" promptText="Search (username)" />
+      <Button layoutX="50.0" layoutY="51.0" mnemonicParsing="false" onAction="#switchToCourseSearchScene" text="&lt;- Back" />
     </children>
 </AnchorPane>
