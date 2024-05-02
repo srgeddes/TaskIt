@@ -1,6 +1,9 @@
 package edu.virginia.sde.reviews;
 
 import edu.virginia.sde.reviews.controllers.CourseReviewsController;
+import javafx.animation.FadeTransition;
+import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -9,6 +12,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import javafx.event.Event;
+import javafx.util.Duration;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,14 +56,22 @@ public class SceneManager {
         stage.show();
     }
 
-    public void switchToCourseSearchScene(Event event) throws IOException{
-        root = FXMLLoader.load(getClass().getResource("/edu/virginia/sde/reviews/CourseSearchStyling/course-search.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setTitle("Course Search");
-        stage.show();
+    public void switchToCourseSearchScene(Event event) throws IOException {
+        Node currentRoot = stage.getScene().getRoot();
+        slideOut(currentRoot, () -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/virginia/sde/reviews/CourseSearchStyling/course-search.fxml"));
+                Parent newRoot = loader.load();
+                Scene newScene = new Scene(newRoot);
+                stage.setScene(newScene);
+                stage.setTitle("Course Search");
+                slideIn((Node) newRoot);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        });
     }
+
 
     public void switchToCreateAccountScene(Event event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/edu/virginia/sde/reviews/CreateAccountStyling/create-account.fxml"));
@@ -91,6 +104,20 @@ public class SceneManager {
         stage.show();
     }
 
+    public void slideOut(Node node, Runnable onFinish) {
+        TranslateTransition slideOut = new TranslateTransition(Duration.millis(500), node);
+        slideOut.setFromX(0);
+        slideOut.setToX(-stage.getWidth());
+        slideOut.setOnFinished(event -> onFinish.run());
+        slideOut.play();
+    }
+
+    public void slideIn(Node node) {
+        TranslateTransition slideIn = new TranslateTransition(Duration.millis(500), node);
+        slideIn.setFromX(stage.getWidth());
+        slideIn.setToX(0);
+        slideIn.play();
+    }
 
 }
 
