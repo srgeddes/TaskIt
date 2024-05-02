@@ -1,5 +1,6 @@
 package edu.virginia.sde.reviews;
 
+import edu.virginia.sde.reviews.controllers.CourseReviewsController;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -69,11 +70,14 @@ public class SceneManager {
     }
 
     public void switchToCourseReviewsScene(Event event, String course) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/edu/virginia/sde/reviews/CourseReviewsStyling/course-reviews.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/virginia/sde/reviews/CourseReviewsStyling/course-reviews.fxml"));
+        Parent root = loader.load();
+        CourseReviewsController courseReviewsController = loader.getController();
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
-        stage.setTitle(course);
+        courseReviewsController.setCourseLabel(course);
+        stage.setTitle("Course Reviews");
         stage.show();
     }
 

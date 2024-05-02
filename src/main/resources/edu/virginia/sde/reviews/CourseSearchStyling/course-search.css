@@ -29,6 +29,11 @@
 
 .menu-button {
     -fx-background-color: #E57200;
+    -fx-border-radius: 10px;
+}
+
+.menu-item {
+    -fx-border-radius: 10px;
 }
 
 .text-field {
