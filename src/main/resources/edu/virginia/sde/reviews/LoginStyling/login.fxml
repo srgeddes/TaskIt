@@ -10,8 +10,8 @@
 
 <StackPane prefHeight="517.0" prefWidth="441.0" stylesheets="@login.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.virginia.sde.reviews.controllers.LoginSceneController">
     <VBox alignment="CENTER" prefHeight="632.0" prefWidth="542.0" spacing="40.0">
-        <TextField fx:id="usernameField" maxWidth="200" onMouseClicked="#incorrectUsernameOrPasswordHide" promptText="Username" />
-        <PasswordField fx:id="passwordField" maxWidth="200.0" onMouseClicked="#incorrectUsernameOrPasswordHide" promptText="Password" snapToPixel="false" />
+        <TextField fx:id="usernameField" maxWidth="200" onMouseClicked="#incorrectUsernameOrPasswordHide" onKeyPressed="#handleKeyPressed" promptText="Username" />
+        <PasswordField fx:id="passwordField" maxWidth="200.0" onMouseClicked="#incorrectUsernameOrPasswordHide" onKeyPressed="#handleKeyPressed" promptText="Password" snapToPixel="false" />
         <Label fx:id="errorLabel" prefWidth="305.0" snapToPixel="false" style="-fx-text-fill: #c70000" text="Incorrect Username or Password" visible="false" />
         <Button fx:id="loginAction" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#login" text="Login" />
         <Button fx:id="createAccount" onAction="#switchToCreateAccountScene" text="Create Account" />

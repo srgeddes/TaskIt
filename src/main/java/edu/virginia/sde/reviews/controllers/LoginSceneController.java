@@ -7,6 +7,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -53,6 +55,12 @@ public class LoginSceneController {
             sceneManager.switchToCourseSearchScene(event);
         } else {
             errorLabel.setVisible(true);
+        }
+    }
+
+    public void handleKeyPressed(KeyEvent keyEvent) throws IOException {
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            login(new ActionEvent(keyEvent.getSource(), keyEvent.getTarget()));
         }
     }
 
@@ -133,7 +141,5 @@ public class LoginSceneController {
             }
         });
     }
-
-
 }
 

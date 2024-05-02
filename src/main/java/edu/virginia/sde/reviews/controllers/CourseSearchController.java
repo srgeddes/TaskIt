@@ -11,6 +11,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
@@ -43,6 +45,8 @@ public class CourseSearchController implements Initializable{
     Label departmentTooShortError;
 
     @FXML
+    TextField courseSearch;
+    @FXML
     TableView<String> courseTable;
     @FXML
     TableColumn<String, String> courseNameColumn;
@@ -74,9 +78,9 @@ public class CourseSearchController implements Initializable{
 //        userImagev.setImage(userIcon);
 
         // TODO : Replace this with the data from the database
-        courses.put("Introduction to Programming | CS 1110", "4.3");
-        courses.put("Data Structures and Algorithms | CS 2100", "5.0");
-        courses.put("Discrete Math | CS 2120", "1.0");
+        courses.put("Introduction to Programming | CS 1110", "4.33");
+        courses.put("Data Structures and Algorithms | CS 2100", "5.00");
+        courses.put("Discrete Math | CS 2120", "1.00");
 
         ObservableList<String> courseAndReviews = FXCollections.observableArrayList();
         courses.forEach((course, review) -> courseAndReviews.add(course + " - Review: " + review));
@@ -85,6 +89,9 @@ public class CourseSearchController implements Initializable{
 
         courseNameColumn.setCellValueFactory(param -> new javafx.beans.property.SimpleStringProperty(param.getValue().split(" - Review: ")[0]));
         courseReviewColumn.setCellValueFactory(param -> new javafx.beans.property.SimpleStringProperty(param.getValue().split(" - Review: ")[1]));
+
+        courseReviewColumn.setSortType(TableColumn.SortType.ASCENDING);
+
 
         courseTable.setOnMouseClicked(event -> {
             // TODO :
@@ -98,7 +105,6 @@ public class CourseSearchController implements Initializable{
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-                System.out.println(currentCourse);
             }
         });
     }
@@ -128,20 +134,33 @@ public class CourseSearchController implements Initializable{
         boolean isTitleTooLong = title.length() > 50;
 
         if (isDepartmentValid && isCatalogValid && !isTitleTooLong && !isTitleTooShort) {
+            titleTooShortError.setVisible(false);
+            titleTooLongError.setVisible(false);
             department = department.toUpperCase();
-            System.out.println("department added");
+            System.out.println("Course Added");
             // TODO : Add course to Database
         } else {
-            if (!isDepartmentValid) {
-                departmentTooShortError.setVisible(true);
-            }
-            if (!isCatalogValid) {
-                catalogIncorrectError.setVisible(true);
-            }
+            departmentTooShortError.setVisible(!isDepartmentValid);
+            catalogIncorrectError.setVisible(!isCatalogValid);
             if (isTitleTooLong) {
-                titleTooShortError.setVisible(true);
-            } else if (isTitleTooShort) {
                 titleTooLongError.setVisible(true);
+            } else {
+                titleTooShortError.setVisible(false);
+            }
+            if (isTitleTooShort) {
+                titleTooShortError.setVisible(true);
+            } else {
+                titleTooShortError.setVisible(false);
+            }
+        }
+    }
+
+    public void handleKeyPressed(KeyEvent keyEvent) throws IOException {
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            if (keyEvent.getSource() == courseSearch) {
+                // TODO : Handle the search here in the database
+            } else if (keyEvent.getSource() == courseDepartment || keyEvent.getSource() == courseCatalog || keyEvent.getSource() == courseTitle) {
+                addCourse(new ActionEvent(keyEvent.getSource(), keyEvent.getTarget()));
             }
         }
     }
