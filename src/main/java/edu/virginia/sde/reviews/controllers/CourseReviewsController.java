@@ -35,10 +35,6 @@ public class CourseReviewsController implements Initializable {
     @FXML
     Label courseLabel;
     String course;
-    String[] courseLabelParts;
-    String courseTitle;
-    String courseDepartment;
-    String courseCatalog_number;
 
     @FXML
     TextArea commentsTextArea;
@@ -76,21 +72,16 @@ public class CourseReviewsController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         Platform.runLater(() -> {
             fetchReviewsFromDB(course);
-            ObservableList<String[]> data = FXCollections.observableArrayList();
-            data.addAll(reviews.values());
-            reviewsTable.setItems(data);
-
             setupTableColumns();
-
-            timestampColumn.setSortType(TableColumn.SortType.DESCENDING);
-            reviewsTable.getSortOrder().add(timestampColumn);
-            reviewsTable.sort();
+            setupSlider();
         });
-
-        setupSlider();
     }
 
     private void setupTableColumns() {
+        ObservableList<String[]> data = FXCollections.observableArrayList();
+        data.addAll(reviews.values());
+        reviewsTable.setItems(data);
+
         commentsColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue()[0]));
         ratingColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue()[1]));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
@@ -103,6 +94,9 @@ public class CourseReviewsController implements Initializable {
                 return new SimpleObjectProperty<>(LocalDateTime.MIN); // Handle parsing error
             }
         });
+        timestampColumn.setSortType(TableColumn.SortType.DESCENDING);
+        reviewsTable.getSortOrder().add(timestampColumn);
+        reviewsTable.sort();
     }
 
 
@@ -227,7 +221,6 @@ public class CourseReviewsController implements Initializable {
         this.courseLabel.setText(course + " " + averageRating);
         this.course = course;
     }
-
 
     public void setupSlider() {
         StringConverter<Number> format = new NumberStringConverter("0");
