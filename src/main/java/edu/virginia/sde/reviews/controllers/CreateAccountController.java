@@ -19,7 +19,9 @@ import java.sql.SQLException;
 
 public class CreateAccountController {
 
-
+    // TODO : Implement show password here:
+    @FXML
+    CheckBox passwordShowCheckbox;
 
     @FXML
     TextField usernameField;
@@ -29,34 +31,13 @@ public class CreateAccountController {
     PasswordField passwordField;
     @FXML
     PasswordField confirmPasswordField;
-//    @FXML
-//    Label usernameDoesNotMatchError;
     @FXML
     Label createAccountError;
-//    @FXML
-//    Label passwordTooShortError;
-    @FXML
-    CheckBox passwordShowCheckbox;
-
-
-
     private Stage stage;
+
 
     public CreateAccountController() {}
 
-
-    public void handleKeyPressed(KeyEvent keyEvent) throws IOException, SQLException {
-        if (keyEvent.getCode() == KeyCode.ENTER) {
-            createAccount(new ActionEvent(keyEvent.getSource(), keyEvent.getTarget()));
-        }
-    }
-
-
-    public void switchToLoginScene(ActionEvent event) throws IOException {
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        SceneManager sceneManager = new SceneManager(stage);
-        sceneManager.switchToLoginScene(event);
-    }
 
 
     public void createAccount(ActionEvent event) throws IOException, SQLException {
@@ -100,7 +81,7 @@ public class CreateAccountController {
             databaseDriver.commit();
             databaseDriver.setCurrentUser(username);
 
-            // switch scenes
+            databaseDriver.disconnect();
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             SceneManager sceneManager = new SceneManager(stage);
             sceneManager.switchToLoginScene(event);
@@ -114,7 +95,20 @@ public class CreateAccountController {
         createAccountError.setVisible(false);
     }
 
+    public void handleKeyPressed(KeyEvent keyEvent) throws IOException, SQLException {
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            createAccount(new ActionEvent(keyEvent.getSource(), keyEvent.getTarget()));
+        }
+    }
 
+    public void switchToLoginScene(ActionEvent event) throws IOException {
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        SceneManager sceneManager = new SceneManager(stage);
+        sceneManager.switchToLoginScene(event);
+    }
+
+
+    // TODO : IMPLEMENT THIS
 //    @FXML
 //    void handlePasswordShow() throws IOException{
 //        incorrectUsernameOrPasswordHide();

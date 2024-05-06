@@ -2,6 +2,7 @@ package edu.virginia.sde.reviews.controllers;
 
 
 import edu.virginia.sde.reviews.SceneManager;
+import edu.virginia.sde.reviews.database.DatabaseDriver;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -16,6 +17,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import javafx.scene.image.ImageView;
@@ -25,10 +27,8 @@ import javafx.event.ActionEvent;
 public class CourseSearchController implements Initializable{
 
     private Stage stage;
-    private Scene scene;
+    String currentUser;
 
-
-    // add course
     @FXML
     TextField courseDepartment;
     @FXML
@@ -43,6 +43,8 @@ public class CourseSearchController implements Initializable{
     Label titleTooShortError;
     @FXML
     Label departmentTooShortError;
+    @FXML
+    Label courseAlreadyExistsError;
 
     @FXML
     TextField courseSearch;
@@ -53,18 +55,7 @@ public class CourseSearchController implements Initializable{
     @FXML
     TableColumn<String, String> courseReviewColumn;
 
-    @FXML
-    Label courseLabel;
 
-    @FXML
-    ImageView userImagev;
-
-    @FXML
-    MenuItem reviewsMenuItem;
-    @FXML
-    MenuItem logoutMenuItem;
-
-    String currentUser;
 
     // List of Courses in the Database as Strings
     // TODO : Create and Array of courses like this from the Database
@@ -76,14 +67,21 @@ public class CourseSearchController implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        Image userIcon = new Image("src/main/resources/edu/virginia/sde/reviews/CourseSearchStyling/thing.jpeg");
-//        userImagev.setImage(userIcon);
 
-
-        // TODO : Replace this with the data from the database
-        courses.put("Introduction to Programming | CS 1110", "4.33");
-        courses.put("Data Structures and Algorithms | CS 2100", "5.00");
-        courses.put("Discrete Math | CS 2120", "1.00");
+        DatabaseDriver databaseDriver = new DatabaseDriver();
+        try {
+            databaseDriver.connect();
+            HashMap<String, String> coursesFromDB = databaseDriver.getCourses();
+            courses.putAll(coursesFromDB);
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to load courses from database");
+        } finally {
+            try {
+                databaseDriver.disconnect();
+            } catch (SQLException e) {
+                System.out.println("Failed to disconnect from database");
+            }
+        }
 
         ObservableList<String> courseAndReviews = FXCollections.observableArrayList();
         courses.forEach((course, review) -> courseAndReviews.add(course + " - Review: " + review));
@@ -98,9 +96,7 @@ public class CourseSearchController implements Initializable{
         courseTable.sort();
 
         courseTable.setOnMouseClicked(event -> {
-            // TODO :
             if (!courseTable.getSelectionModel().isEmpty()) {
-                // TODO : Open Course Review Screen for this particular course
                 currentCourse = courseTable.getSelectionModel().getSelectedItem();
                 stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                 SceneManager sceneManager = new SceneManager(stage);
@@ -111,18 +107,6 @@ public class CourseSearchController implements Initializable{
                 }
             }
         });
-    }
-
-    public void switchToLoginScene(ActionEvent event) throws IOException {
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        SceneManager sceneManager = new SceneManager(stage);
-        sceneManager.switchToLoginScene(event);
-    }
-
-    public void switchToMyReviewsScene(ActionEvent event) throws IOException {
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        SceneManager sceneManager = new SceneManager(stage);
-        sceneManager.switchToMyReviewsScene(event, currentUser);
     }
 
     public void addCourse(ActionEvent event) throws IOException {
@@ -141,8 +125,26 @@ public class CourseSearchController implements Initializable{
             titleTooShortError.setVisible(false);
             titleTooLongError.setVisible(false);
             department = department.toUpperCase();
-            System.out.println("Course Added");
-            // TODO : Add course to Database
+
+            DatabaseDriver databaseDriver = new DatabaseDriver();
+            try {
+                databaseDriver.connect();
+                if (!databaseDriver.doesCourseExist(title, department, catalog)) {
+                    courseAlreadyExistsError.setVisible(false);
+                    databaseDriver.addCourse(title, department, catalog);
+                    databaseDriver.commit();
+                } else {
+                    courseAlreadyExistsError.setVisible(true);
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException("Failed to connect to database");
+            } finally {
+                try {
+                    databaseDriver.disconnect();
+                } catch (SQLException e) {
+                    System.out.println("Failed to disconnect from database");
+                }
+            }
         } else {
             departmentTooShortError.setVisible(!isDepartmentValid);
             catalogIncorrectError.setVisible(!isCatalogValid);
@@ -155,16 +157,6 @@ public class CourseSearchController implements Initializable{
                 titleTooShortError.setVisible(true);
             } else {
                 titleTooShortError.setVisible(false);
-            }
-        }
-    }
-
-    public void handleKeyPressed(KeyEvent keyEvent) throws IOException {
-        if (keyEvent.getCode() == KeyCode.ENTER) {
-            if (keyEvent.getSource() == courseSearch) {
-                // TODO : Handle the search here in the database
-            } else if (keyEvent.getSource() == courseDepartment || keyEvent.getSource() == courseCatalog || keyEvent.getSource() == courseTitle) {
-                addCourse(new ActionEvent(keyEvent.getSource(), keyEvent.getTarget()));
             }
         }
     }
@@ -187,6 +179,28 @@ public class CourseSearchController implements Initializable{
             }
         });
 
+    }
+
+    public void handleKeyPressed(KeyEvent keyEvent) throws IOException {
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            if (keyEvent.getSource() == courseSearch) {
+                // TODO : Handle the search here in the database
+            } else if (keyEvent.getSource() == courseDepartment || keyEvent.getSource() == courseCatalog || keyEvent.getSource() == courseTitle) {
+                addCourse(new ActionEvent(keyEvent.getSource(), keyEvent.getTarget()));
+            }
+        }
+    }
+
+    public void switchToLoginScene(ActionEvent event) throws IOException {
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        SceneManager sceneManager = new SceneManager(stage);
+        sceneManager.switchToLoginScene(event);
+    }
+
+    public void switchToMyReviewsScene(ActionEvent event) throws IOException {
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        SceneManager sceneManager = new SceneManager(stage);
+        sceneManager.switchToMyReviewsScene(event, currentUser);
     }
 
     public void setCurrentUser(String currentUser) {

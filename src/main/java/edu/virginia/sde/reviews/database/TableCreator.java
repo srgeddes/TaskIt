@@ -13,11 +13,18 @@ public class TableCreator {
     }
 
     public void createTables() throws SQLException {
-        try (Statement stmt = connection.createStatement()) {
-            stmt.execute(
+        try (Statement st = connection.createStatement()) {
+            st.execute(
                     "CREATE TABLE IF NOT EXISTS Users (" +
                             "Username TEXT PRIMARY KEY, " +
                             "Password TEXT NOT NULL)"
+            );
+            st.execute(
+                    "CREATE TABLE IF NOT EXISTS Courses (" +
+                            "Title TEXT PRIMARY KEY, " +
+                            "Department TEXT NOT NULL, " +
+                            "Catalog_Number TEXT NOT NULL, " +
+                            "Average_rating DECIMAL(10, 2) NOT NULL)"
             );
         }
     }

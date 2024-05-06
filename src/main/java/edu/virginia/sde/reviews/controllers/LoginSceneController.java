@@ -12,12 +12,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.sql.SQLException;
 
 
 public class LoginSceneController {
+
+    private Stage stage;
 
     @FXML
     TextField usernameField;
@@ -30,9 +31,6 @@ public class LoginSceneController {
     @FXML
     CheckBox passwordShowCheckbox;
 
-
-
-    private Stage stage;
 
     public LoginSceneController() {}
 
@@ -77,14 +75,6 @@ public class LoginSceneController {
         });
     }
 
-
-    public void switchToCreateAccountScene(javafx.event.ActionEvent event) throws IOException {
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        SceneManager sceneManager = new SceneManager(stage);
-        sceneManager.switchToCreateAccountScene(event);
-    }
-
-
     @FXML
     void handlePasswordShow() throws IOException{
         incorrectUsernameOrPasswordHide();
@@ -97,6 +87,12 @@ public class LoginSceneController {
             hiddenPasswordField.setVisible(true);
             visiblePasswordField.setVisible(false);
         }
+    }
+
+    public void switchToCreateAccountScene(javafx.event.ActionEvent event) throws IOException {
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        SceneManager sceneManager = new SceneManager(stage);
+        sceneManager.switchToCreateAccountScene(event);
     }
 
 }

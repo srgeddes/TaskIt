@@ -1,6 +1,7 @@
 package edu.virginia.sde.reviews.database;
 
 import java.sql.*;
+import java.util.HashMap;
 
 public class DatabaseDriver {
 
@@ -93,7 +94,62 @@ public class DatabaseDriver {
         }
     }
 
-//    public void addCourse(String )
+    /**
+     * Be aware that Course Subject/Number *are not unique* - For example, there are several different
+     * courses that are "CS 4501" with different titles. You should only assume two courses are the same
+     * if they have the same subject, number, *and* title.
+     */
+
+    public HashMap<String, String> getCourses() throws SQLException {
+        HashMap<String, String> coursesMap = new HashMap<>();
+        String sql = "SELECT * FROM Courses";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    String title = rs.getString("Title");
+                    String department = rs.getString("Department");
+                    String catalog_number = rs.getString("Catalog_Number");
+                    double averageRating = rs.getDouble("Average_rating");
+                    coursesMap.put(title + " | " + department + " " + catalog_number, String.format("%.2f", averageRating));
+                }
+            }
+        }
+        return coursesMap;
+    }
+
+    public void addCourse(String title, String department, String catalog_number) throws SQLException {
+        String sql = "INSERT INTO Courses (Title, Department, Catalog_Number, Average_rating) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, title);
+            ps.setString(2, department);
+            ps.setString(3, catalog_number);
+            ps.setDouble(4, 0.0);
+            ps.executeUpdate();
+        }
+    }
+
+    public boolean doesCourseExist(String title, String department, String catalog_number) throws SQLException {
+        String sql = "SELECT * FROM Courses WHERE Title = ? AND Department = ? AND Catalog_Number = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, title);
+            ps.setString(2, department);
+            ps.setString(3, catalog_number);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        }
+    }
+
+    public void removeCourse(String title, String department, String catalog_number) throws SQLException {
+        String sql = "DELETE FROM Courses WHERE Title = ? AND Department = ? AND Catalog_Number = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, title);
+            ps.setString(2, department);
+            ps.setString(3, catalog_number);
+            ps.executeUpdate();
+        }
+    }
 
 
     public static void main(String[] args) {
