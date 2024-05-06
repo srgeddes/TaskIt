@@ -48,6 +48,8 @@ public class MyReviewsController implements Initializable {
     HashMap<String, String[]> reviews = new HashMap<>();
     String currentCourse;
 
+    String currentUser;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -99,7 +101,7 @@ public class MyReviewsController implements Initializable {
                 stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                 SceneManager sceneManager = new SceneManager(stage);
                 try {
-                    sceneManager.switchToCourseReviewsScene(event, currentCourse);
+                    sceneManager.switchToCourseReviewsScene(event, currentCourse, currentUser);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -126,12 +128,20 @@ public class MyReviewsController implements Initializable {
     public void switchToMyReviewsScene(ActionEvent event) throws IOException {
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         SceneManager sceneManager = new SceneManager(stage);
-        sceneManager.switchToMyReviewsScene(event);
+        sceneManager.switchToMyReviewsScene(event, currentUser);
     }
 
     public void switchToCourseSearchScene(ActionEvent event) throws IOException {
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         SceneManager sceneManager = new SceneManager(stage);
-        sceneManager.switchToCourseSearchScene(event);
+        sceneManager.switchToCourseSearchScene(event, currentUser);
+    }
+
+    public void setCurrentUser(String currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 }

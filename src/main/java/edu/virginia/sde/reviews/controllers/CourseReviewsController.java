@@ -61,6 +61,8 @@ public class CourseReviewsController implements Initializable {
     @FXML
     TextField usernameSearchTextField;
 
+    String currentUser;
+
 
     // TODO : database
     // key = user id
@@ -120,14 +122,6 @@ public class CourseReviewsController implements Initializable {
         Platform.runLater(this::updateLabelPosition);
     }
 
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
-    public void setCourseLabel(String course) {
-        String averageRating = getAverageRating(course);
-        this.courseLabel.setText(course + " " + averageRating);
-    }
 
     public String getAverageRating(String course) {
         // TODO : Average all the ratings for a given course
@@ -178,13 +172,13 @@ public class CourseReviewsController implements Initializable {
     public void switchToMyReviewsScene(ActionEvent event) throws IOException {
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         SceneManager sceneManager = new SceneManager(stage);
-        sceneManager.switchToMyReviewsScene(event);
+        sceneManager.switchToMyReviewsScene(event, currentUser);
     }
 
     public void switchToCourseSearchScene(ActionEvent event) throws IOException {
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         SceneManager sceneManager = new SceneManager(stage);
-        sceneManager.switchToCourseSearchScene(event);
+        sceneManager.switchToCourseSearchScene(event, currentUser);
     }
 
     private void updateLabelPosition() {
@@ -197,5 +191,18 @@ public class CourseReviewsController implements Initializable {
         double thumbPos = percent * (trackWidth - thumbWidth) + thumbWidth / 2;
         sliderValueLabel.setLayoutX(ratingSlider.getLayoutX() + thumbPos - sliderValueLabel.getWidth() / 2);
         sliderValueLabel.setLayoutY(ratingSlider.getLayoutY() - sliderValueLabel.getHeight() - 5);
+    }
+
+    public void setCurrentUser(String currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public void setCourseLabel(String course) {
+        String averageRating = getAverageRating(course);
+        this.courseLabel.setText(course + " " + averageRating);
     }
 }

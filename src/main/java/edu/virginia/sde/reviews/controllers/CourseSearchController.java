@@ -64,6 +64,8 @@ public class CourseSearchController implements Initializable{
     @FXML
     MenuItem logoutMenuItem;
 
+    String currentUser;
+
     // List of Courses in the Database as Strings
     // TODO : Create and Array of courses like this from the Database
 //    String[] courses = {"Introduction to Programming | CS 1110", "Data Structures and Algorithms | CS 2100", "Discrete Math | CS 2120"};
@@ -76,6 +78,7 @@ public class CourseSearchController implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {
 //        Image userIcon = new Image("src/main/resources/edu/virginia/sde/reviews/CourseSearchStyling/thing.jpeg");
 //        userImagev.setImage(userIcon);
+
 
         // TODO : Replace this with the data from the database
         courses.put("Introduction to Programming | CS 1110", "4.33");
@@ -102,7 +105,7 @@ public class CourseSearchController implements Initializable{
                 stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                 SceneManager sceneManager = new SceneManager(stage);
                 try {
-                    sceneManager.switchToCourseReviewsScene(event, courseTable.getSelectionModel().getSelectedItem().split("- Review: ")[0]);
+                    sceneManager.switchToCourseReviewsScene(event, courseTable.getSelectionModel().getSelectedItem().split("- Review: ")[0], currentUser);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -119,7 +122,7 @@ public class CourseSearchController implements Initializable{
     public void switchToMyReviewsScene(ActionEvent event) throws IOException {
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         SceneManager sceneManager = new SceneManager(stage);
-        sceneManager.switchToMyReviewsScene(event);
+        sceneManager.switchToMyReviewsScene(event, currentUser);
     }
 
     public void addCourse(ActionEvent event) throws IOException {
@@ -184,6 +187,14 @@ public class CourseSearchController implements Initializable{
             }
         });
 
+    }
+
+    public void setCurrentUser(String currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 
 }

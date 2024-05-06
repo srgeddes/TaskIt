@@ -1,11 +1,15 @@
 // CourseReviewsApplication.java
 package edu.virginia.sde.reviews;
 
+import edu.virginia.sde.reviews.database.DatabaseDriver;
+import edu.virginia.sde.reviews.database.TableCreator;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.sql.SQLException;
 
 public class CourseReviewsApplication extends Application {
 
@@ -20,6 +24,7 @@ public class CourseReviewsApplication extends Application {
         stage.setHeight(720);
         SceneManager sceneManager = new SceneManager(stage);
         sceneManager.initializeLoginScene(stage);
-//        sceneManager.initializeCourseSearchScene(stage);
+
+        DatabaseDriver.main(new String[0]);
     }
 }

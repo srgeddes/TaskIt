@@ -1,6 +1,8 @@
 package edu.virginia.sde.reviews;
 
 import edu.virginia.sde.reviews.controllers.CourseReviewsController;
+import edu.virginia.sde.reviews.controllers.CourseSearchController;
+import edu.virginia.sde.reviews.controllers.MyReviewsController;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
@@ -47,7 +49,6 @@ public class SceneManager {
 
     public void switchToLoginScene(Event event) throws IOException {
         Node source = (Node) event.getSource();
-        Stage stage = (Stage) source.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/edu/virginia/sde/reviews/LoginStyling/login.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -55,23 +56,6 @@ public class SceneManager {
         stage.setTitle("Login");
         stage.show();
     }
-
-    public void switchToCourseSearchScene(Event event) throws IOException {
-        Node currentRoot = stage.getScene().getRoot();
-        slideOut(currentRoot, () -> {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/virginia/sde/reviews/CourseSearchStyling/course-search.fxml"));
-                Parent newRoot = loader.load();
-                Scene newScene = new Scene(newRoot);
-                stage.setScene(newScene);
-                stage.setTitle("Course Search");
-                slideIn(newRoot);
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-        });
-    }
-
 
     public void switchToCreateAccountScene(Event event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/edu/virginia/sde/reviews/CreateAccountStyling/create-account.fxml"));
@@ -82,7 +66,23 @@ public class SceneManager {
         stage.show();
     }
 
-    public void switchToCourseReviewsScene(Event event, String course) throws IOException {
+    public void switchToCourseSearchScene(Event event, String currentUser) throws IOException {
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/virginia/sde/reviews/CourseSearchStyling/course-search.fxml"));
+        Parent root = loader.load();
+        CourseSearchController courseSearchController = loader.getController();
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        courseSearchController.setStage(stage);
+        courseSearchController.setCurrentUser(currentUser);
+        stage.setTitle("Course Search");
+        stage.show();
+
+    }
+
+
+    public void switchToCourseReviewsScene(Event event, String course, String currentUser) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/virginia/sde/reviews/CourseReviewsStyling/course-reviews.fxml"));
         Parent root = loader.load();
         CourseReviewsController courseReviewsController = loader.getController();
@@ -90,34 +90,23 @@ public class SceneManager {
         scene = new Scene(root);
         stage.setScene(scene);
         courseReviewsController.setCourseLabel(course);
+        courseReviewsController.setCurrentUser(currentUser);
         courseReviewsController.setStage(stage);
         stage.setTitle(course);
         stage.show();
     }
 
-    public void switchToMyReviewsScene(Event event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/edu/virginia/sde/reviews/MyReviewsStyling/my-reviews.fxml"));
+    public void switchToMyReviewsScene(Event event, String currentUser) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/virginia/sde/reviews/MyReviewsStyling/my-reviews.fxml"));
+        Parent root = loader.load();
+        MyReviewsController myReviewsController = loader.getController();
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
-        stage.setTitle("My Reviews");
+        myReviewsController.setStage(stage);
+        myReviewsController.setCurrentUser(currentUser);
+        stage.setTitle(currentUser + "'s Reviews");
         stage.show();
     }
-
-    public void slideOut(Node node, Runnable onFinish) {
-        TranslateTransition slideOut = new TranslateTransition(Duration.millis(500), node);
-        slideOut.setFromX(0);
-        slideOut.setToX(-stage.getWidth());
-        slideOut.setOnFinished(event -> onFinish.run());
-        slideOut.play();
-    }
-
-    public void slideIn(Node node) {
-        TranslateTransition slideIn = new TranslateTransition(Duration.millis(500), node);
-        slideIn.setFromX(stage.getWidth());
-        slideIn.setToX(0);
-        slideIn.play();
-    }
-
 }
 
