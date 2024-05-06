@@ -19,6 +19,8 @@ import java.sql.SQLException;
 
 public class CreateAccountController {
 
+    private Stage stage;
+
     // TODO : Implement show password here:
     @FXML
     CheckBox passwordShowCheckbox;
@@ -33,13 +35,17 @@ public class CreateAccountController {
     PasswordField confirmPasswordField;
     @FXML
     Label createAccountError;
-    private Stage stage;
+
+
 
 
     public CreateAccountController() {}
 
-
-
+    /**
+     * Check database to see if a username is already taken.
+     * If not create the username and password.
+     * Handle error messages.
+     */
     public void createAccount(ActionEvent event) throws IOException, SQLException {
         String username = usernameField.getText();
         String password = passwordField.getText();
@@ -70,31 +76,42 @@ public class CreateAccountController {
             return;
         }
 
-
-
-        // TODO : Check to make sure that the user is not already in the database
-
-        DatabaseDriver databaseDriver = new DatabaseDriver();
-        databaseDriver.connect();
-        if (!databaseDriver.doesUserExist(username)) {
-            databaseDriver.addUser(username, password);
-            databaseDriver.commit();
-            databaseDriver.setCurrentUser(username);
-
-            databaseDriver.disconnect();
-            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            SceneManager sceneManager = new SceneManager(stage);
-            sceneManager.switchToLoginScene(event);
-
+        if (addUser(username, password)) {
+            switchToLoginScene(event);
         } else {
-            databaseDriver.disconnect();
-            createAccountError.setText("Account already exists");
+            createAccountError.setText("Account Already Exists");
             createAccountError.setVisible(true);
-            return;
         }
-        createAccountError.setVisible(false);
     }
 
+
+    public boolean addUser(String username, String password) {
+        DatabaseDriver databaseDriver = new DatabaseDriver();
+        boolean userAdded = false;
+        try {
+            databaseDriver.connect();
+            boolean doesUserExists = databaseDriver.doesUserExist(username);
+            if (!doesUserExists) {
+                databaseDriver.addUser(username, password);
+                databaseDriver.commit();
+                userAdded = true;
+                createAccountError.setVisible(false);
+            }
+        } catch (SQLException e) {
+            System.out.println("Unable to connect to database");
+        } finally {
+            try {
+                databaseDriver.disconnect();
+            } catch (SQLException e) {
+                System.out.println("Unable to disconnect from database");
+            }
+        }
+        return userAdded;
+    }
+
+    /**
+     * Handle when Enter is pressed
+     */
     public void handleKeyPressed(KeyEvent keyEvent) throws IOException, SQLException {
         if (keyEvent.getCode() == KeyCode.ENTER) {
             createAccount(new ActionEvent(keyEvent.getSource(), keyEvent.getTarget()));

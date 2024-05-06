@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -34,18 +35,19 @@ public class LoginSceneController {
 
     public LoginSceneController() {}
 
-    public void login(ActionEvent event) throws IOException, SQLException {
+
+    /**
+     * Check if the username and password are valid within the database
+     */
+    public void login(ActionEvent event) throws IOException {
         String username = (usernameField != null) ? usernameField.getText() : "";
         String password = (hiddenPasswordField != null) ? hiddenPasswordField.getText() : "";
 
         if (!username.isEmpty() && !password.isEmpty()) {
-            DatabaseDriver databaseDriver = new DatabaseDriver();
-            databaseDriver.connect();
-            boolean isValidUsernameAndPassword = databaseDriver.isValidUser(username, password);
-            databaseDriver.disconnect();
-            databaseDriver.setCurrentUser(username);
 
-            if (isValidUsernameAndPassword) {
+            boolean isValidUser = isValidUser(username, password);
+
+            if (isValidUser) {
                 stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                 SceneManager sceneManager = new SceneManager(stage);
                 sceneManager.switchToCourseSearchScene(event, username);
@@ -55,12 +57,46 @@ public class LoginSceneController {
         } else errorLabel.setVisible(true);
     }
 
+    /**
+     * @param username from TextField
+     * @param password from PasswordField
+     * @return True if the username and password are valid in the database
+     */
+    public boolean isValidUser(String username, String password) {
+        DatabaseDriver databaseDriver = new DatabaseDriver();
+        boolean isValidUser = false;
+        try {
+            databaseDriver.connect();
+            isValidUser = databaseDriver.isValidUser(username, password);
+            databaseDriver.setCurrentUser(username);
+        } catch (SQLException e) {
+            System.out.println("Unable to connect to database");
+        } finally {
+            try {
+                databaseDriver.disconnect();
+            } catch (SQLException e) {
+                System.out.println("Unable to disconnect from database");
+            }
+        }
+        return isValidUser;
+    }
+
+    /**
+     * Attempt to login when enter is pressed
+     * @param keyEvent Enter
+     * @throws IOException
+     * @throws SQLException
+     */
     public void handleKeyPressed(KeyEvent keyEvent) throws IOException, SQLException {
         if (keyEvent.getCode() == KeyCode.ENTER) {
             login(new ActionEvent(keyEvent.getSource(), keyEvent.getTarget()));
         }
     }
 
+
+    /**
+     * Hide the error labels when the user clicks on the TextField or PasswordField
+     */
     @FXML
     public void incorrectUsernameOrPasswordHide() throws IOException {
         usernameField.focusedProperty().addListener((observable, oldValue, newValue) -> {
@@ -75,6 +111,9 @@ public class LoginSceneController {
         });
     }
 
+    /**
+     * show / hide password handling
+     */
     @FXML
     void handlePasswordShow() throws IOException{
         incorrectUsernameOrPasswordHide();
@@ -89,11 +128,10 @@ public class LoginSceneController {
         }
     }
 
-    public void switchToCreateAccountScene(javafx.event.ActionEvent event) throws IOException {
+    public void switchToCreateAccountScene(ActionEvent event) throws IOException {
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         SceneManager sceneManager = new SceneManager(stage);
         sceneManager.switchToCreateAccountScene(event);
     }
-
 }
 

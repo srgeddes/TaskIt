@@ -6,11 +6,8 @@ import edu.virginia.sde.reviews.database.DatabaseDriver;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -20,13 +17,13 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.ResourceBundle;
-import javafx.scene.image.ImageView;
 import javafx.event.ActionEvent;
 
 
 public class CourseSearchController implements Initializable{
 
     private Stage stage;
+
     String currentUser;
 
     @FXML
@@ -58,10 +55,6 @@ public class CourseSearchController implements Initializable{
     TableColumn<String, String> courseReviewColumn;
 
 
-
-    // List of Courses in the Database as Strings
-    // TODO : Create and Array of courses like this from the Database
-//    String[] courses = {"Introduction to Programming | CS 1110", "Data Structures and Algorithms | CS 2100", "Discrete Math | CS 2120"};
     HashMap<String, String> courses = new HashMap<>();
 
     String currentCourse;
@@ -69,48 +62,18 @@ public class CourseSearchController implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-        DatabaseDriver databaseDriver = new DatabaseDriver();
-        try {
-            databaseDriver.connect();
-            HashMap<String, String> coursesFromDB = databaseDriver.getCourses();
-            courses.putAll(coursesFromDB);
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to load courses from database");
-        } finally {
-            try {
-                databaseDriver.disconnect();
-            } catch (SQLException e) {
-                System.out.println("Failed to disconnect from database");
-            }
-        }
-
-        ObservableList<String> courseAndReviews = FXCollections.observableArrayList();
-        courses.forEach((course, review) -> courseAndReviews.add(course + " - Review: " + review));
-
-        courseTable.setItems(courseAndReviews);
-
-        courseNameColumn.setCellValueFactory(param -> new javafx.beans.property.SimpleStringProperty(param.getValue().split(" - Review: ")[0]));
-        courseReviewColumn.setCellValueFactory(param -> new javafx.beans.property.SimpleStringProperty(param.getValue().split(" - Review: ")[1]));
-
-        courseReviewColumn.setSortType(TableColumn.SortType.DESCENDING);
-        courseTable.getSortOrder().add(courseReviewColumn);
-        courseTable.sort();
-
-        courseTable.setOnMouseClicked(event -> {
-            if (!courseTable.getSelectionModel().isEmpty()) {
-                currentCourse = courseTable.getSelectionModel().getSelectedItem();
-                stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-                SceneManager sceneManager = new SceneManager(stage);
-                try {
-                    sceneManager.switchToCourseReviewsScene(event, courseTable.getSelectionModel().getSelectedItem().split("- Review: ")[0], currentUser);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
+        setALlCourses();
+        setupTable();
+        handleCourseClicked();
     }
 
+
+    /**
+     * Add Course to the Database if it meets these requirements:
+     * Department = 2 letters
+     * Catalog # = 4 digits
+     * Title = all letters and length is between 2 and 50
+     */
     public void addCourse(ActionEvent event) throws IOException {
         String department = courseDepartment.getText().trim();
         String catalog = courseCatalog.getText().trim();
@@ -163,6 +126,61 @@ public class CourseSearchController implements Initializable{
                 titleTooShortError.setVisible(false);
             }
         }
+    }
+
+    /**
+     * Update the Hashmap of courses with the courses from the database
+     */
+    public void setALlCourses() {
+        DatabaseDriver databaseDriver = new DatabaseDriver();
+        try {
+            databaseDriver.connect();
+            HashMap<String, String> coursesFromDB = databaseDriver.getCourses();
+            courses.putAll(coursesFromDB);
+        } catch (SQLException e) {
+            System.out.println("Unable to connect to database");
+        } finally {
+            try {
+                databaseDriver.disconnect();
+            } catch (SQLException e) {
+                System.out.println("Unable to disconnect from database");
+            }
+        }
+    }
+
+    /**
+     * Convert the Hashmap of courses into a viewable form for the tableView.
+     */
+    public void setupTable() {
+        ObservableList<String> courseAndReviews = FXCollections.observableArrayList();
+        courses.forEach((course, review) -> courseAndReviews.add(course + " - Review: " + review));
+
+        courseTable.setItems(courseAndReviews);
+
+        courseNameColumn.setCellValueFactory(param -> new javafx.beans.property.SimpleStringProperty(param.getValue().split(" - Review: ")[0]));
+        courseReviewColumn.setCellValueFactory(param -> new javafx.beans.property.SimpleStringProperty(param.getValue().split(" - Review: ")[1]));
+
+        courseReviewColumn.setSortType(TableColumn.SortType.DESCENDING);
+        courseTable.getSortOrder().add(courseReviewColumn);
+        courseTable.sort();
+    }
+
+    /**
+     * Handle switching to the appropriate review screen for the course that was clicked in the table
+     */
+    public void handleCourseClicked() {
+        courseTable.setOnMouseClicked(event -> {
+            if (!courseTable.getSelectionModel().isEmpty()) {
+                currentCourse = courseTable.getSelectionModel().getSelectedItem();
+                stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                SceneManager sceneManager = new SceneManager(stage);
+                try {
+                    sceneManager.switchToCourseReviewsScene(event, courseTable.getSelectionModel().getSelectedItem().split("- Review: ")[0], currentUser);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
 
     public void addCourseErrorHide() {
