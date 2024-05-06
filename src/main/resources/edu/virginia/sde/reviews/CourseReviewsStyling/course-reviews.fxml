@@ -24,11 +24,11 @@
                                 <TextArea fx:id="commentsTextArea" maxHeight="400.0" minHeight="165.0" prefHeight="165.0" prefWidth="300.0" promptText="Comments..." wrapText="true" />
                         <VBox alignment="BOTTOM_RIGHT" spacing="30.0">
                            <children>
-                              <VBox alignment="CENTER_RIGHT">
+                              <VBox alignment="CENTER_RIGHT" spacing="10.0">
                                  <children>
                                     <VBox alignment="CENTER_RIGHT" maxWidth="100.0">
                                        <children>
-                                           <Slider fx:id="ratingSlider" min="1.0" max="5.0" value="1.0" blockIncrement="0.1" snapToTicks="true" majorTickUnit="1.0" minorTickCount="9" showTickMarks="true" showTickLabels="true" prefWidth="200.0" />
+                                           <Slider fx:id="ratingSlider" blockIncrement="1" majorTickUnit="1" max="5" min="1" minorTickCount="0" prefWidth="200.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1" />
                                            <Label fx:id="sliderValueLabel" text="1" />
                                        </children>
                                     </VBox>
@@ -36,8 +36,9 @@
                                        <children>
                                           <StackPane>
                                              <children>
-                                                <Label fx:id="ratingErrorLabel" text="Rating must be 1-5 " visible="false" />
+                                                <Label fx:id="reviewLeftLabel" text="Review Successfully Created" visible="false" />
                                                 <Label fx:id="commentErrorLabel" text="Comment too long" visible="false" />
+                                                <Label fx:id="reviewAlreadyLeftError" prefWidth="318.0" text="You have previously left a review for this course" visible="false" />
                                              </children>
                                           </StackPane>
                                           <VBox alignment="CENTER_RIGHT">

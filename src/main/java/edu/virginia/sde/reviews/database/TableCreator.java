@@ -26,6 +26,20 @@ public class TableCreator {
                             "Catalog_Number TEXT NOT NULL, " +
                             "Average_rating DECIMAL(10, 2) NOT NULL)"
             );
+            st.execute(
+                    "CREATE TABLE IF NOT EXISTS Reviews (" +
+                            "ReviewID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                            "Username TEXT NOT NULL, " +
+                            "CourseTitle TEXT NOT NULL, " +
+                            "Comments TEXT, " +
+                            "Rating INTEGER NOT NULL, " +
+                            "TimeStamp TEXT NOT NULL, " +
+                            "FOREIGN KEY (Username) REFERENCES Users(Username))"
+            );
         }
     }
+
+
+
+
 }

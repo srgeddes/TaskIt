@@ -151,6 +151,57 @@ public class DatabaseDriver {
         }
     }
 
+    public HashMap<String, String[]> getReviews(String course) throws SQLException {
+        HashMap<String, String[]> reviews = new HashMap<>();
+        String sql = "SELECT ReviewID, Comments, Rating, TimeStamp FROM Reviews WHERE CourseTitle = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, course);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    String reviewID = String.valueOf(rs.getInt("ReviewID"));
+                    String comments = rs.getString("Comments");
+                    String rating = rs.getString("Rating");
+                    String timestamp = rs.getString("TimeStamp");
+                    reviews.put(reviewID, new String[]{comments, rating, timestamp});
+                }
+            }
+        }
+        return reviews;
+    }
+
+    public void addReview(String username, String courseTitle, String comments, int rating, String timestamp) throws SQLException {
+        String sql = "INSERT INTO Reviews (Username, CourseTitle, Comments, Rating, TimeStamp) VALUES (?, ?, ?, ?, ?)";
+        // Fix the autoincremet stuff
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, username);
+            ps.setString(2, courseTitle);
+            ps.setString(3, comments);
+            ps.setInt(4, rating);
+            ps.setString(5, timestamp);
+            ps.executeUpdate();
+        }
+    }
+
+    public boolean userAlreadyLeftReview(String username, String courseTitle) throws SQLException {
+        String sql = "SELECT * FROM Reviews WHERE Username = ? AND CourseTitle = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, username);
+            ps.setString(2, courseTitle);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        }
+    }
+
+    public void removeReview(String username, String courseTitle) throws SQLException {
+        String sql = "DELETE FROM Reviews WHERE Username = ? AND CourseTitle = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, username);
+            ps.setString(2, courseTitle);
+            ps.executeUpdate();
+        }
+    }
+
 
     public static void main(String[] args) {
         DatabaseDriver databaseDriver = new DatabaseDriver();

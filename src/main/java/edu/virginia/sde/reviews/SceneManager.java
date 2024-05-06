@@ -89,9 +89,9 @@ public class SceneManager {
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
+        courseReviewsController.setStage(stage);
         courseReviewsController.setCourseLabel(course);
         courseReviewsController.setCurrentUser(currentUser);
-        courseReviewsController.setStage(stage);
         stage.setTitle(course);
         stage.show();
     }

@@ -1,11 +1,11 @@
 package edu.virginia.sde.reviews.controllers;
 
 import edu.virginia.sde.reviews.SceneManager;
+import edu.virginia.sde.reviews.database.DatabaseDriver;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,17 +13,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -36,14 +34,23 @@ public class CourseReviewsController implements Initializable {
 
     @FXML
     Label courseLabel;
+    String course;
+    String[] courseLabelParts;
+    String courseTitle;
+    String courseDepartment;
+    String courseCatalog_number;
+
     @FXML
     TextArea commentsTextArea;
-    @FXML
-    TextField ratingTextField;
-    @FXML
-    Label ratingErrorLabel;
+
     @FXML
     Label commentErrorLabel;
+    @FXML
+    Label reviewAlreadyLeftError;
+    @FXML
+    Label reviewLeftLabel;
+
+
     @FXML
     Slider ratingSlider;
     @FXML
@@ -63,63 +70,58 @@ public class CourseReviewsController implements Initializable {
 
     String currentUser;
 
-
-    // TODO : database
-    // key = user id
-    // value = [comment, rating(1-5), timestamp]
-    // remember that comments are optional. First index needs to be empty string if
-    // theres no comments
     HashMap<String, String[]> reviews = new HashMap<>();
-    String currentCourse;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        reviews.put("krf9mp", new String[]{"ddddddddddddddddddddddddddddddd", "4", timestamp.toString()});
-        reviews.put("Alex", new String[]{"This course was not good", "2", timestamp.toString()});
-        reviews.put("Levi", new String[]{"", "1", timestamp.toString()});
+        Platform.runLater(() -> {
+            fetchReviewsFromDB(course);
+            ObservableList<String[]> data = FXCollections.observableArrayList();
+            data.addAll(reviews.values());
+            reviewsTable.setItems(data);
 
-        ObservableList<String[]> data = FXCollections.observableArrayList();
-        data.addAll(reviews.values());
+            setupTableColumns();
 
-        commentsColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<String[], String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<String[], String> param) {
-                return new SimpleStringProperty(param.getValue()[0]);
-            }
+            timestampColumn.setSortType(TableColumn.SortType.DESCENDING);
+            reviewsTable.getSortOrder().add(timestampColumn);
+            reviewsTable.sort();
         });
 
-        ratingColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<String[], String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<String[], String> param) {
-                return new SimpleStringProperty(param.getValue()[1]);
-            }
-        });
+        setupSlider();
+    }
 
+    private void setupTableColumns() {
+        commentsColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue()[0]));
+        ratingColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue()[1]));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
-        timestampColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<String[], LocalDateTime>, ObservableValue<LocalDateTime>>() {
-            @Override
-            public ObservableValue<LocalDateTime> call(TableColumn.CellDataFeatures<String[], LocalDateTime> param) {
-                String timestampStr = param.getValue()[2];
-                try {
-                    LocalDateTime dateTime = LocalDateTime.parse(timestampStr, formatter);
-                    return new SimpleObjectProperty<>(dateTime);
-                } catch (Exception e) {
-                    return new SimpleObjectProperty<>(LocalDateTime.MIN); // Handle parsing error
-                }
+        timestampColumn.setCellValueFactory(param -> {
+            String timestampStr = param.getValue()[2];
+            try {
+                LocalDateTime dateTime = LocalDateTime.parse(timestampStr, formatter);
+                return new SimpleObjectProperty<>(dateTime);
+            } catch (Exception e) {
+                return new SimpleObjectProperty<>(LocalDateTime.MIN); // Handle parsing error
             }
         });
+    }
 
-        reviewsTable.setItems(data);
-        timestampColumn.setSortType(TableColumn.SortType.DESCENDING);
-        reviewsTable.getSortOrder().add(timestampColumn);
-        reviewsTable.sort();
 
-        StringConverter<Number> format = new NumberStringConverter("0.0");
-        sliderValueLabel.textProperty().bind(Bindings.createStringBinding(() ->
-                format.toString(ratingSlider.getValue()), ratingSlider.valueProperty()));
-        ratingSlider.valueProperty().addListener((obs, oldval, newVal) -> updateLabelPosition());
-        Platform.runLater(this::updateLabelPosition);
+    public void fetchReviewsFromDB(String course) {
+        DatabaseDriver databaseDriver = new DatabaseDriver();
+        try {
+            databaseDriver.connect();
+            HashMap<String, String[]> reviewsFromDB = databaseDriver.getReviews(course);
+            reviews.putAll(reviewsFromDB);
+
+        } catch (SQLException e) {
+            System.out.println("No reviews have been made for this course");
+        } finally {
+            try {
+                databaseDriver.disconnect();
+            } catch (SQLException e) {
+                System.out.println("Failed to disconnect from database");
+            }
+        }
     }
 
 
@@ -131,18 +133,37 @@ public class CourseReviewsController implements Initializable {
 
     public void addReview(ActionEvent event) throws IOException {
         String comments = commentsTextArea.getText();
-        String rating = ratingTextField.getText();
-
-        boolean validRating = rating.matches("[12345]");
+        int rating = Integer.parseInt(sliderValueLabel.getText());
         boolean validComment = comments.length() <= 600;
-        if (comments.length() <= 600 && validRating) {
+
+        if (validComment) {
             commentErrorLabel.setVisible(false);
-            ratingErrorLabel.setVisible(false);
-            System.out.println("Valid Review");
-            // TODO : Add review to database
+            DatabaseDriver databaseDriver = new DatabaseDriver();
+            try {
+                databaseDriver.connect();
+                if (!(databaseDriver.userAlreadyLeftReview(currentUser, course))) {
+                    reviewAlreadyLeftError.setVisible(false);
+                    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                    databaseDriver.addReview(currentUser, course, comments, rating, timestamp.toString());
+                    databaseDriver.commit();
+                    reviewAlreadyLeftError.setVisible(false);
+                    reviewLeftLabel.setVisible(true);
+                } else {
+                    reviewAlreadyLeftError.setVisible(true);
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException("Failed to add review");
+            } finally {
+                try {
+                    databaseDriver.disconnect();
+                } catch (SQLException e) {
+                    System.out.println("Failed to disconnect from database");
+                }
+            }
+            commentErrorLabel.setVisible(false);
+            // TODO : Add review to database and Update the average rating of the course
         } else {
-            commentErrorLabel.setVisible(!validComment);
-            ratingErrorLabel.setVisible(!commentErrorLabel.isVisible());
+            commentErrorLabel.setVisible(true);
         }
     }
 
@@ -153,10 +174,10 @@ public class CourseReviewsController implements Initializable {
 
     public void handleKeyPressed(KeyEvent keyEvent) throws IOException {
         if (keyEvent.getCode() == KeyCode.ENTER) {
-            if (keyEvent.getSource() == commentsTextArea || keyEvent.getSource() == ratingTextField) {
-                // TODO : Handle the search here in the database
+            if (keyEvent.getSource() == commentsTextArea) {
                 addReview(new ActionEvent(keyEvent.getSource(), keyEvent.getTarget()));
             } else if (keyEvent.getSource() == usernameSearchTextField) {
+                // TODO : Search in the Database here
                 searchForReview();
             }
         }
@@ -204,5 +225,15 @@ public class CourseReviewsController implements Initializable {
     public void setCourseLabel(String course) {
         String averageRating = getAverageRating(course);
         this.courseLabel.setText(course + " " + averageRating);
+        this.course = course;
+    }
+
+
+    public void setupSlider() {
+        StringConverter<Number> format = new NumberStringConverter("0");
+        sliderValueLabel.textProperty().bind(Bindings.createStringBinding(() ->
+                format.toString(ratingSlider.getValue()), ratingSlider.valueProperty()));
+        ratingSlider.valueProperty().addListener((obs, oldval, newVal) -> updateLabelPosition());
+        Platform.runLater(this::updateLabelPosition);
     }
 }

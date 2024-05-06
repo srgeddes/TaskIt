@@ -81,6 +81,11 @@
     -fx-text-fill: #c70000;
 }
 
+#courseAddedLabel {
+    -fx-font-size: 15px;
+    -fx-text-fill: #18b927;
+}
+
 .table-view .column-header-background .filler {
     -fx-background-color: transparent;
 }

@@ -45,6 +45,8 @@ public class CourseSearchController implements Initializable{
     Label departmentTooShortError;
     @FXML
     Label courseAlreadyExistsError;
+    @FXML
+    Label courseAddedLabel;
 
     @FXML
     TextField courseSearch;
@@ -133,6 +135,7 @@ public class CourseSearchController implements Initializable{
                     courseAlreadyExistsError.setVisible(false);
                     databaseDriver.addCourse(title, department, catalog);
                     databaseDriver.commit();
+                    courseAddedLabel.setVisible(true);
                 } else {
                     courseAlreadyExistsError.setVisible(true);
                 }
@@ -146,6 +149,7 @@ public class CourseSearchController implements Initializable{
                 }
             }
         } else {
+            courseAddedLabel.setVisible(false);
             departmentTooShortError.setVisible(!isDepartmentValid);
             catalogIncorrectError.setVisible(!isCatalogValid);
             if (isTitleTooLong) {
