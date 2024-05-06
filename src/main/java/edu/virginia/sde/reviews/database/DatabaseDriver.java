@@ -45,7 +45,6 @@ public class DatabaseDriver {
 
     public void addUser(String username, String password) throws SQLException {
         String sql = "INSERT INTO Users (Username, Password) VALUES (?, ?)";
-
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, username);
             ps.setString(2, password);
@@ -61,6 +60,12 @@ public class DatabaseDriver {
         }
     }
 
+    /**
+     * @param username
+     * @param password
+     * @return True if the username and password match a user in the course_review database
+     * @throws SQLException
+     */
     public boolean isValidUser(String username, String password) throws SQLException {
         String sql = "SELECT * FROM Users WHERE Username = ? AND Password = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -71,6 +76,24 @@ public class DatabaseDriver {
             }
         }
     }
+
+    /**
+     * @param username
+     * @return True if the username matches a username already in the course_review database.
+     * Does not check password.
+     * @throws SQLException
+     */
+    public boolean doesUserExist(String username) throws SQLException {
+        String sql = "SELECT * FROM Users WHERE Username = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, username);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        }
+    }
+
+//    public void addCourse(String )
 
 
     public static void main(String[] args) {

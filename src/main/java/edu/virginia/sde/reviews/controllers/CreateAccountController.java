@@ -95,7 +95,7 @@ public class CreateAccountController {
 
         DatabaseDriver databaseDriver = new DatabaseDriver();
         databaseDriver.connect();
-        if (!databaseDriver.isValidUser(username, password)) {
+        if (!databaseDriver.doesUserExist(username)) {
             databaseDriver.addUser(username, password);
             databaseDriver.commit();
             databaseDriver.setCurrentUser(username);
@@ -103,7 +103,7 @@ public class CreateAccountController {
             // switch scenes
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             SceneManager sceneManager = new SceneManager(stage);
-            sceneManager.switchToCourseSearchScene(event, username);
+            sceneManager.switchToLoginScene(event);
 
         } else {
             databaseDriver.disconnect();
