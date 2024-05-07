@@ -70,8 +70,19 @@
             </children>
         </HBox>
         <Label fx:id="courseLabel" layoutX="39.0" layoutY="118.0" prefHeight="64.0" prefWidth="669.0" text="Course Name" />
-        <HBox alignment="CENTER_RIGHT" layoutX="1000.0" layoutY="137.0" spacing="20.0">
+        <HBox alignment="CENTER_RIGHT" layoutX="842.0" layoutY="135.0" prefHeight="108.0" prefWidth="385.0" spacing="20.0">
             <children>
+            <VBox alignment="BOTTOM_CENTER" prefHeight="127.0" prefWidth="143.0" spacing="21.0">
+               <children>
+                      <Button fx:id="deleteUserReviewButton" mnemonicParsing="false" onAction="#deleteUserReview" prefHeight="25.0" prefWidth="143.0" text="Delete My Review" />
+                  <StackPane>
+                     <children>
+                        <Label fx:id="reviewDeletedLabel" maxHeight="39.0" minHeight="20.0" prefHeight="10.0" prefWidth="143.0" text="Review Deleted" visible="false" />
+                        <Label fx:id="noReviewFoundError" maxHeight="39.0" minHeight="20.0" prefHeight="10.0" prefWidth="143.0" text="No Review Found " visible="false" />
+                     </children>
+                  </StackPane>
+               </children>
+            </VBox>
                 <Button mnemonicParsing="false" onAction="#switchToMyReviewsScene" prefWidth="99.0" text="My Reviews" />
                 <Button fx:id="logout" mnemonicParsing="false" onAction="#switchToLoginScene" text="Logout" />
             </children>

@@ -243,6 +243,16 @@ public class DatabaseDriver {
         return reviews;
     }
 
+    public boolean removeUserReview(String username, String courseTitle) throws SQLException {
+        String sql = "DELETE FROM Reviews WHERE Username = ? AND CourseTitle = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, username);
+            ps.setString(2, courseTitle);
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        }
+    }
+
 
     public static void main(String[] args) {
         DatabaseDriver databaseDriver = new DatabaseDriver();

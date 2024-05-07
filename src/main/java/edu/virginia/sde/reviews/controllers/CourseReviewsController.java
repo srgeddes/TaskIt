@@ -45,6 +45,10 @@ public class CourseReviewsController implements Initializable {
     Label reviewAlreadyLeftError;
     @FXML
     Label reviewLeftLabel;
+    @FXML
+    Label reviewDeletedLabel;
+    @FXML
+    Label noReviewFoundError;
 
 
     @FXML
@@ -174,6 +178,31 @@ public class CourseReviewsController implements Initializable {
 
         } else {
             commentErrorLabel.setVisible(true);
+        }
+    }
+
+    public void deleteUserReview() {
+        DatabaseDriver databaseDriver = new DatabaseDriver();
+        try {
+            databaseDriver.connect();
+            boolean reviewDeleted = databaseDriver.removeUserReview(currentUser, course);
+            databaseDriver.commit();
+            if (reviewDeleted) {
+                reviewDeletedLabel.setVisible(true);
+                noReviewFoundError.setVisible(false);
+            } else {
+                reviewDeletedLabel.setVisible(false);
+                noReviewFoundError.setVisible(true);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Failed to disconnect from database");
+        } finally {
+            try {
+                databaseDriver.disconnect();
+            } catch (SQLException e) {
+                System.out.println("Failed to disconnect from database");
+            }
         }
     }
 

@@ -106,10 +106,10 @@
 
 #commentErrorLabel, #reviewAlreadyLeftError {
     -fx-font-size: 15px;
-    -fx-text-fill: #c70000;
+    -fx-text-fill: #8f0000;
 }
 
-#reviewLeftLabel {
+#reviewLeftLabel, #reviewDeletedLabel {
     -fx-font-size: 15px;
     -fx-text-fill: #18b927;
 }
@@ -125,6 +125,21 @@
 .table-cell:hover {
     -fx-background-color: #232D4B;
     -fx-text-fill: #cccccc;;
+}
+
+#deleteUserReviewButton {
+    -fx-background-color: #8F0000FF;
+    -fx-text-fill: #cccccc;
+}
+
+#deleteUserReviewButton:hover {
+    -fx-text-fill: black;
+    -fx-background-color: #cccccc;
+}
+
+#noReviewFoundError {
+    -fx-font-size: 15px;
+    -fx-text-fill: #c70000;
 }
 
 
