@@ -74,6 +74,7 @@ public class CourseReviewsController implements Initializable {
             fetchReviewsFromDB(course);
             setupTableColumns();
             setupSlider();
+            setCourseLabel(course);
         });
     }
 
@@ -120,9 +121,24 @@ public class CourseReviewsController implements Initializable {
 
 
     public String getAverageRating(String course) {
-        // TODO : Average all the ratings for a given course
-        // Needs to be to 2 decimals places
-        return "4.22";
+        DatabaseDriver databaseDriver = new DatabaseDriver();
+        try {
+            databaseDriver.connect();
+            double averageRating = databaseDriver.calculateAverageRating(course);
+            if (Double.isNaN(averageRating)) {
+                return "0.00";
+            }
+            return String.format("%.2f", averageRating);
+        } catch (SQLException e) {
+            System.out.println("Unable to get average rating for this course");
+        } finally {
+            try {
+                databaseDriver.disconnect();
+            } catch (SQLException e) {
+                System.out.println("Unable to disconnect from database when getting average rating for " + course);
+            }
+        }
+        return "0.00";
     }
 
     public void addReview(ActionEvent event) throws IOException {
@@ -219,6 +235,10 @@ public class CourseReviewsController implements Initializable {
     public void setCourseLabel(String course) {
         String averageRating = getAverageRating(course);
         this.courseLabel.setText(course + " " + averageRating);
+        this.course = course;
+    }
+
+    public void setCourse(String course) {
         this.course = course;
     }
 

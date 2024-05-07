@@ -90,7 +90,7 @@ public class SceneManager {
         scene = new Scene(root);
         stage.setScene(scene);
         courseReviewsController.setStage(stage);
-        courseReviewsController.setCourseLabel(course);
+        courseReviewsController.setCourse(course);
         courseReviewsController.setCurrentUser(currentUser);
         stage.setTitle(course);
         stage.show();

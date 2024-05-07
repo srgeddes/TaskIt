@@ -33,7 +33,7 @@ public class TableCreator {
                             "CourseTitle TEXT NOT NULL, " +
                             "Comments TEXT, " +
                             "Rating INTEGER NOT NULL, " +
-                            "TimeStamp TEXT NOT NULL, " +
+                            "Time_Stamp TEXT NOT NULL, " +
                             "FOREIGN KEY (Username) REFERENCES Users(Username))"
             );
         }

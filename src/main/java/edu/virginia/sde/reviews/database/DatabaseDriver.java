@@ -153,7 +153,7 @@ public class DatabaseDriver {
 
     public HashMap<String, String[]> getReviews(String course) throws SQLException {
         HashMap<String, String[]> reviews = new HashMap<>();
-        String sql = "SELECT ReviewID, Comments, Rating, TimeStamp FROM Reviews WHERE CourseTitle = ?";
+        String sql = "SELECT ReviewID, Comments, Rating, Time_Stamp FROM Reviews WHERE CourseTitle = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, course);
             try (ResultSet rs = ps.executeQuery()) {
@@ -161,7 +161,7 @@ public class DatabaseDriver {
                     String reviewID = String.valueOf(rs.getInt("ReviewID"));
                     String comments = rs.getString("Comments");
                     String rating = rs.getString("Rating");
-                    String timestamp = rs.getString("TimeStamp");
+                    String timestamp = rs.getString("Time_Stamp");
                     reviews.put(reviewID, new String[]{comments, rating, timestamp});
                 }
             }
@@ -170,8 +170,8 @@ public class DatabaseDriver {
     }
 
     public void addReview(String username, String courseTitle, String comments, int rating, String timestamp) throws SQLException {
-        String sql = "INSERT INTO Reviews (Username, CourseTitle, Comments, Rating, TimeStamp) VALUES (?, ?, ?, ?, ?)";
-        // Fix the autoincremet stuff
+        String sql = "INSERT INTO Reviews (Username, CourseTitle, Comments, Rating, Time_Stamp) VALUES (?, ?, ?, ?, ?)";
+        // Fix the autoincremet stuff maybe
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, username);
             ps.setString(2, courseTitle);
@@ -200,6 +200,22 @@ public class DatabaseDriver {
             ps.setString(2, courseTitle);
             ps.executeUpdate();
         }
+    }
+
+    public double calculateAverageRating(String courseTitle) throws SQLException {
+        String sql = "SELECT * FROM Reviews WHERE CourseTitle = ?";
+        int totalReviews = 0;
+        int totalRating = 0;
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, courseTitle);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    totalRating += rs.getInt("Rating");
+                    totalReviews++;
+                }
+            }
+        }
+        return (double) totalRating / totalReviews;
     }
 
 
