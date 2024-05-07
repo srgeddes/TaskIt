@@ -108,10 +108,8 @@ public class DatabaseDriver {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     String title = rs.getString("Title");
-                    String department = rs.getString("Department");
-                    String catalog_number = rs.getString("Catalog_Number");
                     double averageRating = rs.getDouble("Average_rating");
-                    coursesMap.put(title + " | " + department + " " + catalog_number, String.format("%.2f", averageRating));
+                    coursesMap.put(title, String.format("%.2f", averageRating));
                 }
             }
         }
@@ -119,37 +117,45 @@ public class DatabaseDriver {
     }
 
     public void addCourse(String title, String department, String catalog_number) throws SQLException {
-        String sql = "INSERT INTO Courses (Title, Department, Catalog_Number, Average_rating) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO Courses (Title, Average_rating) VALUES (?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, title);
-            ps.setString(2, department);
-            ps.setString(3, catalog_number);
-            ps.setDouble(4, 0.0);
+            ps.setString(1, title + " | " + department + " " + catalog_number);
+            ps.setDouble(2, 0.0);
             ps.executeUpdate();
         }
     }
 
-    public boolean doesCourseExist(String title, String department, String catalog_number) throws SQLException {
-        String sql = "SELECT * FROM Courses WHERE Title = ? AND Department = ? AND Catalog_Number = ?";
+    public boolean doesCourseExist(String title) throws SQLException {
+        String sql = "SELECT * FROM Courses WHERE Title = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, title);
-            ps.setString(2, department);
-            ps.setString(3, catalog_number);
             try (ResultSet rs = ps.executeQuery()) {
                 return rs.next();
             }
         }
     }
 
-    public void removeCourse(String title, String department, String catalog_number) throws SQLException {
-        String sql = "DELETE FROM Courses WHERE Title = ? AND Department = ? AND Catalog_Number = ?";
+    public void removeCourse(String title) throws SQLException {
+        String sql = "DELETE FROM Courses WHERE Title = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, title);
-            ps.setString(2, department);
-            ps.setString(3, catalog_number);
             ps.executeUpdate();
         }
     }
+
+
+    public void updateCourseAverageRating(String title) throws SQLException {
+        String sql = "UPDATE Courses SET Average_rating = ? WHERE Title = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setDouble(1, calculateAverageRating(title));
+            ps.setString(2, title);
+            int affectedRows = ps.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Updating average rating failed, no rows affected.");
+            }
+        }
+    }
+
 
     public HashMap<String, String[]> getReviews(String course) throws SQLException {
         HashMap<String, String[]> reviews = new HashMap<>();

@@ -22,8 +22,6 @@ public class TableCreator {
             st.execute(
                     "CREATE TABLE IF NOT EXISTS Courses (" +
                             "Title TEXT PRIMARY KEY, " +
-                            "Department TEXT NOT NULL, " +
-                            "Catalog_Number TEXT NOT NULL, " +
                             "Average_rating DECIMAL(10, 2) NOT NULL)"
             );
             st.execute(

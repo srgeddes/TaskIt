@@ -171,7 +171,7 @@ public class CourseReviewsController implements Initializable {
                 }
             }
             commentErrorLabel.setVisible(false);
-            // TODO : Add review to database and Update the average rating of the course
+
         } else {
             commentErrorLabel.setVisible(true);
         }

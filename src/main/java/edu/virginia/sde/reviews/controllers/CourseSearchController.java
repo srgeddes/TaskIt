@@ -75,9 +75,11 @@ public class CourseSearchController implements Initializable{
      * Title = all letters and length is between 2 and 50
      */
     public void addCourse(ActionEvent event) throws IOException {
-        String department = courseDepartment.getText().trim();
+        String department = courseDepartment.getText().toUpperCase().trim();
         String catalog = courseCatalog.getText().trim();
         String title = courseTitle.getText().trim();
+
+        String courseTitle = title + " | " + department + " " + catalog;
 
         boolean isDepartmentValid = department.matches("[a-zA-Z]{2,4}");
 
@@ -94,7 +96,7 @@ public class CourseSearchController implements Initializable{
             DatabaseDriver databaseDriver = new DatabaseDriver();
             try {
                 databaseDriver.connect();
-                if (!databaseDriver.doesCourseExist(title, department, catalog)) {
+                if (!databaseDriver.doesCourseExist(courseTitle)) {
                     courseAlreadyExistsError.setVisible(false);
                     databaseDriver.addCourse(title, department, catalog);
                     databaseDriver.commit();
