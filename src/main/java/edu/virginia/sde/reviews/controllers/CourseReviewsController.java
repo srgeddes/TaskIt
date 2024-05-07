@@ -189,6 +189,8 @@ public class CourseReviewsController implements Initializable {
             databaseDriver.connect();
             boolean reviewDeleted = databaseDriver.removeUserReview(currentUser, course);
             databaseDriver.commit();
+            fetchReviewsFromDB(course);
+            setupTableColumns();
             if (reviewDeleted) {
                 reviewDeletedLabel.setVisible(true);
                 noReviewFoundError.setVisible(false);
@@ -196,7 +198,6 @@ public class CourseReviewsController implements Initializable {
                 reviewDeletedLabel.setVisible(false);
                 noReviewFoundError.setVisible(true);
             }
-
         } catch (SQLException e) {
             System.out.println("Failed to disconnect from database");
         } finally {

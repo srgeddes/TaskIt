@@ -5,7 +5,6 @@ import edu.virginia.sde.reviews.database.DatabaseDriver;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,7 +17,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
@@ -56,6 +54,7 @@ public class MyReviewsController implements Initializable {
         Platform.runLater(() -> {
             fetchReviewsFromDB(currentUser);
             setupTable();
+            setUsernameLabel(currentUser);
         });
         setTableMouseClick();
     }
@@ -64,7 +63,7 @@ public class MyReviewsController implements Initializable {
         DatabaseDriver databaseDriver = new DatabaseDriver();
         try {
             databaseDriver.connect();
-            reviews = databaseDriver.getReviewsForUser(username); // Directly assign the returned HashMap
+            reviews = databaseDriver.getReviewsForUser(username);
         } catch (SQLException e) {
             System.out.println("Unable to get reviews from DB");
         } finally {
@@ -81,16 +80,16 @@ public class MyReviewsController implements Initializable {
         data.addAll(reviews.values());
 
         courseNameColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue()[0]));
-        ratingColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue()[2])); // Adjust index for rating
+        ratingColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue()[2]));
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
         timestampColumn.setCellValueFactory(param -> {
-            String timestampStr = param.getValue()[3]; // Adjust index for timestamp
+            String timestampStr = param.getValue()[3];
             try {
                 LocalDateTime dateTime = LocalDateTime.parse(timestampStr, formatter);
                 return new SimpleObjectProperty<>(dateTime);
             } catch (Exception e) {
-                return new SimpleObjectProperty<>(LocalDateTime.MIN); // Handle parsing error
+                return new SimpleObjectProperty<>(LocalDateTime.MIN);
             }
         });
 
@@ -145,6 +144,10 @@ public class MyReviewsController implements Initializable {
 
     public void setCurrentUser(String currentUser) {
         this.currentUser = currentUser;
+    }
+
+    public void setUsernameLabel(String label) {
+        usernameLabel.setText(currentUser + "' Reviews");
     }
 
     public void setStage(Stage stage) {
