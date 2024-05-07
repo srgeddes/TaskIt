@@ -1,6 +1,8 @@
 package edu.virginia.sde.reviews.controllers;
 
 import edu.virginia.sde.reviews.SceneManager;
+import edu.virginia.sde.reviews.database.DatabaseDriver;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -16,12 +18,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javafx.util.Callback;
-
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Timestamp;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -52,39 +53,44 @@ public class MyReviewsController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        reviews.put("krf9mp", new String[]{"Introduction to Programming | CS 1110", "4", timestamp.toString()});
-        reviews.put("Alex", new String[]{"Discrete Math | CS 2120", "2", timestamp.toString()});
-        reviews.put("Levi", new String[]{"Computer Systems and Organizations | CS 2130", "1", timestamp.toString()});
+        Platform.runLater(() -> {
+            fetchReviewsFromDB(currentUser);
+            setupTable();
+        });
+        setTableMouseClick();
+    }
 
+    public void fetchReviewsFromDB(String username) {
+        DatabaseDriver databaseDriver = new DatabaseDriver();
+        try {
+            databaseDriver.connect();
+            reviews = databaseDriver.getReviewsForUser(username); // Directly assign the returned HashMap
+        } catch (SQLException e) {
+            System.out.println("Unable to get reviews from DB");
+        } finally {
+            try {
+                databaseDriver.disconnect();
+            } catch (SQLException e) {
+                System.out.println("Unable to disconnect from database");
+            }
+        }
+    }
+
+    public void setupTable() {
         ObservableList<String[]> data = FXCollections.observableArrayList();
         data.addAll(reviews.values());
 
-        courseNameColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<String[], String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<String[], String> param) {
-                return new SimpleStringProperty(param.getValue()[0]);
-            }
-        });
-
-        ratingColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<String[], String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<String[], String> param) {
-                return new SimpleStringProperty(param.getValue()[1]);
-            }
-        });
+        courseNameColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue()[0]));
+        ratingColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue()[2])); // Adjust index for rating
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
-        timestampColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<String[], LocalDateTime>, ObservableValue<LocalDateTime>>() {
-            @Override
-            public ObservableValue<LocalDateTime> call(TableColumn.CellDataFeatures<String[], LocalDateTime> param) {
-                String timestampStr = param.getValue()[2];
-                try {
-                    LocalDateTime dateTime = LocalDateTime.parse(timestampStr, formatter);
-                    return new SimpleObjectProperty<>(dateTime);
-                } catch (Exception e) {
-                    return new SimpleObjectProperty<>(LocalDateTime.MIN); // Handle parsing error
-                }
+        timestampColumn.setCellValueFactory(param -> {
+            String timestampStr = param.getValue()[3]; // Adjust index for timestamp
+            try {
+                LocalDateTime dateTime = LocalDateTime.parse(timestampStr, formatter);
+                return new SimpleObjectProperty<>(dateTime);
+            } catch (Exception e) {
+                return new SimpleObjectProperty<>(LocalDateTime.MIN); // Handle parsing error
             }
         });
 
@@ -92,11 +98,11 @@ public class MyReviewsController implements Initializable {
         courseNameColumn.setSortType(TableColumn.SortType.ASCENDING);
         reviewsTable.getSortOrder().add(courseNameColumn);
         reviewsTable.sort();
+    }
 
+    public void setTableMouseClick() {
         reviewsTable.setOnMouseClicked(event -> {
-            // TODO :
             if (!reviewsTable.getSelectionModel().isEmpty()) {
-                // TODO : Open Course Review Screen for this particular course
                 currentCourse = reviewsTable.getSelectionModel().getSelectedItem()[0];
                 stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                 SceneManager sceneManager = new SceneManager(stage);

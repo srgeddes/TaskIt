@@ -224,6 +224,25 @@ public class DatabaseDriver {
         return (double) totalRating / totalReviews;
     }
 
+    public HashMap<String, String[]> getReviewsForUser(String username) throws SQLException {
+        HashMap<String, String[]> reviews = new HashMap<>();
+        String sql = "SELECT * FROM Reviews WHERE Username = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, username);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    String reviewID = String.valueOf(rs.getInt("ReviewID"));
+                    String courseTitle = rs.getString("CourseTitle");
+                    String comments = rs.getString("Comments");
+                    String rating = rs.getString("Rating");
+                    String timestamp = rs.getString("Time_Stamp");
+                    reviews.put(reviewID, new String[]{courseTitle, comments, rating, timestamp});
+                }
+            }
+        }
+        return reviews;
+    }
+
 
     public static void main(String[] args) {
         DatabaseDriver databaseDriver = new DatabaseDriver();
