@@ -162,6 +162,8 @@ public class CourseReviewsController implements Initializable {
                     databaseDriver.commit();
                     reviewAlreadyLeftError.setVisible(false);
                     reviewLeftLabel.setVisible(true);
+                    fetchReviewsFromDB(course);
+                    setupTableColumns();
                 } else {
                     reviewAlreadyLeftError.setVisible(true);
                 }

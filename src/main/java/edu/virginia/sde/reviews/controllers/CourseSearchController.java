@@ -101,6 +101,8 @@ public class CourseSearchController implements Initializable{
                     databaseDriver.addCourse(title, department, catalog);
                     databaseDriver.commit();
                     courseAddedLabel.setVisible(true);
+                    setALlCourses();
+                    setupTable();
                 } else {
                     courseAlreadyExistsError.setVisible(true);
                 }
