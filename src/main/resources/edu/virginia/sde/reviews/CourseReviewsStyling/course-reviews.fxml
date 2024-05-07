@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@course-reviews.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.virginia.sde.reviews.controllers.CourseReviewsController">
+<AnchorPane maxHeight="720.0" maxWidth="1280.0" minHeight="720.0" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" stylesheets="@course-reviews.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.virginia.sde.reviews.controllers.CourseReviewsController">
     <children>
         <HBox layoutX="84.0" layoutY="268.0" prefHeight="452.0" prefWidth="1176.0" spacing="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="84.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="268.0">
             <children>

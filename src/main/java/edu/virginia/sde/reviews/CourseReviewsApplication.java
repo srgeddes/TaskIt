@@ -20,8 +20,6 @@ public class CourseReviewsApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         stage.setResizable(false);
-        stage.setWidth(1280);
-        stage.setHeight(720);
         SceneManager sceneManager = new SceneManager(stage);
         sceneManager.initializeLoginScene(stage);
 
