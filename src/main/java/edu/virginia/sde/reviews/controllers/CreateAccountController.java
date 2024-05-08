@@ -47,10 +47,10 @@ public class CreateAccountController {
      * Handle error messages.
      */
     public void createAccount(ActionEvent event) throws IOException, SQLException {
-        String username = usernameField.getText();
-        String password = passwordField.getText();
-        String confirmUsername = confirmUsernameField.getText();
-        String confirmPassword = confirmPasswordField.getText();
+        String username = usernameField.getText().trim();
+        String password = passwordField.getText().trim();
+        String confirmUsername = confirmUsernameField.getText().trim();
+        String confirmPassword = confirmPasswordField.getText().trim();
 
         if (username.isEmpty()) {
             createAccountError.setText("Username cannot be empty");
