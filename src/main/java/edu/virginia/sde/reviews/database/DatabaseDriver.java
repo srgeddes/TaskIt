@@ -116,6 +116,24 @@ public class DatabaseDriver {
         return coursesMap;
     }
 
+    public HashMap<String, String> filterCourses(String query) throws SQLException {
+        HashMap<String, String> coursesMap = new HashMap<>();
+        String sql = "SELECT * FROM Courses WHERE Title LIKE ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, "%" + query + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    String title = rs.getString("Title");
+                    double averageRating = rs.getDouble("Average_rating");
+                    coursesMap.put(title, String.format("%.2f", averageRating));
+                }
+            }
+        }
+        return coursesMap;
+    }
+
+
     public void addCourse(String title, String department, String catalog_number) throws SQLException {
         String sql = "INSERT INTO Courses (Title, Average_rating) VALUES (?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
