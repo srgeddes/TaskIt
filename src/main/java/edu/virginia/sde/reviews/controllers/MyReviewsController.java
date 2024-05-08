@@ -147,7 +147,7 @@ public class MyReviewsController implements Initializable {
     }
 
     public void setUsernameLabel(String label) {
-        usernameLabel.setText(currentUser + "' Reviews");
+        usernameLabel.setText(currentUser + " Reviews");
     }
 
     public void setStage(Stage stage) {

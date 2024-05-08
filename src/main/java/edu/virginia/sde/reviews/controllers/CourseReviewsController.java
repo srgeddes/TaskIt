@@ -18,7 +18,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -163,8 +162,10 @@ public class CourseReviewsController implements Initializable {
                     reviewAlreadyLeftError.setVisible(false);
                     reviewLeftLabel.setVisible(true);
                     fetchReviewsFromDB(course);
+                    setCourseLabel(course);
                     setupTableColumns();
                 } else {
+                    reviewLeftLabel.setVisible(false);
                     reviewAlreadyLeftError.setVisible(true);
                 }
             } catch (SQLException e) {
