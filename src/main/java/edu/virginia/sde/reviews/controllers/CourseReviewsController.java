@@ -211,18 +211,11 @@ public class CourseReviewsController implements Initializable {
         }
     }
 
-    public void searchForReview() {
-        // TODO : Update table with only the review that the user made showing or show it first or something
-
-    }
 
     public void handleKeyPressed(KeyEvent keyEvent) throws IOException {
         if (keyEvent.getCode() == KeyCode.ENTER) {
             if (keyEvent.getSource() == commentsTextArea) {
                 addReview(new ActionEvent(keyEvent.getSource(), keyEvent.getTarget()));
-            } else if (keyEvent.getSource() == usernameSearchTextField) {
-                // TODO : Search in the Database here
-                searchForReview();
             }
         }
     }

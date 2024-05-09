@@ -88,7 +88,6 @@
             </children>
         </HBox>
       <Label layoutX="86.0" layoutY="247.0" prefHeight="36.0" prefWidth="207.0" text="Create Review" />
-      <TextField fx:id="usernameSearchTextField" layoutX="584.0" layoutY="205.0" onKeyPressed="#handleKeyPressed" promptText="Search (username)" />
       <Button layoutX="50.0" layoutY="51.0" mnemonicParsing="false" onAction="#switchToCourseSearchScene" text="&lt;- Back" />
     </children>
 </AnchorPane>
