@@ -6,63 +6,68 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
 <AnchorPane maxHeight="720.0" maxWidth="1280.0" minHeight="720.0" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" stylesheets="@login.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.virginia.sde.reviews.controllers.LoginSceneController">
    <children>
-      <HBox alignment="CENTER" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0">
+      <StackPane>
          <children>
-             <VBox alignment="CENTER" prefHeight="689.0" prefWidth="441.0" spacing="15.0">
+            <HBox alignment="CENTER" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0">
                <children>
-                  <VBox alignment="CENTER" spacing="15.0">
+                   <VBox alignment="CENTER" prefHeight="689.0" prefWidth="441.0" spacing="15.0">
                      <children>
-                        <ImageView fx:id="imageView">
-                        </ImageView>
-                        <VBox alignment="CENTER" spacing="35.0">
+                        <VBox alignment="CENTER" spacing="15.0">
                            <children>
-                                <TextField fx:id="usernameField" maxWidth="200" onKeyPressed="#handleKeyPressed" onMouseClicked="#incorrectUsernameOrPasswordHide" promptText="Username" />
-                              <StackPane>
+                              <VBox alignment="CENTER" spacing="35.0">
                                  <children>
-                                      <TextField fx:id="visiblePasswordField" maxWidth="200.0" onKeyPressed="#handleKeyPressed" onMouseClicked="#incorrectUsernameOrPasswordHide" promptText="Password" snapToPixel="false" visible="false" />
-                                    <PasswordField fx:id="hiddenPasswordField" maxWidth="200.0" onKeyPressed="#handleKeyPressed" onMouseClicked="#incorrectUsernameOrPasswordHide" promptText="Password" />
+                                      <TextField fx:id="usernameField" maxWidth="200" onKeyPressed="#handleKeyPressed" onMouseClicked="#incorrectUsernameOrPasswordHide" promptText="Username" />
+                                    <StackPane>
+                                       <children>
+                                            <TextField fx:id="visiblePasswordField" maxWidth="200.0" onKeyPressed="#handleKeyPressed" onMouseClicked="#incorrectUsernameOrPasswordHide" promptText="Password" snapToPixel="false" visible="false" />
+                                          <PasswordField fx:id="hiddenPasswordField" maxWidth="200.0" onKeyPressed="#handleKeyPressed" onMouseClicked="#incorrectUsernameOrPasswordHide" promptText="Password" />
+                                       </children>
+                                    </StackPane>
                                  </children>
-                              </StackPane>
+                              </VBox>
+                              <HBox alignment="CENTER_RIGHT" prefWidth="441.0">
+                                 <children>
+                                    <Label fx:id="showPasswordLabel" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="205.0" text="Show Password">
+                                       <padding>
+                                          <Insets right="3.0" />
+                                       </padding>
+                                    </Label>
+                                    <CheckBox fx:id="passwordShowCheckbox" mnemonicParsing="false" onKeyPressed="#handleKeyPressed" onMouseClicked="#handlePasswordShow" prefHeight="20.0" prefWidth="68.0">
+                                       <padding>
+                                          <Insets right="60.0" top="2.0" />
+                                       </padding>
+                                    </CheckBox>
+                                 </children>
+                                 <padding>
+                                    <Insets right="15.0" />
+                                 </padding>
+                              </HBox>
                            </children>
                         </VBox>
-                        <HBox alignment="CENTER_RIGHT" prefWidth="441.0">
+                          <Label fx:id="errorLabel" prefWidth="305.0" snapToPixel="false" style="-fx-text-fill: #c70000" text="Incorrect Username or Password" visible="false" />
+                        <VBox alignment="CENTER" spacing="25.0">
                            <children>
-                              <Label fx:id="showPasswordLabel" alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="205.0" text="Show Password">
-                                 <padding>
-                                    <Insets right="3.0" />
-                                 </padding></Label>
-                              <CheckBox fx:id="passwordShowCheckbox" mnemonicParsing="false" onKeyPressed="#handleKeyPressed" onMouseClicked="#handlePasswordShow" prefHeight="20.0" prefWidth="68.0">
-                                 <padding>
-                                    <Insets right="60.0" top="2.0" />
-                                 </padding>
-                              </CheckBox>
+                                <Button fx:id="loginAction" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#login" text="Login" />
+                                <Button fx:id="createAccount" onAction="#switchToCreateAccountScene" text="Create Account" />
                            </children>
-                           <padding>
-                              <Insets right="15.0" />
-                           </padding>
-                        </HBox>
+                        </VBox>
                      </children>
-                  </VBox>
-                    <Label fx:id="errorLabel" prefWidth="305.0" snapToPixel="false" style="-fx-text-fill: #c70000" text="Incorrect Username or Password" visible="false" />
-                  <VBox alignment="CENTER" spacing="25.0">
-                     <children>
-                          <Button fx:id="loginAction" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#login" text="Login" />
-                          <Button fx:id="createAccount" onAction="#switchToCreateAccountScene" text="Create Account" />
-                     </children>
-                  </VBox>
+                   </VBox>
                </children>
-             </VBox>
+            </HBox>
+            <ImageView fitHeight="720.0" fitWidth="1280.0" pickOnBounds="true" preserveRatio="true" />
+             <ImageView fx:id="imageView">
+             </ImageView>
          </children>
-      </HBox>
-      <Button fx:id="exitButton" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#exit" text="Exit" />
+      </StackPane>
+      <Button fx:id="exitButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#exit" text="Exit" />
    </children>
 </AnchorPane>

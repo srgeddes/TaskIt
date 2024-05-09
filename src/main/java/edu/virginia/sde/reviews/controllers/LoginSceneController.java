@@ -52,7 +52,7 @@ public class LoginSceneController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         Platform.runLater(() -> {
             try {
-                InputStream stream = getClass().getResourceAsStream("/edu/virginia/sde/reviews/LoginStyling/course_logo.png");
+                InputStream stream = getClass().getResourceAsStream("/edu/virginia/sde/reviews/LoginStyling/rotunda.jpg");
                 Image image = new Image(stream);
                 imageView.setImage(image);
             } catch (Exception e) {

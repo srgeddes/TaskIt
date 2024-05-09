@@ -1,7 +1,8 @@
 .root {
-    -fx-background-color: #232D4B;
+    -fx-background-color: rgba(35, 45, 75, 0.2);
     -fx-font-family: "Helvetica";
 }
+
 
 .label {
     -fx-font-size: 20;
