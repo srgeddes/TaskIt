@@ -15,24 +15,21 @@ Run CourseReviewsApplication.java
 
 List the primary contributions of each author. It is recommended to update this with your contributions after each coding session.:
 
-### [Author 1 - replace this with their name]
+### Riley Geddes
 
-* Author 1 contributions
-* as a bulleted list
-* each line starts with an asterisk and a space
+* Built the front-end 
 
-### [Author 2 - replace this with their name]
+### Alex Halpern
 
-* Author 2 contributions
-* as a bulleted list
-* each line starts with an asterisk and a space
+* Built the Database and back-end 
 
-### [Author 3 - replace this with their name]
+### Levi Dawit
 
-* Author 3 contributions
-* as a bulleted list
-* each line starts with an asterisk and a space
+* Assisted with both front-end and back-end 
+* Assisted with testing 
 
 ## Issues
 
 List any known issues (bugs, incorrect behavior, etc.) at the time of submission.
+
+No known issues. 
