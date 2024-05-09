@@ -137,10 +137,14 @@ public class DatabaseDriver {
                 "FROM Courses c " +
                 "LEFT JOIN reviews r ON c.CourseID = r.CourseID " +
                 "WHERE c.CourseTitle LIKE ? " +
+                "OR c.CourseDepartment LIKE ? " +
+                "OR c.CourseNumber LIKE ?" +
                 "GROUP BY c.CourseTitle, c.CourseDepartment, c.CourseNumber";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, "%" + query + "%");
+            ps.setString(2, "%" + query + "%");
+            ps.setString(3, "%" + query + "%");
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     ArrayList<String> row = new ArrayList<>();
