@@ -45,7 +45,9 @@
     -fx-background-color: #E57200;
 }
 
-
+.image-view {
+    -fx-opacity: 0.1;
+}
 
 .check-box .box {
     -fx-background-color: #cccccc;
