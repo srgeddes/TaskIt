@@ -242,10 +242,11 @@ public class CourseSearchController implements Initializable{
             databaseDriver.connect();
             courses = databaseDriver.filterCourses(courseSearch.getText());
             setupTable();
-        } else if (keyEvent.getSource() == courseDepartment || keyEvent.getSource() == courseNumber || keyEvent.getSource() == courseTitle) {
-            addCourse(new ActionEvent(keyEvent.getSource(), keyEvent.getTarget()));
         }
 
+        if (keyEvent.getCode() == KeyCode.ENTER && (keyEvent.getSource() == courseDepartment || keyEvent.getSource() == courseNumber || keyEvent.getSource() == courseTitle)) {
+            addCourse(new ActionEvent(keyEvent.getSource(), keyEvent.getTarget()));
+        }
     }
 
     public void hideAllAddErrorLabels() {
