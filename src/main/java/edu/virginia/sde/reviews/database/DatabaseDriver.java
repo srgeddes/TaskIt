@@ -211,7 +211,7 @@ public class DatabaseDriver {
                     String courseTitle = rs.getString("CourseTitle");
                     String courseDepartment = rs.getString("CourseDepartment");
                     String courseNumber = rs.getString("CourseNumber");
-                    return courseTitle + " | " + courseDepartment + " " + courseNumber;
+                    return courseDepartment + " " + courseNumber + " | " + courseTitle;
                 }
             }
         } catch (Exception e) {

@@ -80,7 +80,7 @@ public class MyReviewsController implements Initializable {
         ObservableList<String[]> data = FXCollections.observableArrayList();
         data.addAll(reviews.values());
 
-        courseNameColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue()[0] + " | " + param.getValue()[1] + " " + param.getValue()[2]));
+        courseNameColumn.setCellValueFactory(param -> new SimpleStringProperty( param.getValue()[1] + " " + param.getValue()[2] + " | " + param.getValue()[0]));
         ratingColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue()[3]));
 
         timestampColumn.setCellValueFactory(param -> {
