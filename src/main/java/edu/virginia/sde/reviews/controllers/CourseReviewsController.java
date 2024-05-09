@@ -184,7 +184,7 @@ public class CourseReviewsController implements Initializable {
                     databaseDriver.commit();
                     reviewAlreadyLeftError.setVisible(false);
                     reviewLeftLabel.setVisible(true);
-                    commentsTextArea.setText("");
+//                    commentsTextArea.setText("");
                     fetchReviewsFromDB(courseID);
                     setupTableColumns();
                     setCourseLabel(courseID);
@@ -194,9 +194,11 @@ public class CourseReviewsController implements Initializable {
                     Timestamp timestamp = new Timestamp(System.currentTimeMillis());
                     databaseDriver.editReview(currentUser, courseID, comments, rating, timestamp.toString());
                     databaseDriver.commit();
-                    reviewLeftLabel.setVisible(false);
+                    reviewLeftLabel.setText("You have already left a review. Editing your current one.");
+                    reviewLeftLabel.setVisible(true);
+
 //                    reviewAlreadyLeftError.setVisible(true);
-                    commentsTextArea.setText("");
+//                    commentsTextArea.setText("");
                     fetchReviewsFromDB(courseID);
                     setupTableColumns();
                     setCourseLabel(courseID);
