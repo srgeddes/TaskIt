@@ -37,7 +37,7 @@ public class MyReviewsController implements Initializable {
     @FXML
     TableColumn<String[], String> ratingColumn;
     @FXML
-    TableColumn<String[], LocalDateTime> timestampColumn;
+    TableColumn<String[], String> timestampColumn;
 
     @FXML
     Label usernameLabel;
@@ -83,20 +83,17 @@ public class MyReviewsController implements Initializable {
         courseNameColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue()[0] + " | " + param.getValue()[1] + " " + param.getValue()[2]));
         ratingColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue()[3]));
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
         timestampColumn.setCellValueFactory(param -> {
             String timestampStr = param.getValue()[4];
             if (timestampStr != null && !timestampStr.isEmpty()) {
                 try {
-                    LocalDateTime dateTime = LocalDateTime.parse(timestampStr, formatter);
-                    return new SimpleObjectProperty<>(dateTime);
-                } catch (DateTimeParseException e) {
-                    // Log the error and return a null or placeholder value
-                    System.out.println("setupTable, Failed to parse timestamp: " + e);
-                    return new SimpleObjectProperty<>(null);
+                    return new SimpleStringProperty(timestampStr);
+                } catch (Exception e) {
+                    System.out.println("Failed to Parse");
+                    return new SimpleStringProperty(""); // Handle parsing error
                 }
             } else {
-                return new SimpleObjectProperty<>(null);
+               return new SimpleStringProperty("");
             }
         });
 

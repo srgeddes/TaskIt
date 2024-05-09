@@ -100,7 +100,7 @@ public class CourseReviewsController implements Initializable {
             try {
                 return new SimpleStringProperty(timestampStr);
             } catch (Exception e) {
-                return new SimpleObjectProperty<>(LocalDateTime.MIN.toString()); // Handle parsing error
+                return new SimpleStringProperty(""); // Handle parsing error
             }
         });
         timestampColumn.setSortType(TableColumn.SortType.DESCENDING);
