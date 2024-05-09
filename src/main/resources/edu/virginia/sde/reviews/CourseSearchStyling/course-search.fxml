@@ -67,7 +67,7 @@
       </HBox>
         <HBox alignment="CENTER_LEFT" layoutX="41.0" layoutY="156.0" minWidth="506.0" prefHeight="30.0" prefWidth="506.0">
             <children>
-                <TextField fx:id="courseSearch" maxWidth="370.0" onKeyPressed="#handleKeyPressed" prefHeight="30.0" prefWidth="340.0" promptText="Search" />
+                <TextField fx:id="courseSearch" maxWidth="370.0" onKeyTyped="#handleKeyPressed" prefHeight="30.0" prefWidth="340.0" promptText="Search" />
             </children>
         </HBox>
       <Label fx:id="courseAlreadyExistsError" layoutX="703.0" layoutY="132.0" text="Course Already Exists" visible="false" />

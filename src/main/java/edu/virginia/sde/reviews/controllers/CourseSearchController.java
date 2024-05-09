@@ -237,15 +237,15 @@ public class CourseSearchController implements Initializable{
 
     public void handleKeyPressed(KeyEvent keyEvent) throws IOException, SQLException {
         DatabaseDriver databaseDriver = new DatabaseDriver();
-        if (keyEvent.getCode() == KeyCode.ENTER) {
-            if (keyEvent.getSource() == courseSearch) {
-                databaseDriver.connect();
-                courses = databaseDriver.filterCourses(courseSearch.getText());
-                setupTable();
-            } else if (keyEvent.getSource() == courseDepartment || keyEvent.getSource() == courseNumber || keyEvent.getSource() == courseTitle) {
-                addCourse(new ActionEvent(keyEvent.getSource(), keyEvent.getTarget()));
-            }
+
+        if (keyEvent.getSource() == courseSearch) {
+            databaseDriver.connect();
+            courses = databaseDriver.filterCourses(courseSearch.getText());
+            setupTable();
+        } else if (keyEvent.getSource() == courseDepartment || keyEvent.getSource() == courseNumber || keyEvent.getSource() == courseTitle) {
+            addCourse(new ActionEvent(keyEvent.getSource(), keyEvent.getTarget()));
         }
+
     }
 
     public void hideAllAddErrorLabels() {
