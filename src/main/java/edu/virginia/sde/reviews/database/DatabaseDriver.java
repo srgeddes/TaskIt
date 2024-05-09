@@ -261,6 +261,20 @@ public class DatabaseDriver {
         }
     }
 
+    public void editReview(String username, int courseID, String comments, int rating, String timestamp) throws SQLException {
+        // SQL statement to update an existing review based on the username and courseID
+        String sql = "UPDATE Reviews SET Comments = ?, Rating = ?, Time_Stamp = ? WHERE Username = ? AND CourseID = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, comments);
+            ps.setInt(2, rating);
+            ps.setString(3, timestamp);
+            ps.setString(4, username);
+            ps.setInt(5, courseID);  // Specifies which review to update by matching both username and courseID
+            ps.executeUpdate();
+        }
+    }
+
+
     public boolean userAlreadyLeftReview(String username, int courseID) throws SQLException {
         String sql = "SELECT * FROM Reviews WHERE Username = ? AND CourseID = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {

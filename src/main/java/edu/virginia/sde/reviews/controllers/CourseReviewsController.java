@@ -40,6 +40,9 @@ public class CourseReviewsController implements Initializable {
     TextArea commentsTextArea;
 
     @FXML
+    Button submitReview;
+
+    @FXML
     Label commentErrorLabel;
     @FXML
     Label reviewAlreadyLeftError;
@@ -80,6 +83,7 @@ public class CourseReviewsController implements Initializable {
             setupSlider();
             setCourseLabel(courseID);
             setAverageRatingLabel(courseID);
+            updateSubmitButton();
         });
     }
 
@@ -144,6 +148,26 @@ public class CourseReviewsController implements Initializable {
         return "0.00";
     }
 
+    public void updateSubmitButton() {
+        DatabaseDriver databaseDriver = new DatabaseDriver();
+        try {
+            databaseDriver.connect();
+            if (databaseDriver.userAlreadyLeftReview(currentUser, courseID)) {
+                submitReview.setText("Edit Review");
+            } else {
+                submitReview.setText("Submit");
+            }
+        } catch (SQLException e) {
+            System.out.println("updateSubmitButton, Failed to add review: " + e);
+        } finally {
+            try {
+                databaseDriver.disconnect();
+            } catch (SQLException e) {
+                System.out.println("updateSubmitButton, Failed to disconnect from database: " + e);
+            }
+        }
+    }
+
     public void addReview(ActionEvent event) throws IOException {
         String comments = commentsTextArea.getText();
         int rating = Integer.parseInt(sliderValueLabel.getText());
@@ -166,9 +190,19 @@ public class CourseReviewsController implements Initializable {
                     setupTableColumns();
                     setCourseLabel(courseID);
                     setAverageRatingLabel(courseID);
+                    updateSubmitButton();
                 } else {
+                    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                    databaseDriver.editReview(currentUser, courseID, comments, rating, timestamp.toString());
+                    databaseDriver.commit();
                     reviewLeftLabel.setVisible(false);
-                    reviewAlreadyLeftError.setVisible(true);
+//                    reviewAlreadyLeftError.setVisible(true);
+                    commentsTextArea.setText("");
+                    fetchReviewsFromDB(courseID);
+                    setupTableColumns();
+                    setCourseLabel(courseID);
+                    setAverageRatingLabel(courseID);
+                    updateSubmitButton();
                 }
             } catch (SQLException e) {
                 System.out.println("addReview, Failed to add review: " + e);
@@ -196,6 +230,7 @@ public class CourseReviewsController implements Initializable {
             setupTableColumns();
             setCourseLabel(courseID);
             setAverageRatingLabel(courseID);
+            updateSubmitButton();
             if (reviewDeleted) {
                 reviewDeletedLabel.setVisible(true);
                 noReviewFoundError.setVisible(false);

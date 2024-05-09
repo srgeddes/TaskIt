@@ -42,7 +42,7 @@
                                           </StackPane>
                                           <VBox alignment="CENTER_RIGHT">
                                              <children>
-                                                        <Button alignment="CENTER" onAction="#addReview" prefWidth="100.0" text="Submit" />
+                                                        <Button fx:id="submitReview" alignment="CENTER" onAction="#addReview" prefWidth="100.0" text="Submit" />
                                              </children>
                                           </VBox>
                                        </children>
