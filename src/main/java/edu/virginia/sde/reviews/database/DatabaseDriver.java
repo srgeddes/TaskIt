@@ -185,12 +185,15 @@ public class DatabaseDriver {
 
 
     public String getCourseTitle(int courseID) {
-        String sql = "SELECT CourseTitle from Courses WHERE CourseID = ?";
+        String sql = "SELECT CourseTitle, CourseDepartment, CourseNumber from Courses WHERE CourseID = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, courseID);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    return rs.getString("CourseTitle");
+                    String courseTitle = rs.getString("CourseTitle");
+                    String courseDepartment = rs.getString("CourseDepartment");
+                    String courseNumber = rs.getString("CourseNumber");
+                    return courseTitle + " | " + courseDepartment + " " + courseNumber;
                 }
             }
         } catch (Exception e) {
