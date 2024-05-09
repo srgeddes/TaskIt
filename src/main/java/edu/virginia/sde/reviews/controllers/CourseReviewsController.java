@@ -36,7 +36,6 @@ public class CourseReviewsController implements Initializable {
     int courseID;
     @FXML
     Label averageRatingLabel;
-
     @FXML
     TextArea commentsTextArea;
 
@@ -80,6 +79,7 @@ public class CourseReviewsController implements Initializable {
             setupTableColumns();
             setupSlider();
             setCourseLabel(courseID);
+            setAverageRatingLabel(courseID);
         });
     }
 
@@ -165,6 +165,7 @@ public class CourseReviewsController implements Initializable {
                     fetchReviewsFromDB(courseID);
                     setupTableColumns();
                     setCourseLabel(courseID);
+                    setAverageRatingLabel(courseID);
                 } else {
                     reviewLeftLabel.setVisible(false);
                     reviewAlreadyLeftError.setVisible(true);
@@ -194,6 +195,7 @@ public class CourseReviewsController implements Initializable {
             fetchReviewsFromDB(courseID);
             setupTableColumns();
             setCourseLabel(courseID);
+            setAverageRatingLabel(courseID);
             if (reviewDeleted) {
                 reviewDeletedLabel.setVisible(true);
                 noReviewFoundError.setVisible(false);
@@ -265,8 +267,7 @@ public class CourseReviewsController implements Initializable {
         DatabaseDriver databaseDriver = new DatabaseDriver();
         try {
             databaseDriver.connect();
-            String averageRating = getAverageRating(courseID);
-            this.courseLabel.setText("Course Title: " + databaseDriver.getCourseTitle(courseID) + " | Average Rating: " + averageRating);
+            this.courseLabel.setText("Course Title: " + databaseDriver.getCourseTitle(courseID));
             this.courseID = courseID;
         } catch (SQLException e) {
             System.out.println("Could not connect to DB");
@@ -278,6 +279,24 @@ public class CourseReviewsController implements Initializable {
             }
         }
 
+    }
+
+    public void setAverageRatingLabel(int courseID) {
+        DatabaseDriver databaseDriver = new DatabaseDriver();
+        try {
+            databaseDriver.connect();
+            String averageRating = getAverageRating(courseID);
+            this.averageRatingLabel.setText("Average Rating: " + averageRating);
+            this.courseID = courseID;
+        } catch (SQLException e) {
+            System.out.println("Could not connect to DB");
+        } finally {
+            try {
+                databaseDriver.disconnect();
+            } catch (SQLException disconnectEx) {
+                System.out.println("Error closing the database connection: " + disconnectEx.getMessage());
+            }
+        }
     }
 
     public void setCourse(int course) {

@@ -104,7 +104,7 @@ public class DatabaseDriver {
     public ArrayList<ArrayList<String>> getCourses() throws SQLException {
         ArrayList<ArrayList<String>> courses = new ArrayList<>();
         String sql = "SELECT c.CourseTitle, c.CourseDepartment, c.CourseNumber, " +
-                "COALESCE(AVG(r.Rating), 'No Reviews') AS Review " +
+                "COALESCE(ROUND(AVG(r.Rating), 2), 'No Reviews') AS Review " +
                 "FROM Courses c " +
                 "LEFT JOIN reviews r ON c.CourseID = r.CourseID " +
                 "GROUP BY c.CourseTitle, c.CourseDepartment, c.CourseNumber";
@@ -116,7 +116,12 @@ public class DatabaseDriver {
                     row.add(rs.getString("CourseTitle"));
                     row.add(rs.getString("CourseDepartment"));
                     row.add(rs.getString("CourseNumber"));
-                    row.add(rs.getString("Review")); // Ensure the review is treated as a double
+                    Object review = rs.getObject("Review"); // Use getObject to handle different possible types
+                    if (review instanceof Double) {
+                        row.add(String.format("%.2f", review)); // Format double values to two decimal places
+                    } else {
+                        row.add((String) review); // Handle 'No Reviews' as a string
+                    }
                     courses.add(row);
                 }
             }
@@ -124,10 +129,11 @@ public class DatabaseDriver {
         return courses;
     }
 
+
     public ArrayList<ArrayList<String>> filterCourses(String query) throws SQLException {
         ArrayList<ArrayList<String>> courses = new ArrayList<>();
         String sql = "SELECT c.CourseTitle, c.CourseDepartment, c.CourseNumber, " +
-                "COALESCE(AVG(r.Rating), 'No Reviews') AS Review " +
+                "COALESCE(ROUND(AVG(r.Rating), 2), 'No Reviews') AS Review " +
                 "FROM Courses c " +
                 "LEFT JOIN reviews r ON c.CourseID = r.CourseID " +
                 "WHERE c.CourseTitle LIKE ? " +
@@ -141,13 +147,19 @@ public class DatabaseDriver {
                     row.add(rs.getString("CourseTitle"));
                     row.add(rs.getString("CourseDepartment"));
                     row.add(rs.getString("CourseNumber"));
-                    row.add(rs.getString("Review")); // Adjusted to include Review
+                    Object review = rs.getObject("Review"); // Use getObject to handle different possible types
+                    if (review instanceof Double) {
+                        row.add(String.format("%.2f", review)); // Format double values to two decimal places
+                    } else {
+                        row.add((String) review); // Handle 'No Reviews' as a string
+                    }
                     courses.add(row);
                 }
             }
         }
         return courses;
     }
+
 
 
     public void addCourse(String title, String department, String catalog_number) throws SQLException {
