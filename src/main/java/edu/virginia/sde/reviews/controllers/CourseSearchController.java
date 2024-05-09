@@ -102,21 +102,17 @@ public class CourseSearchController implements Initializable{
             DatabaseDriver databaseDriver = new DatabaseDriver();
             try {
                 databaseDriver.connect();
-                System.out.println(title);
                 if (!databaseDriver.doesCourseExist(title, department, catalog)) {
-                    courseAlreadyExistsError.setVisible(false);
                     databaseDriver.addCourse(title, department, catalog);
                     databaseDriver.commit();
+                    hideAllAddErrorLabels();
                     courseAddedLabel.setVisible(true);
+                    hideAllAddErrorLabels();
                     setALlCourses();
                     setupTable();
                 } else {
+                    hideAllAddErrorLabels();
                     courseAlreadyExistsError.setVisible(true);
-                    courseAddedLabel.setVisible(false);
-                    departmentTooShortError.setVisible(false);
-                    catalogIncorrectError.setVisible(false);
-                    titleTooLongError.setVisible(false);
-                    titleTooShortError.setVisible(false);
                 }
             } catch (SQLException e) {
                 System.out.println("addCourse, Failed to add course: " + e);
@@ -246,6 +242,14 @@ public class CourseSearchController implements Initializable{
                 addCourse(new ActionEvent(keyEvent.getSource(), keyEvent.getTarget()));
             }
         }
+    }
+
+    public void hideAllAddErrorLabels() {
+        departmentTooShortError.setVisible(false);
+        catalogIncorrectError.setVisible(false);
+        titleTooShortError.setVisible(false);
+        titleTooLongError.setVisible(false);
+        courseAlreadyExistsError.setVisible(false);
     }
 
     public void switchToLoginScene(ActionEvent event) throws IOException {

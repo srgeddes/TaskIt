@@ -104,7 +104,7 @@ public class DatabaseDriver {
     public ArrayList<ArrayList<String>> getCourses() throws SQLException {
         ArrayList<ArrayList<String>> courses = new ArrayList<>();
         String sql = "SELECT c.CourseTitle, c.CourseDepartment, c.CourseNumber, " +
-                "COALESCE(ROUND(AVG(r.Rating), 2), 'No Reviews') AS Review " +
+                "COALESCE(ROUND(AVG(r.Rating), 2), '') AS Review " +
                 "FROM Courses c " +
                 "LEFT JOIN reviews r ON c.CourseID = r.CourseID " +
                 "GROUP BY c.CourseTitle, c.CourseDepartment, c.CourseNumber";
@@ -133,7 +133,7 @@ public class DatabaseDriver {
     public ArrayList<ArrayList<String>> filterCourses(String query) throws SQLException {
         ArrayList<ArrayList<String>> courses = new ArrayList<>();
         String sql = "SELECT c.CourseTitle, c.CourseDepartment, c.CourseNumber, " +
-                "COALESCE(ROUND(AVG(r.Rating), 2), 'No Reviews') AS Review " +
+                "COALESCE(ROUND(AVG(r.Rating), 2), '') AS Review " +
                 "FROM Courses c " +
                 "LEFT JOIN reviews r ON c.CourseID = r.CourseID " +
                 "WHERE c.CourseTitle LIKE ? " +
