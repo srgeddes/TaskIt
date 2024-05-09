@@ -59,7 +59,7 @@
                     <children>
                         <TableView fx:id="reviewsTable" prefHeight="423.0" prefWidth="672.0">
                             <columns>
-                                <TableColumn fx:id="commentsColumn" minWidth="350.0" prefWidth="75.0" reorderable="false" text="Comments" />
+                                <TableColumn fx:id="commentsColumn" minWidth="350.0" prefWidth="75.0" reorderable="false" text="Comments" styleClass="comments-column" />
                                 <TableColumn fx:id="ratingColumn" maxWidth="-1.0" minWidth="80.0" prefWidth="20.0" reorderable="false" text="Rating" />
                                 <TableColumn fx:id="timestampColumn" minWidth="240.0" prefWidth="20.0" reorderable="false" text="Timestamp" />
                             </columns>

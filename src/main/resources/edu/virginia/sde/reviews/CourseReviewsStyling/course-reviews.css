@@ -27,6 +27,8 @@
     -fx-font-size: 14px;
 }
 
+
+
 .menu-button {
     -fx-background-color: #E57200;
     -fx-border-radius: 10px;
@@ -92,6 +94,10 @@
 .table-cell {
     -fx-font-size: 15px;
     -fx-text-alignment: CENTER;
+    -fx-wrap-text: true;
+}
+.comments-column .table-cell {
+    -fx-alignment: TOP-LEFT;
 }
 
 .table-view .column-header .label {

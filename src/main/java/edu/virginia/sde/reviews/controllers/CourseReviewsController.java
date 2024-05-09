@@ -15,6 +15,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
@@ -84,6 +85,15 @@ public class CourseReviewsController implements Initializable {
             setCourseLabel(courseID);
             setAverageRatingLabel(courseID);
             updateSubmitButton();
+            commentsColumn.setCellFactory(tc -> {
+                TableCell<String[], String> cell = new TableCell<>();
+                Text text = new Text();
+                cell.setGraphic(text);
+                cell.setPrefHeight(Control.USE_COMPUTED_SIZE);
+                text.wrappingWidthProperty().bind(commentsColumn.widthProperty());
+                text.textProperty().bind(cell.itemProperty());
+                return cell;
+            });
         });
     }
 
@@ -170,7 +180,7 @@ public class CourseReviewsController implements Initializable {
     public void addReview(ActionEvent event) throws IOException {
         String comments = commentsTextArea.getText();
         int rating = Integer.parseInt(sliderValueLabel.getText());
-        boolean validComment = comments.length() <= 600;
+        boolean validComment = true;
 
         if (validComment) {
             commentErrorLabel.setVisible(false);
