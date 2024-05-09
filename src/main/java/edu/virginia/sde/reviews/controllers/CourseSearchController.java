@@ -91,7 +91,7 @@ public class CourseSearchController implements Initializable{
 
         boolean isCatalogValid = catalog.matches("\\d{4}");
 
-        boolean isTitleTooShort = title.length() < 2;
+        boolean isTitleTooShort = title.length() < 1;
         boolean isTitleTooLong = title.length() > 50;
 
         if (isDepartmentValid && isCatalogValid && !isTitleTooLong && !isTitleTooShort) {
