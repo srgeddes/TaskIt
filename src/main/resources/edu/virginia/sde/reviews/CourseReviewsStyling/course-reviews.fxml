@@ -69,7 +69,7 @@
             </children>
         </HBox>
         <Label fx:id="courseLabel" layoutX="39.0" layoutY="118.0" prefHeight="64.0" prefWidth="988.0" text="Course Name" />
-        <HBox alignment="CENTER_RIGHT" layoutX="842.0" layoutY="135.0" prefHeight="108.0" prefWidth="385.0" spacing="20.0">
+        <HBox alignment="CENTER_RIGHT" layoutX="842.0" layoutY="145.0" prefHeight="108.0" prefWidth="385.0" spacing="20.0">
             <children>
             <VBox alignment="BOTTOM_CENTER" prefHeight="127.0" prefWidth="143.0" spacing="21.0">
                <children>
