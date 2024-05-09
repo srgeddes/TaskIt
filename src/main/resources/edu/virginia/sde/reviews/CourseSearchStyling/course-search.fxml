@@ -32,14 +32,14 @@
                 <HBox alignment="CENTER_LEFT" spacing="40.0">
                     <children>
                         <TextField fx:id="courseDepartment" alignment="BOTTOM_LEFT" maxWidth="250.0" onKeyPressed="#handleKeyPressed" onMouseClicked="#addCourseErrorHide" prefHeight="39.0" prefWidth="220.0" promptText="Course Department" />
-                        <TextField fx:id="courseNumber" alignment="BOTTOM_LEFT" maxWidth="165.0" onKeyPressed="#handleKeyPressed" onMouseClicked="#addCourseErrorHide" prefHeight="20.0" prefWidth="165.0" promptText="Course Number" />
+                        <TextField fx:id="courseNumber" alignment="BOTTOM_LEFT" maxWidth="185.0" onKeyPressed="#handleKeyPressed" onMouseClicked="#addCourseErrorHide" prefHeight="20.0" prefWidth="185.0" promptText="Course Number" />
                         <TextField fx:id="courseTitle" alignment="BOTTOM_LEFT" maxWidth="280.0" minWidth="196.0" onKeyPressed="#handleKeyPressed" onMouseClicked="#addCourseErrorHide" prefHeight="39.0" prefWidth="196.0" promptText="Course Title" />
                     </children>
                 </HBox>
-                <HBox alignment="CENTER" spacing="100.0">
+                <HBox alignment="CENTER" prefHeight="42.0" prefWidth="359.0" spacing="75.0">
                     <children>
                         <Button fx:id="addCourse" alignment="BOTTOM_CENTER" lineSpacing="30.0" minWidth="-Infinity" mnemonicParsing="false" onAction="#addCourse" text="Add Course" textAlignment="CENTER" />
-                        <HBox alignment="CENTER_RIGHT" spacing="20.0">
+                        <HBox alignment="CENTER_RIGHT" prefHeight="42.0" prefWidth="179.0" spacing="20.0">
                             <children>
                                 <Button mnemonicParsing="false" onAction="#switchToMyReviewsScene" prefWidth="99.0" text="My Reviews" />
                                 <Button fx:id="logout" mnemonicParsing="false" onAction="#switchToLoginScene" text="Logout" />
