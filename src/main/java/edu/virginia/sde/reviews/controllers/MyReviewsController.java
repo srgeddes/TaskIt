@@ -23,6 +23,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
@@ -79,17 +80,23 @@ public class MyReviewsController implements Initializable {
         ObservableList<String[]> data = FXCollections.observableArrayList();
         data.addAll(reviews.values());
 
-        courseNameColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue()[0]));
-        ratingColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue()[2]));
+        courseNameColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue()[0] + " | " + param.getValue()[1] + " " + param.getValue()[2]));
+        ratingColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue()[3]));
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
         timestampColumn.setCellValueFactory(param -> {
-            String timestampStr = param.getValue()[3];
-            try {
-                LocalDateTime dateTime = LocalDateTime.parse(timestampStr, formatter);
-                return new SimpleObjectProperty<>(dateTime);
-            } catch (Exception e) {
-                return new SimpleObjectProperty<>(LocalDateTime.MIN);
+            String timestampStr = param.getValue()[4];
+            if (timestampStr != null && !timestampStr.isEmpty()) {
+                try {
+                    LocalDateTime dateTime = LocalDateTime.parse(timestampStr, formatter);
+                    return new SimpleObjectProperty<>(dateTime);
+                } catch (DateTimeParseException e) {
+                    // Log the error and return a null or placeholder value
+                    System.out.println("setupTable, Failed to parse timestamp: " + e);
+                    return new SimpleObjectProperty<>(null);
+                }
+            } else {
+                return new SimpleObjectProperty<>(null);
             }
         });
 
@@ -98,6 +105,7 @@ public class MyReviewsController implements Initializable {
         reviewsTable.getSortOrder().add(courseNameColumn);
         reviewsTable.sort();
     }
+
 
     public void setTableMouseClick() {
         DatabaseDriver databaseDriver = new DatabaseDriver();
@@ -121,16 +129,6 @@ public class MyReviewsController implements Initializable {
             }
         });
     }
-
-    public void handleKeyPressed(KeyEvent keyEvent) throws IOException {
-        if (keyEvent.getCode() == KeyCode.ENTER) {
-            if (keyEvent.getSource().equals(courseSearchField)) {
-                // TODO : Update table with review they search for first or something like that
-            }
-        }
-    }
-
-
 
     public void switchToLoginScene(ActionEvent event) throws IOException {
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
