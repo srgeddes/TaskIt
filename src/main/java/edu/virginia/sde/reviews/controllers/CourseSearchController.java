@@ -239,9 +239,19 @@ public class CourseSearchController implements Initializable{
         DatabaseDriver databaseDriver = new DatabaseDriver();
 
         if (keyEvent.getSource() == courseSearch) {
-            databaseDriver.connect();
-            courses = databaseDriver.filterCourses(courseSearch.getText());
-            setupTable();
+            try {
+                databaseDriver.connect();
+                courses = databaseDriver.filterCourses(courseSearch.getText());
+                setupTable();
+            } catch (Exception e) {
+                System.out.println("handleKeyPressed failed: " + e);
+            } finally {
+                try {
+                    databaseDriver.disconnect();
+                } catch (SQLException disconnectEx) {
+                    System.out.println("Error closing the database connection: " + disconnectEx.getMessage());
+                }
+            }
         }
 
         if (keyEvent.getCode() == KeyCode.ENTER && (keyEvent.getSource() == courseDepartment || keyEvent.getSource() == courseNumber || keyEvent.getSource() == courseTitle)) {
