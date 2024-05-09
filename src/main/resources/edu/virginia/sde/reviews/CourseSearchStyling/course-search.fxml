@@ -18,8 +18,8 @@
                     <columns>
                         <TableColumn fx:id="courseDepartmentColumn" minWidth="255.0" reorderable="false" sortType="ASCENDING" text="Course Department" />
                         <TableColumn fx:id="courseNumberColumn" minWidth="200.0" reorderable="false" sortType="ASCENDING" text="Course Number" />
-                        <TableColumn fx:id="courseTitleColumn" minWidth="555.0" reorderable="false" sortType="ASCENDING" text="Course Title" />
-                        <TableColumn fx:id="courseReviewColumn" minWidth="200.0" reorderable="false" sortType="ASCENDING" text="Rating" />
+                        <TableColumn fx:id="courseTitleColumn" minWidth="655.0" reorderable="false" sortType="ASCENDING" text="Course Title" />
+                        <TableColumn fx:id="courseReviewColumn" minWidth="100.0" reorderable="false" sortType="ASCENDING" text="Rating" />
 
                     </columns>
                 </TableView>
