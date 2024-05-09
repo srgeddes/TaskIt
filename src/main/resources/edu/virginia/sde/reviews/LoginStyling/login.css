@@ -64,14 +64,11 @@
 
 
 #exitButton {
-    -fx-background-color: #8F0000FF;
-    -fx-text-fill: #cccccc;
-    -fx-opacity: 0.8;
+    -fx-background-color: grey;
 }
 
 #exitButton:hover {
-    -fx-text-fill: black;
-    -fx-background-color: #cccccc;
+    -fx-background-color: #be0000;
 }
 
 
