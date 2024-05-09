@@ -35,9 +35,6 @@
         </HBox>
         <Button layoutX="40.0" layoutY="41.0" mnemonicParsing="false" onAction="#switchToCourseSearchScene" text="&lt;- Back" />
       <VBox alignment="CENTER" layoutX="479.0" layoutY="202.0" prefHeight="40.0" prefWidth="331.0">
-         <children>
-              <TextField fx:id="courseSearchField" onKeyPressed="#handleKeyPressed" promptText="Search " />
-         </children>
       </VBox>
     </children>
 </AnchorPane>

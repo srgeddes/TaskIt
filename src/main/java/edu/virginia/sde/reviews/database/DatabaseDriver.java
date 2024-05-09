@@ -250,7 +250,6 @@ public class DatabaseDriver {
 
     public void addReview(String username, int courseID, String comments, int rating, String timestamp) throws SQLException {
         String sql = "INSERT INTO Reviews (Username, CourseID, Comments, Rating, Time_Stamp) VALUES (?, ?, ?, ?, ?)";
-        // Fix the autoincremet stuff maybe
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, username);
             ps.setInt(2, courseID);
@@ -313,7 +312,7 @@ public class DatabaseDriver {
 
     public HashMap<String, String[]> getReviewsForUser(String username) throws SQLException {
         HashMap<String, String[]> reviews = new HashMap<>();
-        String sql = "SELECT r.ReviewID, c.CourseTitle, r.Comments, r.Rating, r.Time_Stamp " +
+        String sql = "SELECT r.ReviewID, c.CourseTitle, c.CourseDepartment, c.CourseNumber, r.Rating, r.Time_Stamp " +
                 "FROM Reviews r " +
                 "JOIN Courses c ON r.CourseID = c.CourseID " +
                 "WHERE r.Username = ?";
@@ -324,16 +323,18 @@ public class DatabaseDriver {
                 while (rs.next()) {
                     String reviewID = String.valueOf(rs.getInt("ReviewID"));
                     String courseTitle = rs.getString("CourseTitle");
-                    String comments = rs.getString("Comments");
-                    String rating = String.valueOf(rs.getDouble("Rating"));
+                    String department = rs.getString("CourseDepartment");
+                    String number = rs.getString("CourseNumber");
+                    String rating = String.valueOf(rs.getInt("Rating"));
                     String timestamp = rs.getString("Time_Stamp");
                     // Put the review details into the map
-                    reviews.put(reviewID, new String[]{courseTitle, comments, rating, timestamp});
+                    reviews.put(reviewID, new String[]{courseTitle, department, number, rating, timestamp});
                 }
             }
         }
         return reviews;
     }
+
 
     public boolean removeUserReview(String username, int courseID) throws SQLException {
         String sql = "DELETE FROM Reviews WHERE Username = ? AND CourseID = ?";
