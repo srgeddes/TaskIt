@@ -302,7 +302,7 @@ public class CourseReviewsController implements Initializable {
         DatabaseDriver databaseDriver = new DatabaseDriver();
         try {
             databaseDriver.connect();
-            this.courseLabel.setText("Course Title: " + databaseDriver.getCourseTitle(courseID));
+            this.courseLabel.setText(databaseDriver.getCourseTitle(courseID));
             this.courseID = courseID;
         } catch (SQLException e) {
             System.out.println("Could not connect to DB");
