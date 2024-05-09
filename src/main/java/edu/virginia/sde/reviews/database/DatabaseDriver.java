@@ -126,8 +126,12 @@ public class DatabaseDriver {
 
     public ArrayList<ArrayList<String>> filterCourses(String query) throws SQLException {
         ArrayList<ArrayList<String>> courses = new ArrayList<>();
-        String sql = "SELECT CourseTitle, CourseDepartment, CourseNumber " +
-                "FROM Courses WHERE CourseTitle LIKE ?";
+        String sql = "SELECT c.CourseTitle, c.CourseDepartment, c.CourseNumber, " +
+                "COALESCE(AVG(r.Rating), 'No Reviews') AS Review " +
+                "FROM Courses c " +
+                "LEFT JOIN reviews r ON c.CourseID = r.CourseID " +
+                "WHERE c.CourseTitle LIKE ? " +
+                "GROUP BY c.CourseTitle, c.CourseDepartment, c.CourseNumber";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, "%" + query + "%");
@@ -137,6 +141,7 @@ public class DatabaseDriver {
                     row.add(rs.getString("CourseTitle"));
                     row.add(rs.getString("CourseDepartment"));
                     row.add(rs.getString("CourseNumber"));
+                    row.add(rs.getString("Review")); // Adjusted to include Review
                     courses.add(row);
                 }
             }
