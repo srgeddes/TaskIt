@@ -153,7 +153,7 @@ public class DatabaseDriver {
         }
     }
 
-    public boolean doesCourseExist(String title) throws SQLException {
+    public boolean doesCourseExist(String title, String department, String Number) throws SQLException {
         String sql = "SELECT CourseTitle FROM Courses WHERE CourseTitle = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, title);
@@ -306,6 +306,7 @@ public class DatabaseDriver {
             databaseDriver.connect();
             TableCreator tableCreator = new TableCreator(databaseDriver.getConnection());
             tableCreator.createTables();
+            databaseDriver.removeCourse("Discrete Math");
             databaseDriver.commit();
         } catch (SQLException e) {
             System.out.println("Error creating tables: " + e);
