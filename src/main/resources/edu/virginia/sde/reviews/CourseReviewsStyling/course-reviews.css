@@ -106,7 +106,7 @@
 
 #commentErrorLabel, #reviewAlreadyLeftError {
     -fx-font-size: 15px;
-    -fx-text-fill: #8f0000;
+    -fx-text-fill: #c90000;
 }
 
 #reviewLeftLabel, #reviewDeletedLabel {

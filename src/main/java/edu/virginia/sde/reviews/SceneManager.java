@@ -120,7 +120,7 @@ public class SceneManager {
         stage.setScene(scene);
         myReviewsController.setStage(stage);
         myReviewsController.setCurrentUser(currentUser);
-        stage.setTitle(currentUser + "'s Reviews");
+        stage.setTitle(currentUser + " Reviews");
         stage.show();
     }
 }

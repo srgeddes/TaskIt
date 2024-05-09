@@ -208,17 +208,23 @@ public class CourseSearchController implements Initializable{
         courseDepartment.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 departmentTooShortError.setVisible(false);
+                courseAddedLabel.setVisible(false);
+                courseAlreadyExistsError.setVisible(false);
             }
         });
         courseNumber.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 catalogIncorrectError.setVisible(false);
+                courseAddedLabel.setVisible(false);
+                courseAlreadyExistsError.setVisible(false);
             }
         });
         courseTitle.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 titleTooShortError.setVisible(false);
                 titleTooLongError.setVisible(false);
+                courseAddedLabel.setVisible(false);
+                courseAlreadyExistsError.setVisible(false);
             }
         });
 

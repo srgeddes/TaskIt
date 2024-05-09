@@ -2,6 +2,7 @@ package edu.virginia.sde.reviews.controllers;
 
 import edu.virginia.sde.reviews.SceneManager;
 import edu.virginia.sde.reviews.database.DatabaseDriver;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -32,6 +33,8 @@ public class LoginSceneController {
     @FXML
     CheckBox passwordShowCheckbox;
 
+    boolean isPasswordShowing = false;
+
 
     public LoginSceneController() {}
 
@@ -40,8 +43,13 @@ public class LoginSceneController {
      * Check if the username and password are valid within the database
      */
     public void login(ActionEvent event) throws IOException {
-        String username = (usernameField != null) ? usernameField.getText() : "";
-        String password = (hiddenPasswordField != null) ? hiddenPasswordField.getText() : "";
+        String username = usernameField.getText().trim();
+        String password;
+        if (isPasswordShowing) {
+            password = visiblePasswordField.getText().trim();
+        } else {
+            password = hiddenPasswordField.getText().trim();
+        }
 
         if (!username.isEmpty() && !password.isEmpty()) {
 
@@ -93,6 +101,10 @@ public class LoginSceneController {
         }
     }
 
+    public void exit(ActionEvent event) {
+        Platform.exit();
+    }
+
 
     /**
      * Hide the error labels when the user clicks on the TextField or PasswordField
@@ -118,10 +130,12 @@ public class LoginSceneController {
     void handlePasswordShow() throws IOException{
         incorrectUsernameOrPasswordHide();
         if (passwordShowCheckbox.isSelected()) {
+            isPasswordShowing = true;
             visiblePasswordField.setText(hiddenPasswordField.getText());
             visiblePasswordField.setVisible(true);
             hiddenPasswordField.setVisible(false);
         } else {
+            isPasswordShowing = false;
             hiddenPasswordField.setText(visiblePasswordField.getText());
             hiddenPasswordField.setVisible(true);
             visiblePasswordField.setVisible(false);

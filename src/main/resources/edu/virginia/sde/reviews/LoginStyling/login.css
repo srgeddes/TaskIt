@@ -60,6 +60,17 @@
 }
 
 
+#exitButton {
+    -fx-background-color: #8F0000FF;
+    -fx-text-fill: #cccccc;
+}
+
+#exitButton:hover {
+    -fx-text-fill: black;
+    -fx-background-color: #cccccc;
+}
+
+
 
 
 
