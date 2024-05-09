@@ -86,7 +86,6 @@ public class CourseSearchController implements Initializable{
         String catalog = courseNumber.getText().trim();
         String title = courseTitle.getText().trim();
 
-        String courseTitle = title + " | " + department + " " + catalog;
 
         boolean isDepartmentValid = department.matches("[a-zA-Z]{2,4}");
 
@@ -103,7 +102,8 @@ public class CourseSearchController implements Initializable{
             DatabaseDriver databaseDriver = new DatabaseDriver();
             try {
                 databaseDriver.connect();
-                if (!databaseDriver.doesCourseExist(courseTitle)) {
+                System.out.println(title);
+                if (!databaseDriver.doesCourseExist(title, department, catalog)) {
                     courseAlreadyExistsError.setVisible(false);
                     databaseDriver.addCourse(title, department, catalog);
                     databaseDriver.commit();
@@ -112,6 +112,7 @@ public class CourseSearchController implements Initializable{
                     setupTable();
                 } else {
                     courseAlreadyExistsError.setVisible(true);
+                    courseAddedLabel.setVisible(false);
                 }
             } catch (SQLException e) {
                 System.out.println("addCourse, Failed to add course: " + e);
