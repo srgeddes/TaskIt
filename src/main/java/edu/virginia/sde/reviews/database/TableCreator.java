@@ -17,7 +17,7 @@ public class TableCreator {
             st.execute(
                     "CREATE TABLE IF NOT EXISTS Users (" +
                             "UserID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                            "Username TEXT NOT NULL, " +
+                            "Username TEXT NOT NULL UNIQUE, " +
                             "Password TEXT NOT NULL)"
             );
             st.execute(
