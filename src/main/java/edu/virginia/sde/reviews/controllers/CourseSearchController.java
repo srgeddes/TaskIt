@@ -162,6 +162,7 @@ public class CourseSearchController implements Initializable{
     /**
      * Convert the Hashmap of courses into a viewable form for the tableView.
      */
+    @SuppressWarnings("unchecked")
     public void setupTable() {
         ObservableList<ArrayList<String>> courseDetails = FXCollections.observableArrayList();
 
