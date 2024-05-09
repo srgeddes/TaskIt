@@ -34,6 +34,8 @@ public class CourseReviewsController implements Initializable {
     @FXML
     Label courseLabel;
     int courseID;
+    @FXML
+    Label averageRatingLabel;
 
     @FXML
     TextArea commentsTextArea;

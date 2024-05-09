@@ -6,7 +6,6 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
@@ -89,5 +88,6 @@
         </HBox>
       <Label layoutX="86.0" layoutY="247.0" prefHeight="36.0" prefWidth="207.0" text="Create Review" />
       <Button layoutX="50.0" layoutY="51.0" mnemonicParsing="false" onAction="#switchToCourseSearchScene" text="&lt;- Back" />
+      <Label fx:id="averageRatingLabel" layoutX="39.0" layoutY="167.0" prefHeight="64.0" prefWidth="563.0" text="Average Rating" />
     </children>
 </AnchorPane>
