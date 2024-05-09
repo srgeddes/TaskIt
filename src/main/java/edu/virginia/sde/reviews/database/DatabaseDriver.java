@@ -103,9 +103,11 @@ public class DatabaseDriver {
 
     public ArrayList<ArrayList<String>> getCourses() throws SQLException {
         ArrayList<ArrayList<String>> courses = new ArrayList<>();
-        String sql = "SELECT c.CourseTitle, c.CourseDepartment, c.CourseNumber, AVG(r.Rating) as Review " +
+        String sql = "SELECT c.CourseTitle, c.CourseDepartment, c.CourseNumber, " +
+                "COALESCE(AVG(r.Rating), 'No Reviews') AS Review " +
                 "FROM Courses c " +
-                "JOIN reviews r on c.CourseID = r.CourseID ";
+                "LEFT JOIN reviews r ON c.CourseID = r.CourseID " +
+                "GROUP BY c.CourseTitle, c.CourseDepartment, c.CourseNumber";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             try (ResultSet rs = ps.executeQuery()) {
@@ -114,7 +116,7 @@ public class DatabaseDriver {
                     row.add(rs.getString("CourseTitle"));
                     row.add(rs.getString("CourseDepartment"));
                     row.add(rs.getString("CourseNumber"));
-                    row.add(rs.getString("Review"));
+                    row.add(rs.getString("Review")); // Ensure the review is treated as a double
                     courses.add(row);
                 }
             }
