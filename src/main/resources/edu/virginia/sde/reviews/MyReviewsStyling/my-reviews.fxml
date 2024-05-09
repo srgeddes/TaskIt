@@ -29,7 +29,6 @@
         <Label fx:id="usernameLabel" layoutX="38.0" layoutY="118.0" prefHeight="64.0" prefWidth="669.0" text="UserID Reviews" />
         <HBox alignment="CENTER_RIGHT" layoutX="1000.0" layoutY="137.0" spacing="20.0">
             <children>
-                <Button mnemonicParsing="false" onAction="#switchToMyReviewsScene" prefWidth="99.0" text="My Reviews" />
                 <Button fx:id="logout" mnemonicParsing="false" onAction="#switchToLoginScene" text="Logout" />
             </children>
         </HBox>
