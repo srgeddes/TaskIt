@@ -66,7 +66,7 @@ public class CourseReviewsController implements Initializable {
     @FXML
     TableColumn<String[], String> ratingColumn;
     @FXML
-    TableColumn<String[], LocalDateTime> timestampColumn;
+    TableColumn<String[], String> timestampColumn;
 
     @FXML
     TextField usernameSearchTextField;
@@ -94,14 +94,13 @@ public class CourseReviewsController implements Initializable {
 
         commentsColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue()[0]));
         ratingColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue()[1]));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+
         timestampColumn.setCellValueFactory(param -> {
             String timestampStr = param.getValue()[2];
             try {
-                LocalDateTime dateTime = LocalDateTime.parse(timestampStr, formatter);
-                return new SimpleObjectProperty<>(dateTime);
+                return new SimpleStringProperty(timestampStr);
             } catch (Exception e) {
-                return new SimpleObjectProperty<>(LocalDateTime.MIN); // Handle parsing error
+                return new SimpleObjectProperty<>(LocalDateTime.MIN.toString()); // Handle parsing error
             }
         });
         timestampColumn.setSortType(TableColumn.SortType.DESCENDING);
