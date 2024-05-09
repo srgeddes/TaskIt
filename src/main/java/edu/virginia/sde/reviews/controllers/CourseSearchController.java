@@ -110,6 +110,9 @@ public class CourseSearchController implements Initializable{
                     hideAllAddErrorLabels();
                     setALlCourses();
                     setupTable();
+                    courseDepartment.setText("");
+                    courseNumber.setText("");
+                    courseTitle.setText("");
                 } else {
                     hideAllAddErrorLabels();
                     courseAlreadyExistsError.setVisible(true);
