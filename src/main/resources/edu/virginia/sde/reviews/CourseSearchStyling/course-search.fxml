@@ -16,10 +16,10 @@
             <children>
                 <TableView fx:id="courseTable" maxWidth="1210.0" prefHeight="460.0" prefWidth="1210.0">
                     <columns>
-                        <TableColumn fx:id="courseDepartmentColumn" prefWidth="205.0" reorderable="false" sortType="ASCENDING" text="Course Department" />
-                        <TableColumn fx:id="courseNumberColumn" prefWidth="200.0" reorderable="false" sortType="ASCENDING" text="Course Number" />
-                        <TableColumn fx:id="courseTitleColumn" minWidth="605.0" prefWidth="75.0" reorderable="false" sortType="ASCENDING" text="Course Title" />
-                        <TableColumn fx:id="courseReviewColumn" prefWidth="200.0" reorderable="false" sortType="ASCENDING" text="Rating" />
+                        <TableColumn fx:id="courseDepartmentColumn" minWidth="255.0" reorderable="false" sortType="ASCENDING" text="Course Department" />
+                        <TableColumn fx:id="courseNumberColumn" minWidth="200.0" reorderable="false" sortType="ASCENDING" text="Course Number" />
+                        <TableColumn fx:id="courseTitleColumn" minWidth="555.0" reorderable="false" sortType="ASCENDING" text="Course Title" />
+                        <TableColumn fx:id="courseReviewColumn" minWidth="200.0" reorderable="false" sortType="ASCENDING" text="Rating" />
 
                     </columns>
                 </TableView>
