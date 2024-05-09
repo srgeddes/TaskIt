@@ -15,10 +15,10 @@
             <children>
                 <VBox alignment="CENTER">
                     <children>
-                        <TableView fx:id="reviewsTable" prefHeight="423.0" prefWidth="672.0">
+                        <TableView fx:id="reviewsTable" prefHeight="423.0" prefWidth="1000.0" minWidth="1000.0">
                             <columns>
-                                <TableColumn fx:id="courseNameColumn" minWidth="350.0" prefWidth="75.0" reorderable="false" text="Course" />
-                                <TableColumn fx:id="ratingColumn" maxWidth="-1.0" minWidth="80.0" prefWidth="20.0" reorderable="false" text="Rating" />
+                                <TableColumn fx:id="courseNameColumn" minWidth="650.0" prefWidth="75.0" reorderable="false" text="Course" />
+                                <TableColumn fx:id="ratingColumn" minWidth="100.0" reorderable="false" text="Rating" />
                                 <TableColumn fx:id="timestampColumn" minWidth="240.0" prefWidth="20.0" reorderable="false" text="Timestamp" />
                             </columns>
                         </TableView>
