@@ -321,7 +321,11 @@ public class CourseReviewsController implements Initializable {
         try {
             databaseDriver.connect();
             String averageRating = getAverageRating(courseID);
-            this.averageRatingLabel.setText("Average Rating: " + averageRating);
+            if (averageRating.equals("0.00")) {
+                this.averageRatingLabel.setText("");
+            } else {
+                this.averageRatingLabel.setText("Average Rating: " + averageRating);
+            }
             this.courseID = courseID;
         } catch (SQLException e) {
             System.out.println("Could not connect to DB");
