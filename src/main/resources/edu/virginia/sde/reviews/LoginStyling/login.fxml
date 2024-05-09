@@ -16,6 +16,8 @@
    <children>
       <StackPane>
          <children>
+             <ImageView fx:id="imageView">
+             </ImageView>
             <HBox alignment="CENTER" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0">
                <children>
                    <VBox alignment="CENTER" prefHeight="689.0" prefWidth="441.0" spacing="15.0">
@@ -63,9 +65,6 @@
                    </VBox>
                </children>
             </HBox>
-            <ImageView fitHeight="720.0" fitWidth="1280.0" pickOnBounds="true" preserveRatio="true" />
-             <ImageView fx:id="imageView">
-             </ImageView>
          </children>
       </StackPane>
       <Button fx:id="exitButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#exit" text="Exit" />
