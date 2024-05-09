@@ -53,14 +53,14 @@ public class DatabaseDriver {
             ps.executeUpdate();
         }
     }
-
-    public void removeUser(String username) throws SQLException {
-        String sql = "DELETE FROM Users WHERE Username = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, username);
-            ps.executeUpdate();
-        }
-    }
+//
+//    public void removeUser(String username) throws SQLException {
+//        String sql = "DELETE FROM Users WHERE Username = ?";
+//        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+//            ps.setString(1, username);
+//            ps.executeUpdate();
+//        }
+//    }
 
     /**
      * @param username
@@ -69,7 +69,7 @@ public class DatabaseDriver {
      * @throws SQLException
      */
     public boolean isValidUser(String username, String password) throws SQLException {
-        String sql = "SELECT * FROM Users WHERE Username = ? AND Password = ?";
+        String sql = "SELECT Username, Password FROM Users WHERE Username = ? AND Password = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, username);
             ps.setString(2, password);
@@ -254,10 +254,24 @@ public class DatabaseDriver {
         return reviews;
     }
 
-    public void addReview(String username, int courseID, String comments, int rating, String timestamp) throws SQLException {
-        String sql = "INSERT INTO Reviews (Username, CourseID, Comments, Rating, Time_Stamp) VALUES (?, ?, ?, ?, ?)";
+    public int getUserIDForUsername(String username) throws SQLException {
+        String sql = "SELECT UserID from Users WHERE Username = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, username);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    return rs.getInt("UserID");
+                }
+            }
+        }
+        return -1;
+    }
+
+    public void addReview(String username, int courseID, String comments, int rating, String timestamp) throws SQLException {
+        int UserID = getUserIDForUsername(username);
+        String sql = "INSERT INTO Reviews (UserID, CourseID, Comments, Rating, Time_Stamp) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, UserID);
             ps.setInt(2, courseID);
             ps.setString(3, comments);
             ps.setInt(4, rating);
@@ -267,23 +281,24 @@ public class DatabaseDriver {
     }
 
     public void editReview(String username, int courseID, String comments, int rating, String timestamp) throws SQLException {
-        // SQL statement to update an existing review based on the username and courseID
-        String sql = "UPDATE Reviews SET Comments = ?, Rating = ?, Time_Stamp = ? WHERE Username = ? AND CourseID = ?";
+        int UserID = getUserIDForUsername(username);
+        String sql = "UPDATE Reviews SET Comments = ?, Rating = ?, Time_Stamp = ? WHERE UserID = ? AND CourseID = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, comments);
             ps.setInt(2, rating);
             ps.setString(3, timestamp);
-            ps.setString(4, username);
-            ps.setInt(5, courseID);  // Specifies which review to update by matching both username and courseID
+            ps.setInt(4, UserID);
+            ps.setInt(5, courseID);
             ps.executeUpdate();
         }
     }
 
 
     public boolean userAlreadyLeftReview(String username, int courseID) throws SQLException {
-        String sql = "SELECT * FROM Reviews WHERE Username = ? AND CourseID = ?";
+        int UserID = getUserIDForUsername(username);
+        String sql = "SELECT * FROM Reviews WHERE UserID = ? AND CourseID = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, username);
+            ps.setInt(1, UserID);
             ps.setInt(2, courseID);
             try (ResultSet rs = ps.executeQuery()) {
                 return rs.next();
@@ -292,9 +307,10 @@ public class DatabaseDriver {
     }
 
     public void removeReview(String username, int courseID) throws SQLException {
-        String sql = "DELETE FROM Reviews WHERE Username = ? AND CourseID = ?";
+        int UserID = getUserIDForUsername(username);
+        String sql = "DELETE FROM Reviews WHERE UserID = ? AND CourseID = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, username);
+            ps.setInt(1, UserID);
             ps.setInt(2, courseID);
             ps.executeUpdate();
         }
@@ -317,14 +333,15 @@ public class DatabaseDriver {
     }
 
     public HashMap<String, String[]> getReviewsForUser(String username) throws SQLException {
+        int UserID = getUserIDForUsername(username);
         HashMap<String, String[]> reviews = new HashMap<>();
         String sql = "SELECT r.ReviewID, c.CourseTitle, c.CourseDepartment, c.CourseNumber, r.Rating, r.Time_Stamp " +
                 "FROM Reviews r " +
                 "JOIN Courses c ON r.CourseID = c.CourseID " +
-                "WHERE r.Username = ?";
+                "WHERE r.UserID = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, username);
+            ps.setInt(1, UserID);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     String reviewID = String.valueOf(rs.getInt("ReviewID"));
@@ -343,9 +360,10 @@ public class DatabaseDriver {
 
 
     public boolean removeUserReview(String username, int courseID) throws SQLException {
-        String sql = "DELETE FROM Reviews WHERE Username = ? AND CourseID = ?";
+        int UserID = getUserIDForUsername(username);
+        String sql = "DELETE FROM Reviews WHERE UserID = ? AND CourseID = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, username);
+            ps.setInt(1, UserID);
             ps.setInt(2, courseID);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;

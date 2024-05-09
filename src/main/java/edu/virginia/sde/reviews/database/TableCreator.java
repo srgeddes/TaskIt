@@ -16,12 +16,13 @@ public class TableCreator {
         try (Statement st = connection.createStatement()) {
             st.execute(
                     "CREATE TABLE IF NOT EXISTS Users (" +
-                            "Username TEXT PRIMARY KEY, " +
+                            "UserID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                            "Username TEXT NOT NULL, " +
                             "Password TEXT NOT NULL)"
             );
             st.execute(
                     "CREATE TABLE IF NOT EXISTS Courses (" +
-                            "CourseID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                            "CourseID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                             "CourseTitle VARCHAR(255) NOT NULL," +
                             "CourseDepartment VARCHAR(50)," +
                             "CourseNumber VARCHAR(50) NOT NULL)"
@@ -30,11 +31,11 @@ public class TableCreator {
                     "CREATE TABLE IF NOT EXISTS Reviews (" +
                             "ReviewID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                             "CourseID INTEGER, " +
-                            "Username TEXT NOT NULL, " +
+                            "UserID INTEGER, " +
                             "Comments TEXT, " +
                             "Rating INTEGER NOT NULL, " +
                             "Time_Stamp TEXT NOT NULL, " +
-                            "FOREIGN KEY (Username) REFERENCES Users(Username)" +
+                            "FOREIGN KEY (UserID) REFERENCES Users(UserID)" +
                             "FOREIGN KEY (CourseID) REFERENCES Courses(CourseID))"
             );
         }
