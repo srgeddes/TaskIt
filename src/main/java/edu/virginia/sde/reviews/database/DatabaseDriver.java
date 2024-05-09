@@ -299,17 +299,22 @@ public class DatabaseDriver {
 
     public HashMap<String, String[]> getReviewsForUser(String username) throws SQLException {
         HashMap<String, String[]> reviews = new HashMap<>();
-        String sql = "SELECT * FROM Reviews WHERE Username = ?";
+        String sql = "SELECT r.ReviewID, c.CourseTitle, r.Comments, r.Rating, r.Time_Stamp " +
+                "FROM Reviews r " +
+                "JOIN Courses c ON r.CourseID = c.CourseID " +
+                "WHERE r.Username = ?";
+
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, username);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     String reviewID = String.valueOf(rs.getInt("ReviewID"));
-                    String courseID = rs.getString("CourseID");
+                    String courseTitle = rs.getString("CourseTitle");
                     String comments = rs.getString("Comments");
-                    String rating = rs.getString("Rating");
+                    String rating = String.valueOf(rs.getDouble("Rating"));
                     String timestamp = rs.getString("Time_Stamp");
-                    reviews.put(reviewID, new String[]{courseID, comments, rating, timestamp});
+                    // Put the review details into the map
+                    reviews.put(reviewID, new String[]{courseTitle, comments, rating, timestamp});
                 }
             }
         }
