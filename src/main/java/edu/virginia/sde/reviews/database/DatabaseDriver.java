@@ -180,10 +180,12 @@ public class DatabaseDriver {
         String sql = "SELECT CourseTitle " +
                 "FROM Courses " +
                 "WHERE CourseTitle = ? " +
-                "AND CourseNumber = ?";
+                "AND CourseNumber = ? " +
+                "AND CourseDepartment = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, title);
             ps.setString(2, number);
+            ps.setString(3, department);
 
             try (ResultSet rs = ps.executeQuery()) {
                 return rs.next();
