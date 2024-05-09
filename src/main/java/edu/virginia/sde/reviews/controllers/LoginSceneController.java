@@ -5,22 +5,32 @@ import edu.virginia.sde.reviews.database.DatabaseDriver;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 
 
-public class LoginSceneController {
+public class LoginSceneController implements Initializable {
 
     private Stage stage;
+
+    @FXML
+    ImageView imageView;
 
     @FXML
     TextField usernameField;
@@ -37,6 +47,19 @@ public class LoginSceneController {
 
 
     public LoginSceneController() {}
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        Platform.runLater(() -> {
+            try {
+                InputStream stream = getClass().getResourceAsStream("/edu/virginia/sde/reviews/LoginStyling/course_logo.png");
+                Image image = new Image(stream);
+                imageView.setImage(image);
+            } catch (Exception e) {
+                System.out.println("Failed to initialize LoginSceneController: " + e);
+            }
+        });
+    }
 
 
     /**

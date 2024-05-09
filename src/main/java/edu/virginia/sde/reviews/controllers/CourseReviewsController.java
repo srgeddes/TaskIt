@@ -322,7 +322,7 @@ public class CourseReviewsController implements Initializable {
             databaseDriver.connect();
             String averageRating = getAverageRating(courseID);
             if (averageRating.equals("0.00")) {
-                this.averageRatingLabel.setText("");
+                this.averageRatingLabel.setText("No Reviews Yet");
             } else {
                 this.averageRatingLabel.setText("Average Rating: " + averageRating);
             }
