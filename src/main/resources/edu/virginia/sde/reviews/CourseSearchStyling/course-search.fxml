@@ -31,7 +31,7 @@
             <children>
                 <HBox alignment="CENTER_LEFT" spacing="40.0">
                     <children>
-                        <TextField fx:id="courseDepartment" alignment="BOTTOM_LEFT" maxWidth="200.0" onKeyPressed="#handleKeyPressed" onMouseClicked="#addCourseErrorHide" prefHeight="20.0" prefWidth="200.0" promptText="Course Department" />
+                        <TextField fx:id="courseDepartment" alignment="BOTTOM_LEFT" maxWidth="250.0" onKeyPressed="#handleKeyPressed" onMouseClicked="#addCourseErrorHide" prefHeight="39.0" prefWidth="220.0" promptText="Course Department" />
                         <TextField fx:id="courseNumber" alignment="BOTTOM_LEFT" maxWidth="165.0" onKeyPressed="#handleKeyPressed" onMouseClicked="#addCourseErrorHide" prefHeight="20.0" prefWidth="165.0" promptText="Course Number" />
                         <TextField fx:id="courseTitle" alignment="BOTTOM_LEFT" maxWidth="280.0" minWidth="196.0" onKeyPressed="#handleKeyPressed" onMouseClicked="#addCourseErrorHide" prefHeight="39.0" prefWidth="196.0" promptText="Course Title" />
                     </children>
