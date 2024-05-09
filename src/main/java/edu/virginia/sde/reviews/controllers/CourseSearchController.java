@@ -113,6 +113,10 @@ public class CourseSearchController implements Initializable{
                 } else {
                     courseAlreadyExistsError.setVisible(true);
                     courseAddedLabel.setVisible(false);
+                    departmentTooShortError.setVisible(false);
+                    catalogIncorrectError.setVisible(false);
+                    titleTooLongError.setVisible(false);
+                    titleTooShortError.setVisible(false);
                 }
             } catch (SQLException e) {
                 System.out.println("addCourse, Failed to add course: " + e);
