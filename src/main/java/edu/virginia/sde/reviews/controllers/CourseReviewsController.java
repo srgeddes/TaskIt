@@ -34,7 +34,7 @@ public class CourseReviewsController implements Initializable {
 
     @FXML
     Label courseLabel;
-    String course;
+    int courseID;
 
     @FXML
     TextArea commentsTextArea;
@@ -75,10 +75,10 @@ public class CourseReviewsController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Platform.runLater(() -> {
-            fetchReviewsFromDB(course);
+            fetchReviewsFromDB(courseID);
             setupTableColumns();
             setupSlider();
-            setCourseLabel(course);
+            setCourseLabel(courseID);
         });
     }
 
@@ -105,41 +105,39 @@ public class CourseReviewsController implements Initializable {
     }
 
 
-    public void fetchReviewsFromDB(String course) {
+    public void fetchReviewsFromDB(int courseID) {
         DatabaseDriver databaseDriver = new DatabaseDriver();
         try {
             databaseDriver.connect();
-            HashMap<String, String[]> reviewsFromDB = databaseDriver.getReviews(course);
-            reviews.putAll(reviewsFromDB);
-
+            reviews = databaseDriver.getReviews(courseID);
         } catch (SQLException e) {
-            System.out.println("No reviews have been made for this course");
+            System.out.println("No reviews have been made for this course: " + e);
         } finally {
             try {
                 databaseDriver.disconnect();
             } catch (SQLException e) {
-                System.out.println("Failed to disconnect from database");
+                System.out.println("fetchReviewsFromDB, Failed to disconnect from database: " + e);
             }
         }
     }
 
 
-    public String getAverageRating(String course) {
+    public String getAverageRating(int courseID) {
         DatabaseDriver databaseDriver = new DatabaseDriver();
         try {
             databaseDriver.connect();
-            double averageRating = databaseDriver.calculateAverageRating(course);
+            double averageRating = databaseDriver.calculateAverageRating(courseID);
             if (Double.isNaN(averageRating)) {
                 return "0.00";
             }
             return String.format("%.2f", averageRating);
         } catch (SQLException e) {
-            System.out.println("Unable to get average rating for this course");
+            System.out.println("getAverageRating, Unable to get average rating for this course: " + e);
         } finally {
             try {
                 databaseDriver.disconnect();
             } catch (SQLException e) {
-                System.out.println("Unable to disconnect from database when getting average rating for " + course);
+                System.out.println("getAverageRating, Unable to disconnect from database when getting average rating for Course ID " + courseID);
             }
         }
         return "0.00";
@@ -155,25 +153,28 @@ public class CourseReviewsController implements Initializable {
             DatabaseDriver databaseDriver = new DatabaseDriver();
             try {
                 databaseDriver.connect();
-                if (!(databaseDriver.userAlreadyLeftReview(currentUser, course))) {
+                if (!(databaseDriver.userAlreadyLeftReview(currentUser, courseID))) {
                     reviewAlreadyLeftError.setVisible(false);
                     Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-                    databaseDriver.addReview(currentUser, course, comments, rating, timestamp.toString());
+                    databaseDriver.addReview(currentUser, courseID, comments, rating, timestamp.toString());
                     databaseDriver.commit();
                     reviewAlreadyLeftError.setVisible(false);
                     reviewLeftLabel.setVisible(true);
-                    fetchReviewsFromDB(course);
+                    commentsTextArea.setText("");
+                    fetchReviewsFromDB(courseID);
                     setupTableColumns();
+                    setCourseLabel(courseID);
                 } else {
+                    reviewLeftLabel.setVisible(false);
                     reviewAlreadyLeftError.setVisible(true);
                 }
             } catch (SQLException e) {
-                throw new RuntimeException("Failed to add review");
+                System.out.println("addReview, Failed to add review: " + e);
             } finally {
                 try {
                     databaseDriver.disconnect();
                 } catch (SQLException e) {
-                    System.out.println("Failed to disconnect from database");
+                    System.out.println("addReview, Failed to disconnect from database: " + e);
                 }
             }
             commentErrorLabel.setVisible(false);
@@ -187,10 +188,11 @@ public class CourseReviewsController implements Initializable {
         DatabaseDriver databaseDriver = new DatabaseDriver();
         try {
             databaseDriver.connect();
-            boolean reviewDeleted = databaseDriver.removeUserReview(currentUser, course);
+            boolean reviewDeleted = databaseDriver.removeUserReview(currentUser, courseID);
             databaseDriver.commit();
-            fetchReviewsFromDB(course);
+            fetchReviewsFromDB(courseID);
             setupTableColumns();
+            setCourseLabel(courseID);
             if (reviewDeleted) {
                 reviewDeletedLabel.setVisible(true);
                 noReviewFoundError.setVisible(false);
@@ -198,13 +200,14 @@ public class CourseReviewsController implements Initializable {
                 reviewDeletedLabel.setVisible(false);
                 noReviewFoundError.setVisible(true);
             }
+
         } catch (SQLException e) {
-            System.out.println("Failed to disconnect from database");
+            System.out.println("deleteUserReview, Failed to disconnect from database: " + e);
         } finally {
             try {
                 databaseDriver.disconnect();
             } catch (SQLException e) {
-                System.out.println("Failed to disconnect from database");
+                System.out.println("deleteUserReview, Failed to disconnect from database: " + e);
             }
         }
     }
@@ -264,14 +267,27 @@ public class CourseReviewsController implements Initializable {
         this.stage = stage;
     }
 
-    public void setCourseLabel(String course) {
-        String averageRating = getAverageRating(course);
-        this.courseLabel.setText(course + " " + averageRating);
-        this.course = course;
+    public void setCourseLabel(int courseID) {
+        DatabaseDriver databaseDriver = new DatabaseDriver();
+        try {
+            databaseDriver.connect();
+            String averageRating = getAverageRating(courseID);
+            this.courseLabel.setText("Course Title: " + databaseDriver.getCourseTitle(courseID) + " | Average Rating: " + averageRating);
+            this.courseID = courseID;
+        } catch (SQLException e) {
+            System.out.println("Could not connect to DB");
+        } finally {
+            try {
+                databaseDriver.disconnect();
+            } catch (SQLException disconnectEx) {
+                System.out.println("Error closing the database connection: " + disconnectEx.getMessage());
+            }
+        }
+
     }
 
-    public void setCourse(String course) {
-        this.course = course;
+    public void setCourse(int course) {
+        this.courseID = course;
     }
 
     public void setupSlider() {

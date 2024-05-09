@@ -98,12 +98,12 @@ public class CreateAccountController {
                 createAccountError.setVisible(false);
             }
         } catch (SQLException e) {
-            System.out.println("Unable to connect to database");
+            System.out.println("addUser, Unable to connect to database: " + e);
         } finally {
             try {
                 databaseDriver.disconnect();
             } catch (SQLException e) {
-                System.out.println("Unable to disconnect from database");
+                System.out.println("addUser, Unable to disconnect from database: " + e);
             }
         }
         return userAdded;

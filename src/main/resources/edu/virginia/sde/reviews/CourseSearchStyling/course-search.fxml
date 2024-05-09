@@ -16,8 +16,11 @@
             <children>
                 <TableView fx:id="courseTable" maxWidth="1210.0" prefHeight="460.0" prefWidth="1210.0">
                     <columns>
-                        <TableColumn fx:id="courseNameColumn" minWidth="1000.0" prefWidth="75.0" reorderable="false" sortType="ASCENDING" text="Course" />
+                        <TableColumn fx:id="courseTitleColumn" minWidth="605.0" prefWidth="75.0" reorderable="false" sortType="ASCENDING" text="Course" />
+                        <TableColumn fx:id="courseDepartmentColumn" prefWidth="205.0" reorderable="false" sortType="ASCENDING" text="Department" />
+                        <TableColumn fx:id="courseNumberColumn" prefWidth="200.0" reorderable="false" sortType="ASCENDING" text="Number" />
                         <TableColumn fx:id="courseReviewColumn" prefWidth="200.0" reorderable="false" sortType="ASCENDING" text="Rating" />
+
                     </columns>
                 </TableView>
             </children>
@@ -29,7 +32,7 @@
                 <HBox alignment="CENTER_LEFT" spacing="40.0">
                     <children>
                         <TextField fx:id="courseDepartment" alignment="BOTTOM_LEFT" maxWidth="150.0" onKeyPressed="#handleKeyPressed" onMouseClicked="#addCourseErrorHide" prefHeight="20.0" prefWidth="140.0" promptText="Department" />
-                        <TextField fx:id="courseCatalog" alignment="BOTTOM_LEFT" maxWidth="185.0" onKeyPressed="#handleKeyPressed" onMouseClicked="#addCourseErrorHide" prefHeight="20.0" prefWidth="185.0" promptText="Catalog # (1010)" />
+                        <TextField fx:id="courseNumber" alignment="BOTTOM_LEFT" maxWidth="185.0" onKeyPressed="#handleKeyPressed" onMouseClicked="#addCourseErrorHide" prefHeight="20.0" prefWidth="185.0" promptText="Catalog # (1010)" />
                         <TextField fx:id="courseTitle" alignment="BOTTOM_LEFT" maxWidth="280.0" minWidth="196.0" onKeyPressed="#handleKeyPressed" onMouseClicked="#addCourseErrorHide" prefHeight="39.0" prefWidth="196.0" promptText="Title" />
                     </children>
                 </HBox>

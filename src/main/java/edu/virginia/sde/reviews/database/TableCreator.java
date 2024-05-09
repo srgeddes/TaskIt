@@ -21,23 +21,22 @@ public class TableCreator {
             );
             st.execute(
                     "CREATE TABLE IF NOT EXISTS Courses (" +
-                            "Title TEXT PRIMARY KEY, " +
-                            "Average_rating DECIMAL(10, 2) NOT NULL)"
+                            "CourseID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                            "CourseTitle VARCHAR(255) NOT NULL," +
+                            "CourseDepartment VARCHAR(50)," +
+                            "CourseNumber VARCHAR(50) NOT NULL)"
             );
             st.execute(
                     "CREATE TABLE IF NOT EXISTS Reviews (" +
                             "ReviewID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                            "CourseID INTEGER, " +
                             "Username TEXT NOT NULL, " +
-                            "CourseTitle TEXT NOT NULL, " +
                             "Comments TEXT, " +
                             "Rating INTEGER NOT NULL, " +
                             "Time_Stamp TEXT NOT NULL, " +
-                            "FOREIGN KEY (Username) REFERENCES Users(Username))"
+                            "FOREIGN KEY (Username) REFERENCES Users(Username)" +
+                            "FOREIGN KEY (CourseID) REFERENCES Courses(CourseID))"
             );
         }
     }
-
-
-
-
 }

@@ -3,6 +3,7 @@ package edu.virginia.sde.reviews.controllers;
 
 import edu.virginia.sde.reviews.SceneManager;
 import edu.virginia.sde.reviews.database.DatabaseDriver;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -15,9 +16,11 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
+
+import javax.xml.crypto.Data;
 
 
 public class CourseSearchController implements Initializable{
@@ -29,7 +32,7 @@ public class CourseSearchController implements Initializable{
     @FXML
     TextField courseDepartment;
     @FXML
-    TextField courseCatalog;
+    TextField courseNumber;
     @FXML
     TextField courseTitle;
     @FXML
@@ -48,14 +51,18 @@ public class CourseSearchController implements Initializable{
     @FXML
     TextField courseSearch;
     @FXML
-    TableView<String> courseTable;
+    TableView<ArrayList<String>> courseTable;
     @FXML
-    TableColumn<String, String> courseNameColumn;
+    private TableColumn<ArrayList<String>, String> courseTitleColumn;
     @FXML
-    TableColumn<String, String> courseReviewColumn;
+    private TableColumn<ArrayList<String>, String> courseDepartmentColumn;
+    @FXML
+    private TableColumn<ArrayList<String>, String> courseNumberColumn;
+    @FXML
+    private TableColumn<ArrayList<String>, String> courseReviewColumn;
 
 
-    HashMap<String, String> courses = new HashMap<>();
+    ArrayList<ArrayList<String>> courses = new ArrayList<>();
 
     String currentCourse;
 
@@ -76,7 +83,7 @@ public class CourseSearchController implements Initializable{
      */
     public void addCourse(ActionEvent event) throws IOException {
         String department = courseDepartment.getText().toUpperCase().trim();
-        String catalog = courseCatalog.getText().trim();
+        String catalog = courseNumber.getText().trim();
         String title = courseTitle.getText().trim();
 
         String courseTitle = title + " | " + department + " " + catalog;
@@ -107,12 +114,12 @@ public class CourseSearchController implements Initializable{
                     courseAlreadyExistsError.setVisible(true);
                 }
             } catch (SQLException e) {
-                throw new RuntimeException("Failed to connect to database");
+                System.out.println("addCourse, Failed to add course: " + e);
             } finally {
                 try {
                     databaseDriver.disconnect();
                 } catch (SQLException e) {
-                    System.out.println("Failed to disconnect from database");
+                    System.out.println("addCourse, Failed to disconnect from database: " + e);
                 }
             }
         } else {
@@ -139,15 +146,14 @@ public class CourseSearchController implements Initializable{
         DatabaseDriver databaseDriver = new DatabaseDriver();
         try {
             databaseDriver.connect();
-            HashMap<String, String> coursesFromDB = databaseDriver.getCourses();
-            courses.putAll(coursesFromDB);
+            courses = databaseDriver.getCourses();
         } catch (SQLException e) {
-            System.out.println("Unable to connect to database");
+            System.out.println("setALlCourses, Unable to connect to database: " + e);
         } finally {
             try {
                 databaseDriver.disconnect();
             } catch (SQLException e) {
-                System.out.println("Unable to disconnect from database");
+                System.out.println("setALlCourses, Unable to disconnect from database: " + e);
             }
         }
     }
@@ -156,16 +162,19 @@ public class CourseSearchController implements Initializable{
      * Convert the Hashmap of courses into a viewable form for the tableView.
      */
     public void setupTable() {
-        ObservableList<String> courseAndReviews = FXCollections.observableArrayList();
-        courses.forEach((course, review) -> courseAndReviews.add(course + " - Review: " + review));
+        ObservableList<ArrayList<String>> courseDetails = FXCollections.observableArrayList();
 
-        courseTable.setItems(courseAndReviews);
+        courseDetails.addAll(courses);
 
-        courseNameColumn.setCellValueFactory(param -> new javafx.beans.property.SimpleStringProperty(param.getValue().split(" - Review: ")[0]));
-        courseReviewColumn.setCellValueFactory(param -> new javafx.beans.property.SimpleStringProperty(param.getValue().split(" - Review: ")[1]));
+        // Set the table's items
+        courseTable.setItems(courseDetails);
 
-        courseReviewColumn.setSortType(TableColumn.SortType.DESCENDING);
-        courseTable.getSortOrder().add(courseReviewColumn);
+        courseTitleColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(0)));  // Course title at index 0
+        courseDepartmentColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(1)));  // Department at index 1
+        courseNumberColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(2)));  // Course number at index 2
+        courseReviewColumn.setCellValueFactory(cellData ->  new SimpleStringProperty(cellData.getValue().get(3)));  // Course rating at index 3
+
+        courseTable.getSortOrder().addAll(courseTitleColumn, courseDepartmentColumn, courseNumberColumn);
         courseTable.sort();
     }
 
@@ -173,15 +182,23 @@ public class CourseSearchController implements Initializable{
      * Handle switching to the appropriate review screen for the course that was clicked in the table
      */
     public void handleCourseClicked() {
+        DatabaseDriver databaseDriver = new DatabaseDriver();
         courseTable.setOnMouseClicked(event -> {
             if (!courseTable.getSelectionModel().isEmpty()) {
-                currentCourse = courseTable.getSelectionModel().getSelectedItem();
+                currentCourse = courseTable.getSelectionModel().getSelectedItem().get(0);
                 stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                 SceneManager sceneManager = new SceneManager(stage);
                 try {
-                    sceneManager.switchToCourseReviewsScene(event, courseTable.getSelectionModel().getSelectedItem().split("- Review: ")[0], currentUser);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    databaseDriver.connect();
+                    sceneManager.switchToCourseReviewsScene(event, databaseDriver.getCourseID(courseTable.getSelectionModel().getSelectedItem().get(0)), currentUser);
+                } catch (Exception e) {
+                    System.out.println("Couldn't get connect to database and get CourseID");
+                } finally {
+                    try {
+                        databaseDriver.disconnect();
+                    } catch (SQLException disconnectEx) {
+                        System.out.println("Error closing the database connection: " + disconnectEx.getMessage());
+                    }
                 }
             }
         });
@@ -193,7 +210,7 @@ public class CourseSearchController implements Initializable{
                 departmentTooShortError.setVisible(false);
             }
         });
-        courseCatalog.focusedProperty().addListener((observable, oldValue, newValue) -> {
+        courseNumber.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 catalogIncorrectError.setVisible(false);
             }
@@ -212,11 +229,9 @@ public class CourseSearchController implements Initializable{
         if (keyEvent.getCode() == KeyCode.ENTER) {
             if (keyEvent.getSource() == courseSearch) {
                 databaseDriver.connect();
-                HashMap<String, String> coursesFromDB = databaseDriver.filterCourses(courseSearch.getText());
-                courses = coursesFromDB;
-                System.out.println(courses);
+                courses = databaseDriver.filterCourses(courseSearch.getText());
                 setupTable();
-            } else if (keyEvent.getSource() == courseDepartment || keyEvent.getSource() == courseCatalog || keyEvent.getSource() == courseTitle) {
+            } else if (keyEvent.getSource() == courseDepartment || keyEvent.getSource() == courseNumber || keyEvent.getSource() == courseTitle) {
                 addCourse(new ActionEvent(keyEvent.getSource(), keyEvent.getTarget()));
             }
         }

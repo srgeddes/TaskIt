@@ -65,12 +65,12 @@ public class MyReviewsController implements Initializable {
             databaseDriver.connect();
             reviews = databaseDriver.getReviewsForUser(username);
         } catch (SQLException e) {
-            System.out.println("Unable to get reviews from DB");
+            System.out.println("fetchReviewsFromDB, Unable to get reviews from DB: " + e);
         } finally {
             try {
                 databaseDriver.disconnect();
             } catch (SQLException e) {
-                System.out.println("Unable to disconnect from database");
+                System.out.println("Unable to disconnect from database: " + e);
             }
         }
     }
@@ -100,15 +100,23 @@ public class MyReviewsController implements Initializable {
     }
 
     public void setTableMouseClick() {
+        DatabaseDriver databaseDriver = new DatabaseDriver();
         reviewsTable.setOnMouseClicked(event -> {
             if (!reviewsTable.getSelectionModel().isEmpty()) {
                 currentCourse = reviewsTable.getSelectionModel().getSelectedItem()[0];
                 stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                 SceneManager sceneManager = new SceneManager(stage);
                 try {
-                    sceneManager.switchToCourseReviewsScene(event, currentCourse, currentUser);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    databaseDriver.connect();
+                    sceneManager.switchToCourseReviewsScene(event, databaseDriver.getCourseID(currentCourse), currentUser);
+                } catch (Exception e) {
+                    System.out.println("Could not set CourseID");
+                } finally {
+                    try {
+                        databaseDriver.disconnect();
+                    } catch (SQLException disconnectEx) {
+                        System.out.println("Error closing the database connection: " + disconnectEx.getMessage());
+                    }
                 }
             }
         });
@@ -147,7 +155,7 @@ public class MyReviewsController implements Initializable {
     }
 
     public void setUsernameLabel(String label) {
-        usernameLabel.setText(currentUser + "' Reviews");
+        usernameLabel.setText(currentUser + "'s Reviews");
     }
 
     public void setStage(Stage stage) {

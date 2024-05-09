@@ -3,6 +3,7 @@ package edu.virginia.sde.reviews;
 import edu.virginia.sde.reviews.controllers.CourseReviewsController;
 import edu.virginia.sde.reviews.controllers.CourseSearchController;
 import edu.virginia.sde.reviews.controllers.MyReviewsController;
+import edu.virginia.sde.reviews.database.DatabaseDriver;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
@@ -17,6 +18,7 @@ import javafx.event.Event;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -82,7 +84,7 @@ public class SceneManager {
     }
 
 
-    public void switchToCourseReviewsScene(Event event, String course, String currentUser) throws IOException {
+    public void switchToCourseReviewsScene(Event event, int courseID, String currentUser) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/virginia/sde/reviews/CourseReviewsStyling/course-reviews.fxml"));
         Parent root = loader.load();
         CourseReviewsController courseReviewsController = loader.getController();
@@ -90,9 +92,22 @@ public class SceneManager {
         scene = new Scene(root);
         stage.setScene(scene);
         courseReviewsController.setStage(stage);
-        courseReviewsController.setCourse(course);
+        courseReviewsController.setCourse(courseID);
         courseReviewsController.setCurrentUser(currentUser);
-        stage.setTitle(course);
+        DatabaseDriver databaseDriver = new DatabaseDriver();
+        try {
+            databaseDriver.connect();
+            stage.setTitle(databaseDriver.getCourseTitle(courseID));
+        } catch (SQLException e) {
+            System.out.println("Couldnt Set Title for Review Page");
+        } finally {
+            try {
+                databaseDriver.disconnect();
+            } catch (SQLException disconnectEx) {
+                System.out.println("Error closing the database connection: " + disconnectEx.getMessage());
+            }
+        }
+
         stage.show();
     }
 

@@ -75,7 +75,7 @@ public class LoginSceneController {
             try {
                 databaseDriver.disconnect();
             } catch (SQLException e) {
-                System.out.println("Unable to disconnect from database");
+                System.out.println("Unable to disconnect from database: " + e);
             }
         }
         return isValidUser;
