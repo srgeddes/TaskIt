@@ -1,10 +1,10 @@
-package TaskIt;
+package TaskIt.Controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
 
-public class HelloWorldController {
+public class ListController {
     @FXML
     private Label messageLabel;
 
