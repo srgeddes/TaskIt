@@ -1,4 +1,4 @@
-package edu.virginia.sde.reviews;
+package TaskIt;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
