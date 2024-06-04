@@ -1,6 +1,7 @@
 package TaskIt.Data;
 
 import TaskIt.Data.Models.Task;
+import TaskIt.Data.Models.User;
 import javafx.beans.property.StringProperty;
 
 import java.sql.*;
@@ -151,7 +152,63 @@ public class DatabaseDriver {
         }
     }
 
+    public List<User> getAllUsers() throws SQLException {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM Users";
+        try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int userId = rs.getInt("UserId");
+                    String username = rs.getString("Username");
+                    String password = rs.getString("Password");
+                    User user = new User(userId, username, password); 
+                    users.add(user);
+                }
+            }
+
+        } 
+        return users;  
+    }
     
+    public void addUser(User user) throws SQLException {
+        String sql = "INSERT INTO Users (Username, Password) VALUES (?, ?)";
+        try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getPassword());
+            ps.executeUpdate();
+        } 
+    }
+    
+    public void updateUser(User user) throws SQLException {
+        String sql = "UPDATE Users SET Username = ?, Password = ? WHERE UserId = ?";
+        try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getPassword());
+        }
+    }
+
+    public void deleteUser(User user) throws SQLException {
+        String sql = "DELETE FROM Users WHERE UserId = ?";
+        try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
+            ps.setInt(1, user.getId());
+            ps.executeUpdate();
+        }
+    }
+
+    public User getUserById(int id) throws SQLException {
+        String sql = "SELECT * FROM Users WHERE UserId = ?";
+        try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    String username = rs.getString("Username");
+                    String password = rs.getString("Password");
+                    return new User(id, username, password);
+                }
+            }
+        }
+        return null; 
+    }
 
     public static void main(String[] args) {
         DatabaseDriver dbDriver = new DatabaseDriver();
