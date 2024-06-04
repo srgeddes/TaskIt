@@ -1,9 +1,15 @@
 package TaskIt;
 
+import TaskIt.Data.DatabaseDriver;
+import TaskIt.Data.Models.Task;
+import TaskIt.Data.Models.TaskRepository;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class Program extends Application {
     public static void main(String[] args) {
@@ -12,10 +18,6 @@ public class Program extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("hello-world.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Riley Geddes");
-        stage.setScene(scene);
-        stage.show();
+        DatabaseDriver.main(new String[0]);
     }
 }

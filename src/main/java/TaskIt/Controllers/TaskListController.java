@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
 
-public class ListController {
+public class TaskListController {
     @FXML
     private Label messageLabel;
 
