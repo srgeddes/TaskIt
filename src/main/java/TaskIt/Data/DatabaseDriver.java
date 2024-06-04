@@ -161,23 +161,14 @@ public class DatabaseDriver {
                     int userId = rs.getInt("UserId");
                     String username = rs.getString("Username");
                     String password = rs.getString("Password");
-                    User user = new User(userId, username, password); 
+                    User user = new User(userId, username, password);
                     users.add(user);
                 }
             }
 
-        } 
-        return users;  
-    }
-    
-    public void addUser(User user) throws SQLException {
-        String sql = "INSERT INTO Users (Username, Password) VALUES (?, ?)";
-        try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
-            ps.setString(1, user.getUsername());
-            ps.setString(2, user.getPassword());
-            ps.executeUpdate();
-        } 
-    }
+        }
+        return users;
+    } 
     
     public void updateUser(User user) throws SQLException {
         String sql = "UPDATE Users SET Username = ?, Password = ? WHERE UserId = ?";
