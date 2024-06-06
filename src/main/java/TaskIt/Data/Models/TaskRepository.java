@@ -3,71 +3,53 @@ package TaskIt.Data.Models;
 import TaskIt.Data.DatabaseDriver;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
-public class TaskRepository implements ITaskRepository {
+public class TaskRepository extends Repositories implements ITaskRepository {
 
     private final DatabaseDriver dbDriver = DatabaseDriver.getInstance();
-    private final int CurrentUserId = dbDriver.currentUserId; 
 
     public List<Task> getAllTasks() throws SQLException {
-        try {
-            dbDriver.connect();
-        } catch (SQLException e) {
-            System.out.println("Error connecting to the database");
-        } finally {
-            dbDriver.disconnect();
-        }
-        return dbDriver.getAllTasks();
+        super.ConnectToDb();
+        List<Task> tasks = dbDriver.getAllTasks(); 
+        super.DisconnectFromDb();
+        return tasks;
     }
 
     public void addTask(Task task) throws SQLException {
-        try {
-            dbDriver.connect();
-        } catch (SQLException e) {
-            System.out.println("Error connecting to the database");
-        } finally {
-            dbDriver.disconnect();
-        } 
+        super.ConnectToDb();
         dbDriver.addTask(task);
+        dbDriver.commit();
+        super.DisconnectFromDb();
     }
 
     public void updateTask(Task task) throws SQLException {
+        super.ConnectToDb();
         dbDriver.updateTask(task);
+        dbDriver.commit();
+        super.DisconnectFromDb();
     }
 
     public void deleteTask(Task task) throws SQLException {
+        super.ConnectToDb();
         dbDriver.deleteTask(task);
+        dbDriver.commit();
+        super.DisconnectFromDb();
     }
 
     public Task getTaskById(int id) throws SQLException {
-        return dbDriver.getTaskById(id); 
+        super.ConnectToDb();
+        Task task = dbDriver.getTaskById(id);
+        super.DisconnectFromDb();
+        return task;
     }
 
     public boolean doesTaskExist(int id) throws SQLException {
-        return dbDriver.doesTaskExist(id); 
+        super.ConnectToDb();
+        boolean rs = dbDriver.doesTaskExist(id);
+        super.DisconnectFromDb();
+        return rs;
     }
-
-    public void addUser(String username, String password) throws SQLException {
-        dbDriver.connect();
-        dbDriver.addUser(username, password);
-        dbDriver.commit();
-        dbDriver.disconnect();
-    }
-
-    private void openConnection() throws SQLException {
-        try {
-            dbDriver.connect();
-        } catch (SQLException e) {
-            System.out.println("Error connecting to the database");
-        } 
-    }
-
-    private void closeConnection() throws SQLException {
-        try {
-            dbDriver.disconnect();
-        } catch (SQLException e) {
-            System.out.println("Error connecting to the database");
-        } 
-    }
+    
 }

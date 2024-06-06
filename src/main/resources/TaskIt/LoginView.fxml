@@ -9,7 +9,7 @@
 <?import javafx.scene.shape.Sphere?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minWidth="1280.0" prefHeight="720.0" prefWidth="1075.0" stylesheets="/TaskIt/Login.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TaskIt.Controllers.TaskListController">
+<AnchorPane minWidth="1280.0" prefHeight="720.0" prefWidth="1075.0" stylesheets="/TaskIt/Login.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TaskIt.Controllers.LoginController">
    <children>
       <Sphere layoutX="1082.0" layoutY="121.0" radius="100.0" />
       <HBox alignment="CENTER" layoutY="174.0" prefHeight="374.0" prefWidth="1280.0">
@@ -18,12 +18,12 @@
                <children>
                   <VBox prefHeight="120.0" prefWidth="250.0" spacing="20.0">
                      <children>
-                        <TextField prefHeight="40.0" prefWidth="218.0" promptText="Username">
+                        <TextField fx:id="usernameField" prefHeight="40.0" prefWidth="218.0" promptText="Username">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </TextField>
-                        <TextField prefHeight="40.0" prefWidth="218.0" promptText="Password">
+                        <TextField fx:id="passwordField" prefHeight="40.0" prefWidth="218.0" promptText="Password">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -32,12 +32,12 @@
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="120.0" prefWidth="100.0" spacing="25.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="190.0" text="Sign in">
+                        <Button onAction="#handleLogin" mnemonicParsing="false" prefHeight="40.0" prefWidth="190.0" text="Sign in">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="190.0" text="Create Account " />
+                        <Button onAction="#handleCreateAccount" mnemonicParsing="false" prefHeight="31.0" prefWidth="190.0" text="Create Account " />
                      </children>
                   </VBox>
                </children>

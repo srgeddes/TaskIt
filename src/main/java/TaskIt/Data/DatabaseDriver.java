@@ -2,7 +2,6 @@ package TaskIt.Data;
 
 import TaskIt.Data.Models.Task;
 import TaskIt.Data.Models.User;
-import javafx.beans.property.StringProperty;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ public class DatabaseDriver {
 
     private Connection connection;
 
-    public int currentUserId;
+    public User currentUser; 
 
     private DatabaseDriver() {
     }
@@ -50,14 +49,18 @@ public class DatabaseDriver {
         connection.rollback();
     }
 
-    public void setCurrentUser(int userId) throws SQLException {
-        this.currentUserId = 1; 
+    public void setCurrentUser(User user) throws SQLException {
+        this.currentUser = user; 
+    }
+    
+    public User getCurrentUser() throws SQLException {
+        return currentUser; 
     }
 
     public void addTask(Task task) throws SQLException {
         String sql = "INSERT INTO Tasks (UserId, Description, PriorityLevel, DueDate, CompletionStatus) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
-            ps.setInt(1, currentUserId);
+            ps.setInt(1, this.currentUser.getId());
             ps.setString(2, task.getDescription());
             ps.setString(3, task.getPriorityLevel().toString());
             ps.setTimestamp(4, task.getDueDate());
@@ -70,7 +73,7 @@ public class DatabaseDriver {
         List<Task> tasks = new ArrayList<>();
         String sql = "SELECT * FROM Tasks WHERE UserId = ?";
         try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
-            ps.setInt(1, this.currentUserId);
+            ps.setInt(1, this.currentUser.getId());
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     int taskId = rs.getInt("TaskId");
@@ -169,6 +172,32 @@ public class DatabaseDriver {
         }
         return users;
     } 
+    
+    public User getUserByUsername(String username) throws SQLException {
+        String sql = "SELECT * FROM Users WHERE Username = ?";
+        try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
+            ps.setString(1, username);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    int userId = rs.getInt("UserId");
+                    String password = rs.getString("Password");
+                    return new User(userId, username, password);
+                }
+            }
+        }
+        return null; 
+    }
+
+    public boolean isValidUser(String username, String password) throws SQLException {
+        String sql = "SELECT Username, Password FROM Users WHERE Username = ? AND Password = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, username);
+            ps.setString(2, password);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        }
+    }
     
     public void updateUser(User user) throws SQLException {
         String sql = "UPDATE Users SET Username = ?, Password = ? WHERE UserId = ?";

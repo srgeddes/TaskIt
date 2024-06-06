@@ -1,2 +1,25 @@
-package TaskIt.Data.Models;public class Repositories {
+package TaskIt.Data.Models;
+
+import TaskIt.Data.DatabaseDriver;
+
+import java.sql.SQLException;
+
+public class Repositories {
+    DatabaseDriver dbDriver = DatabaseDriver.getInstance();
+    
+    public void ConnectToDb() throws SQLException {
+        try {
+            dbDriver.connect();
+        } catch (SQLException e) {
+            System.out.println("Unable to connect to database");
+        } 
+    }
+    
+    public void DisconnectFromDb() throws SQLException {
+        try {
+            dbDriver.disconnect();
+        } catch (SQLException e) {
+            System.out.println("Unable to disconnect from database");
+        }
+    } 
 }

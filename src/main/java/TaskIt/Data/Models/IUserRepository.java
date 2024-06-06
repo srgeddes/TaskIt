@@ -10,4 +10,10 @@ public interface IUserRepository {
     public void updateUser(User user) throws SQLException;
     public void deleteUser(User user) throws SQLException;
     public User getUserById(int id) throws SQLException; 
+    
+    public User getUserByUsername(String username) throws SQLException;
+    public boolean isValidUser(String username, String password) throws SQLException;
+    public void setCurrentUser(User user) throws SQLException;
+    public User getCurrentUser() throws SQLException;
+    
 }
