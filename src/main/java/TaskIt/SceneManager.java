@@ -11,12 +11,10 @@ public class SceneManager {
     private static SceneManager instance;
     private Stage stage;
 
-    // Private constructor to prevent instantiation
     private SceneManager(Stage stage) {
         this.stage = stage;
     }
 
-    // Public method to get the singleton instance
     public static synchronized SceneManager getInstance(Stage stage) {
         if (instance == null) {
             instance = new SceneManager(stage);
@@ -24,7 +22,6 @@ public class SceneManager {
         return instance;
     }
 
-    // Overloaded method to get the instance without passing the stage
     public static synchronized SceneManager getInstance() {
         if (instance == null) {
             throw new IllegalStateException("SceneManager is not initialized. Call getInstance(Stage) first.");
@@ -33,27 +30,29 @@ public class SceneManager {
     }
 
     public void switchToLoginScene() throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/TaskIt/LoginView.fxml")); 
+        Parent root = FXMLLoader.load(getClass().getResource("/TaskIt/Login/LoginView.fxml")); 
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/TaskIt/Shared/Shared.css").toExternalForm());
         stage.setScene(scene);
-        
+        stage.setTitle("Task It - Login");
         stage.show();
     }
 
     public void switchToCreateAccountScene() throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/TaskIt/CreateAccountView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/TaskIt/CreateAccount/CreateAccountView.fxml"));
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/TaskIt/Shared/Shared.css").toExternalForm());
         stage.setScene(scene);
+        stage.setTitle("Task It - Create Account");
         stage.show();
     }
 
     public void switchToTaskListScene() throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/TaskIt/TaskListView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/TaskIt/TaskList/TaskListView.fxml"));
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/TaskIt/Shared/Shared.css").toExternalForm());
         stage.setScene(scene);
+        stage.setTitle("Task It - Task List");
         stage.show();
     }
 

@@ -4,7 +4,7 @@ import TaskIt.Data.DatabaseDriver;
 
 import java.sql.SQLException;
 
-public class Repositories {
+public class Repository {
     DatabaseDriver dbDriver = DatabaseDriver.getInstance();
     
     public void ConnectToDb() throws SQLException {

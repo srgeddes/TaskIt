@@ -3,10 +3,9 @@ package TaskIt.Data.Models;
 import TaskIt.Data.DatabaseDriver;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-public class TaskRepository extends Repositories implements ITaskRepository {
+public class TaskRepository extends Repository implements ITaskRepository {
 
     private final DatabaseDriver dbDriver = DatabaseDriver.getInstance();
 
