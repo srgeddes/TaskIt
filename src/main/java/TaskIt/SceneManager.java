@@ -33,15 +33,18 @@ public class SceneManager {
     }
 
     public void switchToLoginScene() throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/TaskIt/LoginView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/TaskIt/LoginView.fxml")); 
         Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/TaskIt/Shared.css").toExternalForm());
         stage.setScene(scene);
+        
         stage.show();
     }
 
     public void switchToCreateAccountScene() throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/TaskIt/CreateAccountView.fxml"));
         Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/TaskIt/Shared.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
     }
@@ -49,6 +52,7 @@ public class SceneManager {
     public void switchToTaskListScene() throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/TaskIt/TaskListView.fxml"));
         Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/TaskIt/Shared.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
     }

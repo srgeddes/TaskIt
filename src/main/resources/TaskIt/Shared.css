@@ -1,0 +1,82 @@
+.root {
+    -fx-background-color: rgb(81, 28, 70);
+    -fx-font-family: "Helvetica";
+}
+
+
+.label {
+    -fx-font-size: 20;
+    -fx-font-family: "Helvetica";
+    -fx-text-fill: #E57200;
+}
+
+.text-field, .password-field {
+    -fx-font-size: 30px; /* Increase the font size */
+    -fx-min-width: 300px; /* Set the preferred width */
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-padding: 6 7 7 7;
+    -fx-prompt-text-fill: #808080;
+    -fx-text-fill: #E57200;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: transparent transparent #E57200 transparent;
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-prompt-text-fill: #cccccc;
+    -fx-text-fill: #cccccc;
+}
+
+.text-field, .password-field {
+    -fx-border-color: transparent transparent grey transparent;
+    -fx-border-width: 0 0 2 0;
+}
+
+
+.button {
+    -fx-background-color: grey;
+    -fx-font-size: 20;
+}
+
+.button:hover {
+    -fx-background-color: #E57200;
+}
+
+.image-view {
+    -fx-opacity: 0.07;
+}
+
+.check-box .box {
+    -fx-background-color: #cccccc;
+    -fx-border-color: transparent;
+    -fx-border-radius: 2;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: white;
+}
+.check-box:selected .box {
+    -fx-background-color: transparent;
+}
+
+
+#exitButton {
+    -fx-background-color: grey;
+}
+
+#exitButton:hover {
+    -fx-background-color: #be0000;
+}
+
+
+
+
+
+
+
+
+
+
