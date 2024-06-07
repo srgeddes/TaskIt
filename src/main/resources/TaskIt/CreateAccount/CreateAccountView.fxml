@@ -1,14 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Sphere?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="TaskIt.Controllers.CreateAccountController"
-            prefHeight="720.0" prefWidth="1280.0">
-
+<AnchorPane minWidth="1280.0" prefHeight="720.0" prefWidth="1075.0" stylesheets="/TaskIt/CreateAccount/CreateAccount.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TaskIt.Controllers.CreateAccountController">
+    <children>
+        <Sphere layoutX="1082.0" layoutY="121.0" radius="100.0" />
+        <HBox alignment="CENTER" layoutY="187.0" prefHeight="374.0" prefWidth="1280.0">
+            <children>
+                <VBox alignment="CENTER" prefHeight="720.0" prefWidth="250.0" spacing="20.0">
+                    <children>
+                          <TextField fx:id="usernameField" prefHeight="40.0" prefWidth="218.0" promptText="Username">
+                              <font>
+                                  <Font size="14.0" />
+                              </font>
+                          </TextField>
+                        <VBox prefHeight="120.0" prefWidth="250.0" spacing="20.0">
+                            <children>
+                                <TextField fx:id="passwordField" prefHeight="40.0" prefWidth="218.0" promptText="Password">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </TextField>
+                        <TextField prefHeight="40.0" prefWidth="250.0" promptText="Confirm Password">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                            </children>
+                        </VBox>
+                          <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="190.0" text="Create Account " />
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+      <Label style="-fx-font-size: 36px" alignment="CENTER" layoutX="483.0" layoutY="159.0" prefHeight="55.0" prefWidth="314.0" text="CREATE ACCOUNT">
+      </Label>
+    </children>
+    <cursor>
+        <Cursor fx:constant="DEFAULT" />
+    </cursor>
 </AnchorPane>
