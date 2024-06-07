@@ -17,6 +17,8 @@ public class UserRepository extends Repository implements IUserRepository {
     }
 
     public void addUser(User user) throws SQLException {
+        user.setUsername(user.getUsername().trim());
+        user.setPassword(user.getPassword().trim());
         super.ConnectToDb();
         if (!isValidUser(user.getUsername(), user.getPassword())) {
             dbDriver.addUser(user.Username, user.Password);
@@ -47,6 +49,7 @@ public class UserRepository extends Repository implements IUserRepository {
     }
     
     public User getUserByUsername(String username) throws SQLException {
+        username = username.trim();
         super.ConnectToDb();
         User user = dbDriver.getUserByUsername(username);
         super.DisconnectFromDb();
@@ -54,6 +57,8 @@ public class UserRepository extends Repository implements IUserRepository {
     }
     
     public boolean isValidUser(String username, String password) throws SQLException {
+        username = username.trim();
+        password = password.trim();
         super.ConnectToDb();
         boolean rs = dbDriver.isValidUser(username, password);
         super.DisconnectFromDb();
