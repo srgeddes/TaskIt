@@ -4,18 +4,23 @@ import TaskIt.Data.Models.IUserRepository;
 import TaskIt.Data.Models.User;
 import TaskIt.Data.Models.UserRepository;
 import TaskIt.SceneManager;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class LoginController implements Initializable {
+public class LoginController extends Controller implements Initializable {
 
     IUserRepository _userRepository;
     SceneManager sceneManager; 
@@ -24,12 +29,15 @@ public class LoginController implements Initializable {
     TextField usernameField; 
     @FXML 
     TextField passwordField;
+    @FXML
+    Label clockLabel; 
     
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this._userRepository = new UserRepository();
         this.sceneManager = SceneManager.getInstance();
+        super.bindToTime(clockLabel);
     }
     
     public void handleLogin(ActionEvent actionEvent) throws SQLException, IOException {
@@ -50,4 +58,6 @@ public class LoginController implements Initializable {
     public void handleCreateAccount(ActionEvent actionEvent) throws IOException {
         sceneManager.switchToCreateAccountScene();
     }
+
+    
 }
