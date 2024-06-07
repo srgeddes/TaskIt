@@ -41,7 +41,7 @@
                 </VBox>
             </children>
         </HBox>
-      <Label style="-fx-font-size: 36px" alignment="CENTER" layoutX="483.0" layoutY="159.0" prefHeight="55.0" prefWidth="314.0" text="CREATE ACCOUNT">
+      <Label style="-fx-font-size: 30px" alignment="CENTER" layoutX="483.0" layoutY="159.0" prefHeight="55.0" prefWidth="314.0" text="CREATE ACCOUNT">
       </Label>
     </children>
     <cursor>
