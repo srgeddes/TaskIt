@@ -18,8 +18,10 @@ public class UserRepository extends Repository implements IUserRepository {
 
     public void addUser(User user) throws SQLException {
         super.ConnectToDb();
-        dbDriver.addUser(user.Username, user.Password);
-        dbDriver.commit();
+        if (!isValidUser(user.getUsername(), user.getPassword())) {
+            dbDriver.addUser(user.Username, user.Password);
+            dbDriver.commit();
+        }
         super.DisconnectFromDb();
     }
 
