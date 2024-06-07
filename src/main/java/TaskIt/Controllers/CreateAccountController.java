@@ -6,6 +6,7 @@ import TaskIt.Data.Models.UserRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
@@ -27,7 +28,11 @@ public class CreateAccountController implements Initializable {
     TextField passwordField;
     @FXML
     TextField confirmPasswordField;
-    
+    @FXML
+    Label usernameErrorLabel;
+    @FXML
+    Label passwordErrorLabel;
+
     public void createAccount(ActionEvent event) throws SQLException {
         String username = usernameField.getText(); 
         String password = passwordField.getText();
@@ -39,7 +44,7 @@ public class CreateAccountController implements Initializable {
             User user = new User(0, username, password); 
             _userRepository.addUser(user);
         } else {
-            // TODO : Show error label 
+            // TODO : Check if the user already exists first
         } 
     }
     

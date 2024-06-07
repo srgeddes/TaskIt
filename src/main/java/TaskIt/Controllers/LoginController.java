@@ -40,8 +40,8 @@ public class LoginController implements Initializable {
             User user = _userRepository.getUserByUsername(username); 
             _userRepository.setCurrentUser(user);
             sceneManager.switchToTaskListScene();
-        }   else {
-            // TODO : Show Error Label 
+        }  else {
+
         }
         
             
@@ -50,4 +50,5 @@ public class LoginController implements Initializable {
     public void handleCreateAccount(ActionEvent actionEvent) throws IOException {
         sceneManager.switchToCreateAccountScene();
     }
+
 }
