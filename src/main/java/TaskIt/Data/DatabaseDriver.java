@@ -187,6 +187,16 @@ public class DatabaseDriver {
         }
         return null; 
     }
+    
+    public boolean doesUserExist(String username) throws SQLException {
+        String sql = "SELECT * FROM Users WHERE Username = ?";
+        try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
+            ps.setString(1, username);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        }
+    }
 
     public boolean isValidUser(String username, String password) throws SQLException {
         String sql = "SELECT Username, Password FROM Users WHERE Username = ? AND Password = ?";

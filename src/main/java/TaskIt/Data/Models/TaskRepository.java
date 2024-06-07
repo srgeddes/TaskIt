@@ -3,6 +3,7 @@ package TaskIt.Data.Models;
 import TaskIt.Data.DatabaseDriver;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TaskRepository extends Repository implements ITaskRepository {
@@ -10,11 +11,16 @@ public class TaskRepository extends Repository implements ITaskRepository {
     private final DatabaseDriver dbDriver = DatabaseDriver.getInstance();
 
     public List<Task> getAllTasks() throws SQLException {
-        super.ConnectToDb();
-        List<Task> tasks = dbDriver.getAllTasks(); 
+        List<Task> tasks = new ArrayList<>();
+        try {
+            super.ConnectToDb();
+            tasks = dbDriver.getAllTasks();
+        } catch (SQLException e) {
+            System.out.println("Unable to get tasks");
+        }
         super.DisconnectFromDb();
         return tasks;
-    }
+    } 
 
     public void addTask(Task task) throws SQLException {
         super.ConnectToDb();

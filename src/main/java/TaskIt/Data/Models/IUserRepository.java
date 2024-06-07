@@ -15,5 +15,6 @@ public interface IUserRepository {
     public boolean isValidUser(String username, String password) throws SQLException;
     public void setCurrentUser(User user) throws SQLException;
     public User getCurrentUser() throws SQLException;
+    public boolean doesUserExist(String username) throws SQLException;
     
 }

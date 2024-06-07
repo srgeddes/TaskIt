@@ -20,7 +20,7 @@ public class UserRepository extends Repository implements IUserRepository {
         user.setUsername(user.getUsername().trim());
         user.setPassword(user.getPassword().trim());
         super.ConnectToDb();
-        if (!isValidUser(user.getUsername(), user.getPassword())) {
+        if (!dbDriver.doesUserExist(user.getUsername())) {
             dbDriver.addUser(user.Username, user.Password);
             dbDriver.commit();
         }
@@ -61,6 +61,14 @@ public class UserRepository extends Repository implements IUserRepository {
         password = password.trim();
         super.ConnectToDb();
         boolean rs = dbDriver.isValidUser(username, password);
+        super.DisconnectFromDb();
+        return rs;
+    }
+    
+    public boolean doesUserExist(String username) throws SQLException {
+        username = username.trim();
+        super.ConnectToDb();
+        boolean rs = dbDriver.doesUserExist(username); 
         super.DisconnectFromDb();
         return rs;
     }
