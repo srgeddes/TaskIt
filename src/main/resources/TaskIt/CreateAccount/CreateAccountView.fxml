@@ -29,14 +29,14 @@
                                         <Font size="14.0" />
                                     </font>
                                 </TextField>
-                        <TextField prefHeight="40.0" prefWidth="250.0" promptText="Confirm Password">
+                        <TextField fx:id="confirmPasswordField" prefHeight="40.0" prefWidth="250.0" promptText="Confirm Password">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </TextField>
                             </children>
                         </VBox>
-                          <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="190.0" text="Create Account " />
+                            <Button onAction="#createAccount" mnemonicParsing="false" prefHeight="31.0" prefWidth="190.0" text="Create Account " />
                     </children>
                 </VBox>
             </children>
