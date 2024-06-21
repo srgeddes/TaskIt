@@ -4,20 +4,18 @@ import TaskIt.Data.Models.IUserRepository;
 import TaskIt.Data.Models.User;
 import TaskIt.Data.Models.UserRepository;
 import TaskIt.SceneManager;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.util.Duration;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.Calendar;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class LoginController extends Controller implements Initializable {
@@ -31,6 +29,9 @@ public class LoginController extends Controller implements Initializable {
     TextField passwordField;
     @FXML
     Label clockLabel; 
+    
+    @FXML 
+    Label invalidUserErrorLabel; 
     
     
     @Override
@@ -49,14 +50,24 @@ public class LoginController extends Controller implements Initializable {
             _userRepository.setCurrentUser(user);
             sceneManager.switchToTaskListScene();
         }   else {
-            // TODO : Show Error Label 
+            showValidationErrorMessage(); 
         }
-        
-            
     }
     
     public void handleCreateAccount(ActionEvent actionEvent) throws IOException {
         sceneManager.switchToCreateAccountScene();
+    }
+    
+    public void handleFieldClick(MouseEvent actionEvent) throws IOException {
+        hideValidationErrorMessage(); 
+    }
+    
+    public void showValidationErrorMessage() {
+        invalidUserErrorLabel.setVisible(true);
+    }
+    
+    public void hideValidationErrorMessage() {
+        invalidUserErrorLabel.setVisible(false);
     }
 
     

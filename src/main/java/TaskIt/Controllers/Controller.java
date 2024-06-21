@@ -16,7 +16,7 @@ public class Controller {
                     String minuteString = String.format("%02d", time.get(Calendar.MINUTE));
                     String secondString = String.format("%02d", time.get(Calendar.SECOND));
                     String ampmString = time.get(Calendar.AM_PM) == Calendar.AM ? "AM" : "PM";
-                    clockLabel.setText(hourString + ":" + minuteString + ":" + secondString + " " + ampmString);
+                    clockLabel.setText(hourString + ":" + minuteString);
                 }),
                 new KeyFrame(Duration.seconds(1))
         );

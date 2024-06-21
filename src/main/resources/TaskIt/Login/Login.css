@@ -1,0 +1,5 @@
+#invalidUserErrorLabel {
+    -fx-text-fill: #be0000;
+    -fx-text-alignment: center;
+    -fx-font-size: 15px;
+}
